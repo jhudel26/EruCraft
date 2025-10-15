@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EruCraft - Build Your Resume</title>
+    <link rel="stylesheet" href="form-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Modern Loader -->
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <div class="logo-text">EruCraft</div>
+                <div class="logo-subtitle">Resume Builder</div>
+            </div>
+            <div class="loader-animation">
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+                <div class="loader-circle"></div>
+            </div>
+            <div class="loader-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-text">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">EruCraft</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="goBack()">
+                        <i class="fas fa-arrow-left"></i> Back to Templates
+                    </button>
+                    <button class="btn btn-primary" id="downloadBtn">
+                        <i class="fas fa-download"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Form Section -->
+            <div class="form-section">
+                <div class="form-container">
+                    <h2>Personal Information</h2>
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="e.g., Marketing Manager (leave blank if you're a fresh graduate)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" placeholder="123 Main Street, City, State, ZIP"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="website">Website/Portfolio</label>
+                        <input type="url" id="website" placeholder="https://yourwebsite.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profileImage">Profile Image</label>
+                        <div class="image-upload-container">
+                            <div class="image-upload-area" id="imageUploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Click to upload or drag and drop</p>
+                                <span class="image-format">PNG, JPG up to 2MB</span>
+                                <input type="file" id="profileImage" accept="image/*" hidden>
+                            </div>
+                            <div class="image-preview" id="imagePreview" style="display: none;">
+                                <img id="previewImg" src="" alt="Profile Preview">
+                                <button type="button" class="btn btn-danger btn-sm remove-image" id="removeImage" aria-label="Remove profile image">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section-header">
+                        <h2>Professional Summary</h2>
+                        <label class="toggle-switch" aria-label="Toggle Professional Summary section">
+                            <input type="checkbox" id="toggle-summary" checked aria-describedby="toggle-summary-help">
+                            <span class="slider" role="switch" aria-checked="true"></span>
+                        </label>
+                        <span id="toggle-summary-help" class="sr-only">Enable or disable the Professional Summary section in your resume</span>
+                    </div>
+                    <div class="form-group summary-section">
+                        <label for="summary">Summary</label>
+                        <textarea id="summary" rows="4" placeholder="Write a brief professional summary..."></textarea>
+                    </div>
+
+                    <div class="section-header">
+                        <h2>Work Experience</h2>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-experience" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div id="experienceContainer" class="experience-section">
+                        <div class="experience-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" class="experience-company" placeholder="Company Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <input type="text" class="experience-position" placeholder="Your Position">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="month" class="experience-start">
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="month" class="experience-end">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="experience-description" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-experience">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addExperience">
+                        <i class="fas fa-plus"></i> Add Experience
+                    </button>
+
+                    <div class="section-header">
+                        <h2>Education</h2>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-education" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div id="educationContainer" class="education-section">
+                        <div class="education-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Institution</label>
+                                    <input type="text" class="education-institution" placeholder="University Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Degree</label>
+                                    <input type="text" class="education-degree" placeholder="Bachelor of Science">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="month" class="education-start">
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="month" class="education-end">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Additional Info</label>
+                                <textarea class="education-info" rows="2" placeholder="GPA, relevant coursework, achievements..."></textarea>
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-education">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="addEducation">
+                        <i class="fas fa-plus"></i> Add Education
+                    </button>
+
+                    <div class="section-header">
+                        <h2>Skills</h2>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-skills" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group skills-section">
+                        <label for="skills">Skills (comma-separated)</label>
+                        <textarea id="skills" rows="3" placeholder="Project Management, Leadership, Communication, Problem Solving"></textarea>
+                    </div>
+
+                    <div class="section-header">
+                        <h2>Languages</h2>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-languages" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="form-group languages-section">
+                        <label for="languages">Languages</label>
+                        <textarea id="languages" rows="2" placeholder="English (Fluent), Spanish (Intermediate), French (Basic)"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <div class="preview-header">
+                    <h3>Live Preview</h3>
+                    <div class="preview-actions">
+                        <button class="btn btn-sm btn-secondary" id="zoomOut">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span id="zoomLevel">100%</span>
+                        <button class="btn btn-sm btn-secondary" id="zoomIn">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-container">
+                    <div class="resume-preview" id="resumePreview">
+                        <!-- Resume preview will be generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="form-script.js"></script>
+</body>
+</html>
