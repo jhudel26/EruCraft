@@ -1,3 +1,62 @@
+// Template Configuration for Modularity (shared with script.js)
+const templates = {
+    template1: {
+        id: 'template1',
+        name: 'Classic Blue',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: 'white',
+        profilePhotoBorderRadius: '50%'
+    },
+    template2: {
+        id: 'template2',
+        name: 'Modern Beige',
+        sidebarWidth: '30%',
+        sidebarBg: '#f5f5f5',
+        sidebarColor: '#333',
+        profilePhotoBg: '#e8e8e8',
+        profilePhotoBorder: '#ddd',
+        sectionTitleBorder: '#ddd',
+        profilePhotoBorderRadius: '0'
+    },
+    template3: {
+        id: 'template3',
+        name: 'Teal Professional',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: '#f39c12',
+        sectionTitleBorder: '#f39c12',
+        profilePhotoBorderRadius: '50%'
+    },
+    template4: {
+        id: 'template4',
+        name: 'Light Blue',
+        sidebarWidth: '35%',
+        sidebarBg: '#e0ebf2',
+        sidebarColor: '#333',
+        profilePhotoBg: '#bdc3c7',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: '#2c3e50',
+        profilePhotoBorderRadius: '50%'
+    },
+    template5: {
+        id: 'template5',
+        name: 'Dark Gray Modern',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: 'white',
+        profilePhotoBorderRadius: '50%'
+    }
+};
+
 // Form and Preview Management
 class ResumeBuilder {
     constructor() {
@@ -54,6 +113,7 @@ class ResumeBuilder {
             localStorage.setItem('resumeData', JSON.stringify(formData));
         } catch (error) {
             console.warn('Could not save data to localStorage:', error);
+            this.showError('Storage is full. Try removing the profile image or shortening content.');
         }
     }
 
@@ -240,10 +300,14 @@ class ResumeBuilder {
 
         // Update ARIA attributes for toggle switch
         if (toggleSelector) {
-            const toggle = document.querySelector(toggleSelector);
-            const slider = toggle.querySelector('.slider');
-            if (slider) {
-                slider.setAttribute('aria-checked', isEnabled.toString());
+            const inputEl = document.querySelector(toggleSelector);
+            if (inputEl) {
+                inputEl.setAttribute('role', 'switch');
+                inputEl.setAttribute('aria-checked', isEnabled.toString());
+                const sliderEl = inputEl.nextElementSibling;
+                if (sliderEl && sliderEl.classList && sliderEl.classList.contains('slider')) {
+                    sliderEl.setAttribute('aria-checked', isEnabled.toString());
+                }
             }
         }
 
@@ -320,11 +384,13 @@ class ResumeBuilder {
         
         // Remove buttons (delegated event handling)
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-experience')) {
-                this.removeExperience(e.target.closest('.experience-item'));
+            const removeExpBtn = e.target.closest('.remove-experience');
+            if (removeExpBtn) {
+                this.removeExperience(removeExpBtn.closest('.experience-item'));
             }
-            if (e.target.classList.contains('remove-education')) {
-                this.removeEducation(e.target.closest('.education-item'));
+            const removeEduBtn = e.target.closest('.remove-education');
+            if (removeEduBtn) {
+                this.removeEducation(removeEduBtn.closest('.education-item'));
             }
         });
     }
@@ -396,7 +462,12 @@ class ResumeBuilder {
                     // Compress image if needed
                     const compressedData = this.compressImage(img, file.type);
 
-                    localStorage.setItem('profileImage', compressedData);
+                    try {
+                        localStorage.setItem('profileImage', compressedData);
+                    } catch (err) {
+                        this.showError('Image is too large to store. Please choose a smaller image.');
+                        return;
+                    }
 
                     // Show preview
                     this.showImagePreview(compressedData);
@@ -535,6 +606,8 @@ class ResumeBuilder {
     validateForm() {
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
+        const website = (document.getElementById('website')?.value || '').trim();
+        const phone = (document.getElementById('phone')?.value || '').trim();
         
         if (!fullName) {
             this.showError('Please enter your full name');
@@ -550,6 +623,49 @@ class ResumeBuilder {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             this.showError('Please enter a valid email address');
+            return false;
+        }
+
+        // Optional website validation
+        if (website) {
+            try {
+                const url = new URL(website.startsWith('http') ? website : `https://${website}`);
+                if (!url.hostname.includes('.')) throw new Error('Invalid URL');
+            } catch {
+                this.showError('Please enter a valid website URL (e.g., https://example.com)');
+                return false;
+            }
+        }
+
+        // Optional phone validation (very lenient, digits and +, spaces, -)
+        if (phone) {
+            const phoneRegex = /^[+\d][\d\s().-]{6,}$/;
+            if (!phoneRegex.test(phone)) {
+                this.showError('Please enter a valid phone number');
+                return false;
+            }
+        }
+
+        // Date range validation for experience and education
+        const checkRanges = (selectorStart, selectorEnd) => {
+            const starts = document.querySelectorAll(selectorStart);
+            const ends = document.querySelectorAll(selectorEnd);
+            for (let i = 0; i < starts.length; i++) {
+                const s = starts[i].value;
+                const e = ends[i].value;
+                if (s && e && s > e) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        if (!checkRanges('.experience-start', '.experience-end')) {
+            this.showError('Experience start date must be before end date');
+            return false;
+        }
+        if (!checkRanges('.education-start', '.education-end')) {
+            this.showError('Education start date must be before end date');
             return false;
         }
         
@@ -641,54 +757,16 @@ class ResumeBuilder {
     }
 
     getTemplateColors() {
-        const templateColors = {
-            'template1': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: 'white',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template2': {
-                width: '30%',
-                background: '#f5f5f5',
-                color: '#333',
-                profilePhotoBg: '#e8e8e8',
-                profilePhotoBorder: '#ddd',
-                sectionTitleBorder: '#ddd',
-                profilePhotoBorderRadius: '0' // Square shape for Template 2
-            },
-            'template3': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: '#f39c12',
-                sectionTitleBorder: '#f39c12',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template4': {
-                width: '35%',
-                background: '#e0ebf2',
-                color: '#333',
-                profilePhotoBg: '#bdc3c7',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: '#2c3e50',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template5': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: 'white',
-                profilePhotoBorderRadius: '50%'
-            }
+        const template = templates[this.selectedTemplate];
+        return {
+            width: template.sidebarWidth,
+            background: template.sidebarBg,
+            color: template.sidebarColor,
+            profilePhotoBg: template.profilePhotoBg,
+            profilePhotoBorder: template.profilePhotoBorder,
+            sectionTitleBorder: template.sectionTitleBorder,
+            profilePhotoBorderRadius: template.profilePhotoBorderRadius
         };
-        return templateColors[this.selectedTemplate] || templateColors['template1'];
     }
 
     getProfileImageHTML() {

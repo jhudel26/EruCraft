@@ -26,7 +26,7 @@ A beautiful, modern web application for creating professional resumes with multi
 ### 📄 PDF Export
 - **High Quality**: Generates professional PDF files
 - **Automatic Naming**: Files named based on your name
-- **Multi-page Support**: Handles long resumes automatically
+- **Single-page A4 Export**: Exports the current resume to one A4 page
 - **Print Ready**: Optimized for printing and digital sharing
 
 ## Getting Started
@@ -94,8 +94,8 @@ EruCraft/
 - **Responsive Layout**: Adapts to different screen sizes
 
 ### PDF Generation
-- **High Resolution**: 2x scale for crisp text and graphics
-- **Automatic Pagination**: Handles long resumes across multiple pages
+- **High Resolution**: 2x+ scale for crisp text and graphics
+- **Single-page Export**: Current implementation exports one A4 page
 - **Professional Quality**: Print-ready output
 - **Error Handling**: Graceful fallbacks if generation fails
 
