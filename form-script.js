@@ -1048,14 +1048,14 @@ class ResumeBuilder {
                 width: ${templateColors.width};
                 background: ${templateColors.background};
                 color: ${templateColors.color};
-                padding: 20px 15px;
+                padding: 25px 20px;
                 margin: 0;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
-                font-size: 12px;
-                line-height: 1.3;
+                font-size: 14px;
+                line-height: 1.4;
             `;
 
             // Optimize profile photo
@@ -1081,12 +1081,14 @@ class ResumeBuilder {
             const sectionTitles = sidebar.querySelectorAll('.section-title');
             sectionTitles.forEach(title => {
                 title.style.cssText = `
-                    font-size: 12px;
+                    font-size: 14px;
                     font-weight: 700;
                     text-transform: uppercase;
-                    margin-bottom: 8px;
-                    border-bottom: 1px solid ${templateColors.sectionTitleBorder};
-                    padding-bottom: 3px;
+                    margin-bottom: 12px;
+                    margin-top: 20px;
+                    border-bottom: 2px solid ${templateColors.sectionTitleBorder};
+                    padding-bottom: 5px;
+                    letter-spacing: 0.5px;
                 `;
             });
 
@@ -1096,10 +1098,42 @@ class ResumeBuilder {
                 item.style.cssText = `
                     display: flex;
                     align-items: center;
-                    margin-bottom: 6px;
-                    font-size: 11px;
+                    margin-bottom: 8px;
+                    font-size: 13px;
+                    line-height: 1.3;
                 `;
             });
+
+            // Optimize skills and languages lists
+            const skillsLists = sidebar.querySelectorAll('.skills-list, .languages-list');
+            skillsLists.forEach(list => {
+                list.style.cssText = `
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                `;
+                
+                const listItems = list.querySelectorAll('li');
+                listItems.forEach(item => {
+                    item.style.cssText = `
+                        margin-bottom: 6px;
+                        font-size: 13px;
+                        line-height: 1.3;
+                        padding-left: 0;
+                    `;
+                });
+            });
+
+            // Optimize summary text
+            const summaryText = sidebar.querySelector('.summary-section p');
+            if (summaryText) {
+                summaryText.style.cssText = `
+                    font-size: 13px;
+                    line-height: 1.4;
+                    margin: 0;
+                    text-align: justify;
+                `;
+            }
         }
 
         // Optimize main content
@@ -1107,13 +1141,15 @@ class ResumeBuilder {
         if (main) {
             main.style.cssText = `
                 width: 65%;
-                padding: 20px 15px;
+                padding: 25px 20px;
                 margin: 0;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
                 color: #333;
+                font-size: 14px;
+                line-height: 1.4;
             `;
 
             // Optimize name
@@ -1143,13 +1179,15 @@ class ResumeBuilder {
             const mainSectionTitles = main.querySelectorAll('.section-title');
             mainSectionTitles.forEach(title => {
                 title.style.cssText = `
-                    font-size: 14px;
+                    font-size: 16px;
                     font-weight: 700;
                     text-transform: uppercase;
-                    margin-bottom: 10px;
-                    border-bottom: 1px solid #bdc3c7;
-                    padding-bottom: 3px;
+                    margin-bottom: 15px;
+                    margin-top: 25px;
+                    border-bottom: 2px solid #bdc3c7;
+                    padding-bottom: 5px;
                     color: #2c3e50;
+                    letter-spacing: 0.5px;
                 `;
             });
 
