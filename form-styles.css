@@ -709,6 +709,15 @@ input:checked + .slider:before {
     padding-bottom: 10px;
 }
 
+.resume-title-spacer {
+    margin-bottom: 30px;
+}
+
+.resume-name-underline {
+    border-bottom: 2px solid #bdc3c7;
+    padding-bottom: 10px;
+}
+
 .experience-item-preview,
 .education-item-preview {
     margin-bottom: 20px;
@@ -1038,6 +1047,11 @@ input:checked + .slider:before {
     
     .resume-title {
         font-size: 14px;
+    }
+    
+    .resume-name-underline {
+        border-bottom: 1px solid #bdc3c7;
+        padding-bottom: 8px;
     }
     
     .form-row {

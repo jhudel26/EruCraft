@@ -1,62 +1,3 @@
-// Template Configuration for Modularity (shared with script.js)
-const templates = {
-    template1: {
-        id: 'template1',
-        name: 'Classic Blue',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
-        sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
-        profilePhotoBorderRadius: '50%'
-    },
-    template2: {
-        id: 'template2',
-        name: 'Modern Beige',
-        sidebarWidth: '30%',
-        sidebarBg: '#f5f5f5',
-        sidebarColor: '#333',
-        profilePhotoBg: '#e8e8e8',
-        profilePhotoBorder: '#ddd',
-        sectionTitleBorder: '#ddd',
-        profilePhotoBorderRadius: '0'
-    },
-    template3: {
-        id: 'template3',
-        name: 'Teal Professional',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
-        sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: '#f39c12',
-        sectionTitleBorder: '#f39c12',
-        profilePhotoBorderRadius: '50%'
-    },
-    template4: {
-        id: 'template4',
-        name: 'Light Blue',
-        sidebarWidth: '35%',
-        sidebarBg: '#e0ebf2',
-        sidebarColor: '#333',
-        profilePhotoBg: '#bdc3c7',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: '#2c3e50',
-        profilePhotoBorderRadius: '50%'
-    },
-    template5: {
-        id: 'template5',
-        name: 'Dark Gray Modern',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
-        sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
-        profilePhotoBorderRadius: '50%'
-    }
-};
-
 // Form and Preview Management
 class ResumeBuilder {
     constructor() {
@@ -113,7 +54,6 @@ class ResumeBuilder {
             localStorage.setItem('resumeData', JSON.stringify(formData));
         } catch (error) {
             console.warn('Could not save data to localStorage:', error);
-            this.showError('Storage is full. Try removing the profile image or shortening content.');
         }
     }
 
@@ -300,14 +240,10 @@ class ResumeBuilder {
 
         // Update ARIA attributes for toggle switch
         if (toggleSelector) {
-            const inputEl = document.querySelector(toggleSelector);
-            if (inputEl) {
-                inputEl.setAttribute('role', 'switch');
-                inputEl.setAttribute('aria-checked', isEnabled.toString());
-                const sliderEl = inputEl.nextElementSibling;
-                if (sliderEl && sliderEl.classList && sliderEl.classList.contains('slider')) {
-                    sliderEl.setAttribute('aria-checked', isEnabled.toString());
-                }
+            const toggle = document.querySelector(toggleSelector);
+            const slider = toggle.querySelector('.slider');
+            if (slider) {
+                slider.setAttribute('aria-checked', isEnabled.toString());
             }
         }
 
@@ -384,13 +320,11 @@ class ResumeBuilder {
         
         // Remove buttons (delegated event handling)
         document.addEventListener('click', (e) => {
-            const removeExpBtn = e.target.closest('.remove-experience');
-            if (removeExpBtn) {
-                this.removeExperience(removeExpBtn.closest('.experience-item'));
+            if (e.target.classList.contains('remove-experience')) {
+                this.removeExperience(e.target.closest('.experience-item'));
             }
-            const removeEduBtn = e.target.closest('.remove-education');
-            if (removeEduBtn) {
-                this.removeEducation(removeEduBtn.closest('.education-item'));
+            if (e.target.classList.contains('remove-education')) {
+                this.removeEducation(e.target.closest('.education-item'));
             }
         });
     }
@@ -462,12 +396,7 @@ class ResumeBuilder {
                     // Compress image if needed
                     const compressedData = this.compressImage(img, file.type);
 
-                    try {
-                        localStorage.setItem('profileImage', compressedData);
-                    } catch (err) {
-                        this.showError('Image is too large to store. Please choose a smaller image.');
-                        return;
-                    }
+                    localStorage.setItem('profileImage', compressedData);
 
                     // Show preview
                     this.showImagePreview(compressedData);
@@ -606,8 +535,6 @@ class ResumeBuilder {
     validateForm() {
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
-        const website = (document.getElementById('website')?.value || '').trim();
-        const phone = (document.getElementById('phone')?.value || '').trim();
         
         if (!fullName) {
             this.showError('Please enter your full name');
@@ -623,49 +550,6 @@ class ResumeBuilder {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             this.showError('Please enter a valid email address');
-            return false;
-        }
-
-        // Optional website validation
-        if (website) {
-            try {
-                const url = new URL(website.startsWith('http') ? website : `https://${website}`);
-                if (!url.hostname.includes('.')) throw new Error('Invalid URL');
-            } catch {
-                this.showError('Please enter a valid website URL (e.g., https://example.com)');
-                return false;
-            }
-        }
-
-        // Optional phone validation (very lenient, digits and +, spaces, -)
-        if (phone) {
-            const phoneRegex = /^[+\d][\d\s().-]{6,}$/;
-            if (!phoneRegex.test(phone)) {
-                this.showError('Please enter a valid phone number');
-                return false;
-            }
-        }
-
-        // Date range validation for experience and education
-        const checkRanges = (selectorStart, selectorEnd) => {
-            const starts = document.querySelectorAll(selectorStart);
-            const ends = document.querySelectorAll(selectorEnd);
-            for (let i = 0; i < starts.length; i++) {
-                const s = starts[i].value;
-                const e = ends[i].value;
-                if (s && e && s > e) {
-                    return false;
-                }
-            }
-            return true;
-        };
-
-        if (!checkRanges('.experience-start', '.experience-end')) {
-            this.showError('Experience start date must be before end date');
-            return false;
-        }
-        if (!checkRanges('.education-start', '.education-end')) {
-            this.showError('Education start date must be before end date');
             return false;
         }
         
@@ -726,12 +610,18 @@ class ResumeBuilder {
         nameElement.textContent = fullName.toUpperCase();
         mainContent.appendChild(nameElement);
         
-        // Create job title element only if there's content
-        if (jobTitle) {
+        // Create job title element only if there's content (leave blank for fresh graduates)
+        if (jobTitle && jobTitle.length > 0) {
             const titleElement = document.createElement('div');
             titleElement.className = 'resume-title';
             titleElement.textContent = this.sanitizeHTML(jobTitle).toUpperCase();
             mainContent.appendChild(titleElement);
+        } else {
+            // Add spacer with line to maintain consistent spacing when no title is present
+            const spacerElement = document.createElement('div');
+            spacerElement.className = 'resume-title-spacer';
+            spacerElement.innerHTML = '<div class="resume-name-underline"></div>';
+            mainContent.appendChild(spacerElement);
         }
         
         // Add experience and education
@@ -757,16 +647,54 @@ class ResumeBuilder {
     }
 
     getTemplateColors() {
-        const template = templates[this.selectedTemplate];
-        return {
-            width: template.sidebarWidth,
-            background: template.sidebarBg,
-            color: template.sidebarColor,
-            profilePhotoBg: template.profilePhotoBg,
-            profilePhotoBorder: template.profilePhotoBorder,
-            sectionTitleBorder: template.sectionTitleBorder,
-            profilePhotoBorderRadius: template.profilePhotoBorderRadius
+        const templateColors = {
+            'template1': {
+                width: '35%',
+                background: '#2c3e50',
+                color: 'white',
+                profilePhotoBg: '#34495e',
+                profilePhotoBorder: 'white',
+                sectionTitleBorder: 'white',
+                profilePhotoBorderRadius: '50%'
+            },
+            'template2': {
+                width: '30%',
+                background: '#f5f5f5',
+                color: '#333',
+                profilePhotoBg: '#e8e8e8',
+                profilePhotoBorder: '#ddd',
+                sectionTitleBorder: '#ddd',
+                profilePhotoBorderRadius: '0' // Square shape for Template 2
+            },
+            'template3': {
+                width: '35%',
+                background: '#2c3e50',
+                color: 'white',
+                profilePhotoBg: '#34495e',
+                profilePhotoBorder: '#f39c12',
+                sectionTitleBorder: '#f39c12',
+                profilePhotoBorderRadius: '50%'
+            },
+            'template4': {
+                width: '35%',
+                background: '#e0ebf2',
+                color: '#333',
+                profilePhotoBg: '#bdc3c7',
+                profilePhotoBorder: 'white',
+                sectionTitleBorder: '#2c3e50',
+                profilePhotoBorderRadius: '50%'
+            },
+            'template5': {
+                width: '35%',
+                background: '#2c3e50',
+                color: 'white',
+                profilePhotoBg: '#34495e',
+                profilePhotoBorder: 'white',
+                sectionTitleBorder: 'white',
+                profilePhotoBorderRadius: '50%'
+            }
         };
+        return templateColors[this.selectedTemplate] || templateColors['template1'];
     }
 
     getProfileImageHTML() {
@@ -1106,14 +1034,27 @@ class ResumeBuilder {
             box-sizing: border-box;
         `;
 
-        // Remove job title if it's empty (for fresh graduates)
+        // Remove job title if it's empty (for fresh graduates) and ensure proper spacing
         const jobTitleInput = document.getElementById('jobTitle');
         const jobTitleInClone = resumeClone.querySelector('.resume-title');
-        if (jobTitleInClone && (!jobTitleInput || !jobTitleInput.value.trim())) {
+        const spacerInClone = resumeClone.querySelector('.resume-title-spacer');
+        
+        if (jobTitleInClone && (!jobTitleInput || !jobTitleInput.value.trim() || jobTitleInput.value.trim().length === 0)) {
             jobTitleInClone.remove();
-        } else if (jobTitleInClone && jobTitleInput && jobTitleInput.value.trim()) {
+        } else if (jobTitleInClone && jobTitleInput && jobTitleInput.value.trim() && jobTitleInput.value.trim().length > 0) {
             // Update job title content to ensure it's correct
             jobTitleInClone.textContent = jobTitleInput.value.trim().toUpperCase();
+        }
+        
+        // Ensure spacer is present if no title (for consistent spacing)
+        if ((!jobTitleInput || !jobTitleInput.value.trim() || jobTitleInput.value.trim().length === 0) && !spacerInClone) {
+            const spacerElement = document.createElement('div');
+            spacerElement.className = 'resume-title-spacer';
+            spacerElement.innerHTML = '<div class="resume-name-underline"></div>';
+            const resumeMain = resumeClone.querySelector('.resume-main');
+            if (resumeMain && resumeMain.firstChild) {
+                resumeMain.insertBefore(spacerElement, resumeMain.children[1]); // Insert after name
+            }
         }
 
         // Optimize sidebar
@@ -1251,6 +1192,23 @@ class ResumeBuilder {
                     border-bottom: 1px solid #bdc3c7;
                     padding-bottom: 8px;
                 `;
+            }
+
+            // Optimize spacer (only if it exists)
+            const resumeSpacer = main.querySelector('.resume-title-spacer');
+            if (resumeSpacer) {
+                resumeSpacer.style.cssText = `
+                    margin-bottom: 20px;
+                `;
+                
+                // Optimize the underline within the spacer
+                const underline = resumeSpacer.querySelector('.resume-name-underline');
+                if (underline) {
+                    underline.style.cssText = `
+                        border-bottom: 1px solid #bdc3c7;
+                        padding-bottom: 8px;
+                    `;
+                }
             }
 
             // Optimize section titles in main
