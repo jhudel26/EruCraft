@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EruCraft - Build Your Resume</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
     <link rel="stylesheet" href="form-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -58,7 +59,7 @@
                     
                     <div class="form-group">
                         <label for="jobTitle">Job Title</label>
-                        <input type="text" id="jobTitle" placeholder="e.g., Marketing Manager (leave blank for fresh graduates - no title will appear on resume)">
+                        <input type="text" id="jobTitle" placeholder="e.g., Marketing Manager (leave blank if you're a fresh graduate)">
                     </div>
                     
                     <div class="form-group">
@@ -100,15 +101,15 @@
                     </div>
 
                     <div class="section-header">
-                        <h2>Professional Summary</h2>
-                        <label class="toggle-switch" aria-label="Toggle Professional Summary section">
+                        <h2>About</h2>
+                        <label class="toggle-switch" aria-label="Toggle About section">
                             <input type="checkbox" id="toggle-summary" checked aria-describedby="toggle-summary-help">
                             <span class="slider" role="switch" aria-checked="true"></span>
                         </label>
-                        <span id="toggle-summary-help" class="sr-only">Enable or disable the Professional Summary section in your resume</span>
+                        <span id="toggle-summary-help" class="sr-only">Enable or disable the About section in your resume</span>
                     </div>
                     <div class="form-group summary-section">
-                        <label for="summary">Summary</label>
+                        <label for="summary">About</label>
                         <textarea id="summary" rows="4" placeholder="Write a brief professional summary..."></textarea>
                     </div>
 

@@ -1,3 +1,62 @@
+// Template Configuration for Modularity (shared with script.js)
+const templates = {
+    template1: {
+        id: 'template1',
+        name: 'Classic Blue',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: 'white',
+        profilePhotoBorderRadius: '50%'
+    },
+    template2: {
+        id: 'template2',
+        name: 'Modern Beige',
+        sidebarWidth: '30%',
+        sidebarBg: '#f5f5f5',
+        sidebarColor: '#333',
+        profilePhotoBg: '#e8e8e8',
+        profilePhotoBorder: '#ddd',
+        sectionTitleBorder: '#ddd',
+        profilePhotoBorderRadius: '0'
+    },
+    template3: {
+        id: 'template3',
+        name: 'Teal Professional',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: '#f39c12',
+        sectionTitleBorder: '#f39c12',
+        profilePhotoBorderRadius: '50%'
+    },
+    template4: {
+        id: 'template4',
+        name: 'Light Blue',
+        sidebarWidth: '35%',
+        sidebarBg: '#e0ebf2',
+        sidebarColor: '#333',
+        profilePhotoBg: '#bdc3c7',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: '#2c3e50',
+        profilePhotoBorderRadius: '50%'
+    },
+    template5: {
+        id: 'template5',
+        name: 'Dark Gray Modern',
+        sidebarWidth: '35%',
+        sidebarBg: '#2c3e50',
+        sidebarColor: 'white',
+        profilePhotoBg: '#34495e',
+        profilePhotoBorder: 'white',
+        sectionTitleBorder: 'white',
+        profilePhotoBorderRadius: '50%'
+    }
+};
+
 // Form and Preview Management
 class ResumeBuilder {
     constructor() {
@@ -54,6 +113,7 @@ class ResumeBuilder {
             localStorage.setItem('resumeData', JSON.stringify(formData));
         } catch (error) {
             console.warn('Could not save data to localStorage:', error);
+            this.showError('Storage is full. Try removing the profile image or shortening content.');
         }
     }
 
@@ -240,10 +300,14 @@ class ResumeBuilder {
 
         // Update ARIA attributes for toggle switch
         if (toggleSelector) {
-            const toggle = document.querySelector(toggleSelector);
-            const slider = toggle.querySelector('.slider');
-            if (slider) {
-                slider.setAttribute('aria-checked', isEnabled.toString());
+            const inputEl = document.querySelector(toggleSelector);
+            if (inputEl) {
+                inputEl.setAttribute('role', 'switch');
+                inputEl.setAttribute('aria-checked', isEnabled.toString());
+                const sliderEl = inputEl.nextElementSibling;
+                if (sliderEl && sliderEl.classList && sliderEl.classList.contains('slider')) {
+                    sliderEl.setAttribute('aria-checked', isEnabled.toString());
+                }
             }
         }
 
@@ -257,6 +321,12 @@ class ResumeBuilder {
             input.addEventListener('input', () => {
                 this.debouncedUpdate();
                 this.saveData();
+                this.showAutoSaveIndicator();
+            });
+            
+            // Add real-time validation
+            input.addEventListener('blur', () => {
+                this.validateField(input);
             });
         });
 
@@ -320,11 +390,13 @@ class ResumeBuilder {
         
         // Remove buttons (delegated event handling)
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('remove-experience')) {
-                this.removeExperience(e.target.closest('.experience-item'));
+            const removeExpBtn = e.target.closest('.remove-experience');
+            if (removeExpBtn) {
+                this.removeExperience(removeExpBtn.closest('.experience-item'));
             }
-            if (e.target.classList.contains('remove-education')) {
-                this.removeEducation(e.target.closest('.education-item'));
+            const removeEduBtn = e.target.closest('.remove-education');
+            if (removeEduBtn) {
+                this.removeEducation(removeEduBtn.closest('.education-item'));
             }
         });
     }
@@ -396,7 +468,12 @@ class ResumeBuilder {
                     // Compress image if needed
                     const compressedData = this.compressImage(img, file.type);
 
-                    localStorage.setItem('profileImage', compressedData);
+                    try {
+                        localStorage.setItem('profileImage', compressedData);
+                    } catch (err) {
+                        this.showError('Image is too large to store. Please choose a smaller image.');
+                        return;
+                    }
 
                     // Show preview
                     this.showImagePreview(compressedData);
@@ -535,25 +612,126 @@ class ResumeBuilder {
     validateForm() {
         const fullName = document.getElementById('fullName').value.trim();
         const email = document.getElementById('email').value.trim();
+        const website = (document.getElementById('website')?.value || '').trim();
+        const phone = (document.getElementById('phone')?.value || '').trim();
+        const summary = document.getElementById('summary').value.trim();
+        
+        // Clear previous error highlights
+        this.clearErrorHighlights();
+        
+        let hasErrors = false;
         
         if (!fullName) {
-            this.showError('Please enter your full name');
-            return false;
+            this.highlightError('fullName', 'Please enter your full name');
+            hasErrors = true;
         }
         
         if (!email) {
-            this.showError('Please enter your email address');
-            return false;
+            this.highlightError('email', 'Please enter your email address');
+            hasErrors = true;
+        } else {
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                this.highlightError('email', 'Please enter a valid email address');
+                hasErrors = true;
+            }
+        }
+
+        // Optional website validation
+        if (website) {
+            try {
+                const url = new URL(website.startsWith('http') ? website : `https://${website}`);
+                if (!url.hostname.includes('.')) throw new Error('Invalid URL');
+            } catch {
+                this.highlightError('website', 'Please enter a valid website URL (e.g., https://example.com)');
+                hasErrors = true;
+            }
+        }
+
+        // Optional phone validation (very lenient, digits and +, spaces, -)
+        if (phone) {
+            const phoneRegex = /^[+\d][\d\s().-]{6,}$/;
+            if (!phoneRegex.test(phone)) {
+                this.highlightError('phone', 'Please enter a valid phone number');
+                hasErrors = true;
+            }
+        }
+
+        // Check if at least one section has content
+        const hasExperience = document.querySelectorAll('.experience-item').length > 0 && 
+            Array.from(document.querySelectorAll('.experience-item')).some(item => 
+                item.querySelector('.experience-company').value.trim() || 
+                item.querySelector('.experience-position').value.trim()
+            );
+        
+        const hasEducation = document.querySelectorAll('.education-item').length > 0 && 
+            Array.from(document.querySelectorAll('.education-item')).some(item => 
+                item.querySelector('.education-institution').value.trim() || 
+                item.querySelector('.education-degree').value.trim()
+            );
+        
+        const hasSkills = document.getElementById('skills').value.trim();
+        const hasLanguages = document.getElementById('languages').value.trim();
+        
+        if (!hasExperience && !hasEducation && !hasSkills && !hasLanguages && !summary) {
+            this.showError('Please fill in at least one section (Experience, Education, Skills, or Summary)');
+            hasErrors = true;
+        }
+
+        // Date range validation for experience and education
+        const checkRanges = (selectorStart, selectorEnd, sectionName) => {
+            const starts = document.querySelectorAll(selectorStart);
+            const ends = document.querySelectorAll(selectorEnd);
+            for (let i = 0; i < starts.length; i++) {
+                const s = starts[i].value;
+                const e = ends[i].value;
+                if (s && e && s > e) {
+                    this.highlightError(starts[i].id || selectorStart.replace('.', ''), `${sectionName} start date must be before end date`);
+                    hasErrors = true;
+                }
+            }
+        };
+
+        checkRanges('.experience-start', '.experience-end', 'Experience');
+        checkRanges('.education-start', '.education-end', 'Education');
+        
+        if (hasErrors) {
+            this.showError('Please fix the highlighted errors before proceeding');
         }
         
-        // Basic email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            this.showError('Please enter a valid email address');
-            return false;
+        return !hasErrors;
+    }
+
+    highlightError(fieldId, message) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.style.borderColor = '#dc3545';
+            field.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+            
+            // Add error message below field
+            let errorMsg = field.parentElement.querySelector('.field-error');
+            if (!errorMsg) {
+                errorMsg = document.createElement('div');
+                errorMsg.className = 'field-error';
+                errorMsg.style.cssText = 'color: #dc3545; font-size: 0.8rem; margin-top: 5px;';
+                field.parentElement.appendChild(errorMsg);
+            }
+            errorMsg.textContent = message;
         }
+    }
+
+    clearErrorHighlights() {
+        // Clear all error highlights
+        const errorFields = document.querySelectorAll('input, textarea');
+        errorFields.forEach(field => {
+            field.style.borderColor = '';
+            field.style.boxShadow = '';
+        });
         
-        return true;
+        // Remove error messages
+        const errorMessages = document.querySelectorAll('.field-error');
+        errorMessages.forEach(msg => msg.remove());
     }
 
     showImagePreview(imageData) {
@@ -595,6 +773,9 @@ class ResumeBuilder {
         // Add sidebar
         resumeTemplate.innerHTML = this.getSidebarHTML();
         
+        // Apply template-specific colors to the live preview
+        this.applyTemplateColors(resumeTemplate);
+        
         // Create main content container
         const mainContent = document.createElement('div');
         mainContent.className = 'resume-main';
@@ -610,18 +791,29 @@ class ResumeBuilder {
         nameElement.textContent = fullName.toUpperCase();
         mainContent.appendChild(nameElement);
         
-        // Create job title element only if there's content (leave blank for fresh graduates)
-        if (jobTitle && jobTitle.length > 0) {
+        // Create job title element only if there's content
+        if (jobTitle) {
             const titleElement = document.createElement('div');
             titleElement.className = 'resume-title';
             titleElement.textContent = this.sanitizeHTML(jobTitle).toUpperCase();
             mainContent.appendChild(titleElement);
         } else {
-            // Add spacer with line to maintain consistent spacing when no title is present
-            const spacerElement = document.createElement('div');
-            spacerElement.className = 'resume-title-spacer';
-            spacerElement.innerHTML = '<div class="resume-name-underline"></div>';
-            mainContent.appendChild(spacerElement);
+            // Add empty space if no job title to maintain consistent spacing
+            const emptySpace = document.createElement('div');
+            emptySpace.className = 'resume-title-spacer';
+            mainContent.appendChild(emptySpace);
+        }
+        
+        // Add About section if it exists
+        const summary = this.sanitizeHTML(document.getElementById('summary').value) || '';
+        if (summary && this.formSections.summary) {
+            const aboutSection = document.createElement('div');
+            aboutSection.className = 'about-section';
+            aboutSection.innerHTML = `
+                <div class="section-title main">ABOUT</div>
+                <p style="font-size: 14px; line-height: 1.5; margin-bottom: 20px;">${summary}</p>
+            `;
+            mainContent.appendChild(aboutSection);
         }
         
         // Add experience and education
@@ -645,56 +837,44 @@ class ResumeBuilder {
         };
         return templateMap[this.selectedTemplate] || 'template-1';
     }
+    
+    applyTemplateColors(resumeTemplate) {
+        const templateColors = this.getTemplateColors();
+        
+        // Apply sidebar colors
+        const sidebar = resumeTemplate.querySelector('.resume-sidebar');
+        if (sidebar) {
+            sidebar.style.width = templateColors.width;
+            sidebar.style.background = templateColors.background;
+            sidebar.style.color = templateColors.color;
+        }
+        
+        // Apply profile photo colors
+        const profilePhoto = resumeTemplate.querySelector('.profile-photo');
+        if (profilePhoto) {
+            profilePhoto.style.background = templateColors.profilePhotoBg;
+            profilePhoto.style.borderColor = templateColors.profilePhotoBorder;
+            profilePhoto.style.borderRadius = templateColors.profilePhotoBorderRadius;
+        }
+        
+        // Apply section title colors
+        const sectionTitles = resumeTemplate.querySelectorAll('.section-title');
+        sectionTitles.forEach(title => {
+            title.style.borderBottomColor = templateColors.sectionTitleBorder;
+        });
+    }
 
     getTemplateColors() {
-        const templateColors = {
-            'template1': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: 'white',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template2': {
-                width: '30%',
-                background: '#f5f5f5',
-                color: '#333',
-                profilePhotoBg: '#e8e8e8',
-                profilePhotoBorder: '#ddd',
-                sectionTitleBorder: '#ddd',
-                profilePhotoBorderRadius: '0' // Square shape for Template 2
-            },
-            'template3': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: '#f39c12',
-                sectionTitleBorder: '#f39c12',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template4': {
-                width: '35%',
-                background: '#e0ebf2',
-                color: '#333',
-                profilePhotoBg: '#bdc3c7',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: '#2c3e50',
-                profilePhotoBorderRadius: '50%'
-            },
-            'template5': {
-                width: '35%',
-                background: '#2c3e50',
-                color: 'white',
-                profilePhotoBg: '#34495e',
-                profilePhotoBorder: 'white',
-                sectionTitleBorder: 'white',
-                profilePhotoBorderRadius: '50%'
-            }
+        const template = templates[this.selectedTemplate];
+        return {
+            width: template.sidebarWidth,
+            background: template.sidebarBg,
+            color: template.sidebarColor,
+            profilePhotoBg: template.profilePhotoBg,
+            profilePhotoBorder: template.profilePhotoBorder,
+            sectionTitleBorder: template.sectionTitleBorder,
+            profilePhotoBorderRadius: template.profilePhotoBorderRadius
         };
-        return templateColors[this.selectedTemplate] || templateColors['template1'];
     }
 
     getProfileImageHTML() {
@@ -749,12 +929,6 @@ class ResumeBuilder {
                     ` : ''}
                 </div>
                 
-                ${summary && this.formSections.summary ? `
-                <div class="summary-section">
-                    <div class="section-title blue">SUMMARY</div>
-                    <p style="font-size: 13px; line-height: 1.4;">${summary}</p>
-                </div>
-                ` : ''}
                 
                 ${skillsList.length > 0 && this.formSections.skills ? `
                 <div class="skills-section">
@@ -1034,27 +1208,14 @@ class ResumeBuilder {
             box-sizing: border-box;
         `;
 
-        // Remove job title if it's empty (for fresh graduates) and ensure proper spacing
+        // Remove job title if it's empty (for fresh graduates)
         const jobTitleInput = document.getElementById('jobTitle');
         const jobTitleInClone = resumeClone.querySelector('.resume-title');
-        const spacerInClone = resumeClone.querySelector('.resume-title-spacer');
-        
-        if (jobTitleInClone && (!jobTitleInput || !jobTitleInput.value.trim() || jobTitleInput.value.trim().length === 0)) {
+        if (jobTitleInClone && (!jobTitleInput || !jobTitleInput.value.trim())) {
             jobTitleInClone.remove();
-        } else if (jobTitleInClone && jobTitleInput && jobTitleInput.value.trim() && jobTitleInput.value.trim().length > 0) {
+        } else if (jobTitleInClone && jobTitleInput && jobTitleInput.value.trim()) {
             // Update job title content to ensure it's correct
             jobTitleInClone.textContent = jobTitleInput.value.trim().toUpperCase();
-        }
-        
-        // Ensure spacer is present if no title (for consistent spacing)
-        if ((!jobTitleInput || !jobTitleInput.value.trim() || jobTitleInput.value.trim().length === 0) && !spacerInClone) {
-            const spacerElement = document.createElement('div');
-            spacerElement.className = 'resume-title-spacer';
-            spacerElement.innerHTML = '<div class="resume-name-underline"></div>';
-            const resumeMain = resumeClone.querySelector('.resume-main');
-            if (resumeMain && resumeMain.firstChild) {
-                resumeMain.insertBefore(spacerElement, resumeMain.children[1]); // Insert after name
-            }
         }
 
         // Optimize sidebar
@@ -1081,18 +1242,19 @@ class ResumeBuilder {
             const profilePhoto = sidebar.querySelector('.profile-photo');
             if (profilePhoto) {
                 profilePhoto.style.cssText = `
-                    width: 110px;
-                    height: 110px;
-                    margin: 0 auto 15px;
+                    width: 160px;
+                    height: 160px;
+                    margin: 0 auto 25px;
                     border-radius: ${templateColors.profilePhotoBorderRadius};
                     background: ${templateColors.profilePhotoBg};
-                    border: 2px solid ${templateColors.profilePhotoBorder};
+                    border: 4px solid ${templateColors.profilePhotoBorder};
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     color: ${templateColors.color};
-                    font-size: 2rem;
+                    font-size: 3rem;
                     overflow: hidden;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
                 `;
             }
 
@@ -1100,10 +1262,10 @@ class ResumeBuilder {
             const sectionTitles = sidebar.querySelectorAll('.section-title');
             sectionTitles.forEach(title => {
                 title.style.cssText = `
-                    font-size: 14px;
+                    font-size: 16px;
                     font-weight: 700;
                     text-transform: uppercase;
-                    margin-bottom: 12px;
+                    margin-bottom: 15px;
                     margin-top: 20px;
                     border-bottom: 2px solid ${templateColors.sectionTitleBorder};
                     padding-bottom: 5px;
@@ -1175,10 +1337,12 @@ class ResumeBuilder {
             const resumeName = main.querySelector('.resume-name');
             if (resumeName) {
                 resumeName.style.cssText = `
-                    font-size: 24px;
-                    font-weight: 700;
+                    font-size: 42px;
+                    font-weight: 800;
                     color: #2c3e50;
-                    margin-bottom: 5px;
+                    margin-bottom: 8px;
+                    letter-spacing: 1px;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 `;
             }
 
@@ -1186,27 +1350,52 @@ class ResumeBuilder {
             const resumeTitle = main.querySelector('.resume-title');
             if (resumeTitle) {
                 resumeTitle.style.cssText = `
-                    font-size: 14px;
+                    font-size: 18px;
                     color: #7f8c8d;
-                    margin-bottom: 20px;
-                    border-bottom: 1px solid #bdc3c7;
-                    padding-bottom: 8px;
+                    margin-bottom: 30px;
+                    border-bottom: 2px solid #bdc3c7;
+                    padding-bottom: 10px;
                 `;
             }
 
-            // Optimize spacer (only if it exists)
-            const resumeSpacer = main.querySelector('.resume-title-spacer');
-            if (resumeSpacer) {
-                resumeSpacer.style.cssText = `
+            // Optimize title spacer
+            const titleSpacer = main.querySelector('.resume-title-spacer');
+            if (titleSpacer) {
+                titleSpacer.style.cssText = `
+                    height: 40px;
+                    margin-bottom: 20px;
+                `;
+            }
+
+            // Optimize About section
+            const aboutSection = main.querySelector('.about-section');
+            if (aboutSection) {
+                aboutSection.style.cssText = `
                     margin-bottom: 20px;
                 `;
                 
-                // Optimize the underline within the spacer
-                const underline = resumeSpacer.querySelector('.resume-name-underline');
-                if (underline) {
-                    underline.style.cssText = `
-                        border-bottom: 1px solid #bdc3c7;
-                        padding-bottom: 8px;
+                const aboutTitle = aboutSection.querySelector('.section-title');
+                if (aboutTitle) {
+                    aboutTitle.style.cssText = `
+                        font-size: 16px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        margin-bottom: 10px;
+                        margin-top: 0;
+                        border-bottom: 2px solid #bdc3c7;
+                        padding-bottom: 5px;
+                        color: #2c3e50;
+                        letter-spacing: 0.5px;
+                    `;
+                }
+                
+                const aboutText = aboutSection.querySelector('p');
+                if (aboutText) {
+                    aboutText.style.cssText = `
+                        font-size: 14px;
+                        line-height: 1.5;
+                        margin: 0 0 20px 0;
+                        text-align: left;
                     `;
                 }
             }
@@ -1231,7 +1420,53 @@ class ResumeBuilder {
             const expItems = main.querySelectorAll('.experience-item-preview, .education-item-preview');
             expItems.forEach(item => {
                 item.style.cssText = `
-                    margin-bottom: 12px;
+                    margin-bottom: 20px;
+                `;
+            });
+
+            // Optimize experience and education headers
+            const expHeaders = main.querySelectorAll('.experience-header, .education-header');
+            expHeaders.forEach(header => {
+                header.style.cssText = `
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 8px;
+                `;
+            });
+
+            // Optimize experience and education text elements
+            const expPositions = main.querySelectorAll('.experience-position, .education-degree');
+            expPositions.forEach(position => {
+                position.style.cssText = `
+                    font-weight: 600;
+                    font-size: 16px;
+                    color: #2c3e50;
+                `;
+            });
+
+            const expCompanies = main.querySelectorAll('.experience-company, .education-institution');
+            expCompanies.forEach(company => {
+                company.style.cssText = `
+                    font-weight: 500;
+                    color: #7f8c8d;
+                `;
+            });
+
+            const expDates = main.querySelectorAll('.experience-dates, .education-dates');
+            expDates.forEach(date => {
+                date.style.cssText = `
+                    font-size: 12px;
+                    color: #7f8c8d;
+                    text-align: right;
+                `;
+            });
+
+            const expDescriptions = main.querySelectorAll('.experience-description, .education-info');
+            expDescriptions.forEach(desc => {
+                desc.style.cssText = `
+                    font-size: 13px;
+                    line-height: 1.5;
                 `;
             });
         }
@@ -1251,9 +1486,13 @@ class ResumeBuilder {
         const downloadBtn = document.getElementById('downloadBtn');
         const originalText = downloadBtn.innerHTML;
         
-        // Show loading state
+        // Show enhanced loading state
         downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
         downloadBtn.disabled = true;
+        downloadBtn.classList.add('loading');
+        
+        // Add progress indicator
+        this.showProgressIndicator('Preparing resume for PDF generation...');
         
         try {
             // Check if required libraries are loaded
@@ -1329,6 +1568,128 @@ class ResumeBuilder {
             // Reset button state
             downloadBtn.innerHTML = originalText;
             downloadBtn.disabled = false;
+            downloadBtn.classList.remove('loading');
+            this.hideProgressIndicator();
+        }
+    }
+
+    showProgressIndicator(message) {
+        // Remove existing progress indicator
+        this.hideProgressIndicator();
+        
+        const progressDiv = document.createElement('div');
+        progressDiv.id = 'pdfProgressIndicator';
+        progressDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            z-index: 10000;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        `;
+        
+        progressDiv.innerHTML = `
+            <div style="margin-bottom: 15px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #667eea;"></i>
+            </div>
+            <div style="font-size: 16px; font-weight: 500;">${message}</div>
+            <div style="margin-top: 10px; font-size: 14px; opacity: 0.8;">Please wait while we generate your PDF...</div>
+        `;
+        
+        document.body.appendChild(progressDiv);
+    }
+
+    hideProgressIndicator() {
+        const progressDiv = document.getElementById('pdfProgressIndicator');
+        if (progressDiv) {
+            progressDiv.remove();
+        }
+    }
+
+    showAutoSaveIndicator() {
+        // Remove existing indicator
+        const existing = document.querySelector('.auto-save-indicator');
+        if (existing) {
+            existing.remove();
+        }
+        
+        const indicator = document.createElement('div');
+        indicator.className = 'auto-save-indicator';
+        indicator.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            animation: slideInLeft 0.3s ease;
+            box-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
+        `;
+        
+        indicator.innerHTML = '<i class="fas fa-check"></i> Auto-saved';
+        document.body.appendChild(indicator);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+            if (indicator.parentElement) {
+                indicator.style.animation = 'slideOutLeft 0.3s ease';
+                setTimeout(() => indicator.remove(), 300);
+            }
+        }, 2000);
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        const fieldId = field.id;
+        
+        // Clear previous error
+        this.clearFieldError(field);
+        
+        // Validate based on field type
+        if (fieldId === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                this.highlightError(fieldId, 'Please enter a valid email address');
+                return false;
+            }
+        }
+        
+        if (fieldId === 'website' && value) {
+            try {
+                const url = new URL(value.startsWith('http') ? value : `https://${value}`);
+                if (!url.hostname.includes('.')) throw new Error('Invalid URL');
+            } catch {
+                this.highlightError(fieldId, 'Please enter a valid website URL');
+                return false;
+            }
+        }
+        
+        if (fieldId === 'phone' && value) {
+            const phoneRegex = /^[+\d][\d\s().-]{6,}$/;
+            if (!phoneRegex.test(value)) {
+                this.highlightError(fieldId, 'Please enter a valid phone number');
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    clearFieldError(field) {
+        field.style.borderColor = '';
+        field.style.boxShadow = '';
+        const errorMsg = field.parentElement.querySelector('.field-error');
+        if (errorMsg) {
+            errorMsg.remove();
         }
     }
 }

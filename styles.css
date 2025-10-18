@@ -342,6 +342,12 @@ body::before {
     transform: translateZ(50px) scale(1.02) !important;
     box-shadow: 0 35px 70px rgba(0, 0, 0, 0.2) !important;
     z-index: 15 !important;
+    border-color: #667eea !important;
+}
+
+.template-card.active {
+    border-color: #667eea !important;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2) !important;
 }
 
 .template-card.prev-2 {
@@ -435,6 +441,9 @@ body::before {
 /* Template 1 - Classic Blue */
 .template-1 {
     background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .preview-sidebar {
@@ -445,12 +454,13 @@ body::before {
 }
 
 .preview-photo {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: #34495e;
     margin: 0 auto 15px;
-    border: 2px solid white;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .preview-section h4 {
@@ -465,6 +475,15 @@ body::before {
 .preview-contact .contact-item {
     font-size: 12px;
     margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-contact .contact-item i {
+    width: 12px;
+    font-size: 10px;
+    color: #f39c12;
 }
 
 .preview-education .edu-item,
@@ -480,10 +499,11 @@ body::before {
 }
 
 .preview-name {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 800;
     color: var(--text-color);
-    margin-bottom: 3px;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
 }
 
 .preview-title {
@@ -530,25 +550,30 @@ body::before {
 }
 
 .preview-photo-beige {
-    width: 90px;
-    height: 110px;
+    width: 110px;
+    height: 130px;
     background: #e8e8e8;
     margin: 0 auto 15px;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .preview-contact-beige {
     margin-bottom: 15px;
 }
 
-.contact-icon {
-    font-size: 8px;
-    margin-bottom: 3px;
+.preview-contact-beige .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 11px;
 }
 
-.contact-text {
-    font-size: 7px;
-    margin-bottom: 8px;
+.preview-contact-beige .contact-item i {
+    font-size: 10px;
+    color: #667eea;
+    width: 12px;
 }
 
 .preview-section-beige h4 {
@@ -569,9 +594,10 @@ body::before {
 }
 
 .preview-name-beige {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 3px;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
 }
 
 .preview-title-beige {
@@ -594,12 +620,13 @@ body::before {
 }
 
 .preview-photo-teal {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: #34495e;
     margin: 0 auto 15px;
-    border: 2px solid #f39c12;
+    border: 3px solid #f39c12;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .preview-section-teal h4 {
@@ -641,10 +668,11 @@ body::before {
 }
 
 .preview-name-teal {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 800;
     color: #2c3e50;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
 }
 
 .preview-title-teal {
@@ -682,12 +710,13 @@ body::before {
 }
 
 .preview-photo-blue {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: #bdc3c7;
     margin: 0 auto 15px;
-    border: 2px solid white;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .preview-contact-blue h4,
@@ -716,11 +745,12 @@ body::before {
 }
 
 .preview-name-blue {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
     color: #2c3e50;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     font-family: serif;
+    letter-spacing: 0.5px;
 }
 
 .preview-title-blue {
@@ -751,12 +781,13 @@ body::before {
 }
 
 .preview-photo-gray {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     background: #34495e;
     margin: 0 auto 15px;
-    border: 2px solid white;
+    border: 3px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .preview-section-gray h4 {
@@ -802,11 +833,12 @@ body::before {
 }
 
 .preview-name-gray {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
     color: #2c3e50;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
     position: relative;
+    letter-spacing: 0.5px;
 }
 
 .preview-name-gray::after {
