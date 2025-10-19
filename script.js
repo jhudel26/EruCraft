@@ -2,15 +2,17 @@
 const templates = {
     template1: {
         id: 'template1',
-        name: 'Classic Blue',
-        description: 'Professional • Traditional • Clean',
+        name: 'Executive Classic',
+        description: 'Corporate • Professional • Traditional',
         sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        sidebarBg: '#1a365d',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
+        profilePhotoBg: '#2d3748',
+        profilePhotoBorder: '#4299e1',
+        sectionTitleBorder: '#4299e1',
         profilePhotoBorderRadius: '50%',
+        accentColor: '#4299e1',
+        layout: 'traditional',
         previewHTML: `
             <div class="preview-sidebar">
                 <div class="preview-photo">
@@ -72,55 +74,65 @@ const templates = {
     },
     template2: {
         id: 'template2',
-        name: 'Modern Beige',
-        description: 'Creative • Minimalist • Elegant',
-        sidebarWidth: '30%',
-        sidebarBg: '#f5f5f5',
-        sidebarColor: '#333',
-        profilePhotoBg: '#e8e8e8',
-        profilePhotoBorder: '#ddd',
-        sectionTitleBorder: '#ddd',
-        profilePhotoBorderRadius: '0',
+        name: 'Creative Portfolio',
+        description: 'Artistic • Colorful • Dynamic',
+        sidebarWidth: '40%',
+        sidebarBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        sidebarColor: 'white',
+        profilePhotoBg: 'rgba(255,255,255,0.2)',
+        profilePhotoBorder: 'rgba(255,255,255,0.5)',
+        sectionTitleBorder: 'rgba(255,255,255,0.8)',
+        profilePhotoBorderRadius: '20px',
+        accentColor: '#ff6b6b',
+        layout: 'creative',
         previewHTML: `
-            <div class="preview-sidebar-beige">
-                <div class="preview-photo-beige">
+            <div class="preview-sidebar-creative">
+                <div class="preview-photo-creative">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="preview-contact-beige">
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>hello@example.com</span>
+                <div class="preview-section-creative">
+                    <h4>CONTACT</h4>
+                    <div class="preview-contact-creative">
+                        <div class="contact-item-creative">
+                            <i class="fas fa-phone"></i>
+                            <span>+123-456-7890</span>
+                        </div>
+                        <div class="contact-item-creative">
+                            <i class="fas fa-envelope"></i>
+                            <span>hello@example.com</span>
+                        </div>
+                        <div class="contact-item-creative">
+                            <i class="fas fa-globe"></i>
+                            <span>portfolio.com</span>
+                        </div>
                     </div>
                 </div>
-                <div class="preview-section-beige">
-                    <h4>Education</h4>
-                    <div class="edu-item-beige">
-                        <strong>Bachelor of Design</strong><br>
-                        Wardiere University
+                <div class="preview-section-creative">
+                    <h4>TOOLS & SKILLS</h4>
+                    <div class="skills-grid-creative">
+                        <div class="skill-tag">Photoshop</div>
+                        <div class="skill-tag">Illustrator</div>
+                        <div class="skill-tag">Figma</div>
+                        <div class="skill-tag">After Effects</div>
                     </div>
-                </div>
-                <div class="preview-section-beige">
-                    <h4>Expertise</h4>
-                    <div class="expertise-item">Digital Marketing</div>
-                    <div class="expertise-item">Branding</div>
                 </div>
             </div>
-            <div class="preview-main-beige">
-                <div class="preview-name-beige">OLIVIA WILSON</div>
-                <div class="preview-title-beige">Graphics Designer</div>
-                <div class="preview-section-beige">
-                    <h4>About</h4>
-                    <p>Creative designer with expertise in visual identity, digital marketing, and user experience design.</p>
+            <div class="preview-main-creative">
+                <div class="preview-name-creative">OLIVIA WILSON</div>
+                <div class="preview-title-creative">Creative Director</div>
+                <div class="preview-section-creative">
+                    <h4>ABOUT</h4>
+                    <p>Passionate creative professional with 8+ years transforming brands through innovative design and strategic thinking.</p>
                 </div>
-                <div class="preview-section-beige">
-                    <h4>Work Experience</h4>
-                    <div class="exp-item-beige">
-                        <strong>Creative Director</strong><br>
-                        Design Studio • 2020-2023
+                <div class="preview-section-creative">
+                    <h4>FEATURED PROJECTS</h4>
+                    <div class="project-item-creative">
+                        <strong>Brand Identity Redesign</strong><br>
+                        <span class="project-client">TechStart Inc. • 2023</span>
+                    </div>
+                    <div class="project-item-creative">
+                        <strong>Mobile App Design</strong><br>
+                        <span class="project-client">FinanceApp • 2022</span>
                     </div>
                 </div>
             </div>
@@ -129,57 +141,69 @@ const templates = {
     // Add similar objects for template3, template4, template5...
     template3: {
         id: 'template3',
-        name: 'Teal Professional',
-        description: 'Modern • Competency-based • Visual',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        name: 'Tech Modern',
+        description: 'Innovative • Data-driven • Sleek',
+        sidebarWidth: '30%',
+        sidebarBg: '#0f172a',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: '#f39c12',
-        sectionTitleBorder: '#f39c12',
-        profilePhotoBorderRadius: '50%',
+        profilePhotoBg: '#1e293b',
+        profilePhotoBorder: '#06b6d4',
+        sectionTitleBorder: '#06b6d4',
+        profilePhotoBorderRadius: '8px',
+        accentColor: '#06b6d4',
+        layout: 'tech',
         previewHTML: `
-            <div class="preview-sidebar-teal">
-                <div class="preview-photo-teal">
+            <div class="preview-sidebar-tech">
+                <div class="preview-photo-tech">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="preview-section-teal">
-                    <h4>ABOUT</h4>
-                    <p>Highly efficient results-driven interior designer with 8+ years of experience in commercial and residential design.</p>
-                    <div class="preview-attributes">
-                        <div class="attr-item">• Highly Motivated</div>
-                        <div class="attr-item">• Detail Oriented</div>
-                    </div>
-                </div>
-                <div class="preview-section-teal">
-                    <h4>CORE COMPETENCIES</h4>
-                    <div class="competency-item">
-                        <span>Space Planning</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 100%"></div>
+                <div class="preview-section-tech">
+                    <h4>CONTACT</h4>
+                    <div class="preview-contact-tech">
+                        <div class="contact-item-tech">
+                            <i class="fas fa-phone"></i>
+                            <span>+123-456-7890</span>
+                        </div>
+                        <div class="contact-item-tech">
+                            <i class="fas fa-envelope"></i>
+                            <span>hello@example.com</span>
+                        </div>
+                        <div class="contact-item-tech">
+                            <i class="fab fa-github"></i>
+                            <span>github.com/username</span>
                         </div>
                     </div>
-                    <div class="competency-item">
-                        <span>3D Visualization</span>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 90%"></div>
+                </div>
+                <div class="preview-section-tech">
+                    <h4>TECH STACK</h4>
+                    <div class="tech-stack">
+                        <div class="tech-category">
+                            <strong>Frontend</strong>
+                            <div class="tech-items">React, Vue.js, TypeScript</div>
+                        </div>
+                        <div class="tech-category">
+                            <strong>Backend</strong>
+                            <div class="tech-items">Node.js, Python, Go</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="preview-main-teal">
-                <div class="preview-name-teal">RYAN REYNOLDS</div>
-                <div class="preview-title-teal">Interior Designer</div>
-                <div class="preview-contact-teal">
-                    📞 999-111-2222 • 📍 New York, NY
+            <div class="preview-main-tech">
+                <div class="preview-name-tech">ALEX CHEN</div>
+                <div class="preview-title-tech">Full Stack Developer</div>
+                <div class="preview-section-tech">
+                    <h4>ABOUT</h4>
+                    <p>Innovative developer with 6+ years building scalable web applications and leading technical teams in fast-paced environments.</p>
                 </div>
-                <div class="preview-section-teal">
-                    <h4>WORK EXPERIENCE</h4>
-                    <div class="exp-timeline">
-                        <div class="timeline-item">
-                            <strong>Lead Interior Designer</strong><br>
-                            Design Studio • 2017-Present
+                <div class="preview-section-tech">
+                    <h4>EXPERIENCE</h4>
+                    <div class="exp-item-tech">
+                        <div class="exp-header-tech">
+                            <strong>Senior Software Engineer</strong>
+                            <span class="exp-dates">2021 - Present</span>
                         </div>
+                        <div class="exp-company-tech">TechCorp Inc.</div>
+                        <div class="exp-desc-tech">Led development of microservices architecture serving 1M+ users</div>
                     </div>
                 </div>
             </div>
@@ -187,50 +211,77 @@ const templates = {
     },
     template4: {
         id: 'template4',
-        name: 'Light Blue',
-        description: 'Healthcare • Professional • Trustworthy',
+        name: 'Medical Professional',
+        description: 'Healthcare • Trustworthy • Caring',
         sidebarWidth: '35%',
-        sidebarBg: '#e0ebf2',
-        sidebarColor: '#333',
-        profilePhotoBg: '#bdc3c7',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: '#2c3e50',
+        sidebarBg: '#f0f9ff',
+        sidebarColor: '#1e40af',
+        profilePhotoBg: '#dbeafe',
+        profilePhotoBorder: '#3b82f6',
+        sectionTitleBorder: '#3b82f6',
         profilePhotoBorderRadius: '50%',
+        accentColor: '#3b82f6',
+        layout: 'medical',
         previewHTML: `
-            <div class="preview-sidebar-blue">
-                <div class="preview-photo-blue">
-                    <i class="fas fa-user"></i>
+            <div class="preview-sidebar-medical">
+                <div class="preview-photo-medical">
+                    <i class="fas fa-user-md"></i>
                 </div>
-                <div class="preview-contact-blue">
+                <div class="preview-section-medical">
                     <h4>CONTACT</h4>
-                    <div class="contact-item-blue">111 1st Avenue</div>
-                    <div class="contact-item-blue">Redmond, WA 65432</div>
-                    <div class="contact-item-blue">909.555.0100</div>
-                </div>
-                <div class="preview-section-blue">
-                    <h4>COMMUNICATION</h4>
-                    <p>Award for patient education and counseling excellence in healthcare communication.</p>
-                </div>
-                <div class="preview-section-blue">
-                    <h4>LEADERSHIP</h4>
-                    <p>Outstanding Nursing Student award recipient for clinical excellence and leadership.</p>
-                </div>
-            </div>
-            <div class="preview-main-blue">
-                <div class="preview-name-blue">KRISTI LAAR</div>
-                <div class="preview-title-blue">REGISTERED NURSE</div>
-                <div class="preview-section-blue">
-                    <h4>EDUCATION</h4>
-                    <div class="edu-item-blue">
-                        <strong>Bellows College</strong><br>
-                        Bachelors of Science in Nursing
+                    <div class="preview-contact-medical">
+                        <div class="contact-item-medical">
+                            <i class="fas fa-phone"></i>
+                            <span>+123-456-7890</span>
+                        </div>
+                        <div class="contact-item-medical">
+                            <i class="fas fa-envelope"></i>
+                            <span>dr.smith@hospital.com</span>
+                        </div>
+                        <div class="contact-item-medical">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Medical Center, NY</span>
+                        </div>
                     </div>
                 </div>
-                <div class="preview-section-blue">
-                    <h4>EXPERIENCE</h4>
-                    <div class="exp-item-blue">
-                        <strong>Registered Nurse | Pediatrics</strong><br>
-                        Wholeness Healthcare • Nov 2020-Oct 2023
+                <div class="preview-section-medical">
+                    <h4>CERTIFICATIONS</h4>
+                    <div class="cert-item-medical">
+                        <i class="fas fa-certificate"></i>
+                        <span>Board Certified</span>
+                    </div>
+                    <div class="cert-item-medical">
+                        <i class="fas fa-certificate"></i>
+                        <span>ACLS Certified</span>
+                    </div>
+                </div>
+                <div class="preview-section-medical">
+                    <h4>SPECIALTIES</h4>
+                    <div class="specialty-tags">
+                        <span class="specialty-tag">Internal Medicine</span>
+                        <span class="specialty-tag">Cardiology</span>
+                    </div>
+                </div>
+            </div>
+            <div class="preview-main-medical">
+                <div class="preview-name-medical">DR. SARAH SMITH</div>
+                <div class="preview-title-medical">Internal Medicine Physician</div>
+                <div class="preview-section-medical">
+                    <h4>PROFESSIONAL SUMMARY</h4>
+                    <p>Dedicated physician with 10+ years of experience in internal medicine, committed to providing exceptional patient care and advancing medical knowledge through research.</p>
+                </div>
+                <div class="preview-section-medical">
+                    <h4>EDUCATION</h4>
+                    <div class="edu-item-medical">
+                        <strong>Johns Hopkins University</strong><br>
+                        Doctor of Medicine (MD) • 2010-2014
+                    </div>
+                </div>
+                <div class="preview-section-medical">
+                    <h4>CLINICAL EXPERIENCE</h4>
+                    <div class="exp-item-medical">
+                        <strong>Senior Physician</strong><br>
+                        <span class="exp-company-medical">City General Hospital • 2018-Present</span>
                     </div>
                 </div>
             </div>
@@ -238,62 +289,82 @@ const templates = {
     },
     template5: {
         id: 'template5',
-        name: 'Dark Gray Modern',
-        description: 'Bold • Contemporary • Striking',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        name: 'Bold Executive',
+        description: 'Powerful • Confident • Impactful',
+        sidebarWidth: '40%',
+        sidebarBg: '#000000',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
-        profilePhotoBorderRadius: '50%',
+        profilePhotoBg: '#1a1a1a',
+        profilePhotoBorder: '#ffd700',
+        sectionTitleBorder: '#ffd700',
+        profilePhotoBorderRadius: '0',
+        accentColor: '#ffd700',
+        layout: 'executive',
         previewHTML: `
-            <div class="preview-sidebar-gray">
-                <div class="preview-photo-gray">
-                    <i class="fas fa-user"></i>
+            <div class="preview-sidebar-executive">
+                <div class="preview-photo-executive">
+                    <i class="fas fa-user-tie"></i>
                 </div>
-                <div class="preview-section-gray">
-                    <h4>ABOUT ME</h4>
-                    <p>Creative professional with expertise in digital marketing, brand strategy, and team leadership across diverse industries.</p>
-                </div>
-                <div class="preview-section-gray">
-                    <h4>SKILLS</h4>
-                    <div class="skill-item-gray">
-                        <span>Digital Marketing</span>
-                        <div class="skill-bars">
-                            <div class="skill-bar active"></div>
-                            <div class="skill-bar active"></div>
-                            <div class="skill-bar active"></div>
+                <div class="preview-section-executive">
+                    <h4>CONTACT</h4>
+                    <div class="preview-contact-executive">
+                        <div class="contact-item-executive">
+                            <i class="fas fa-phone"></i>
+                            <span>+123-456-7890</span>
+                        </div>
+                        <div class="contact-item-executive">
+                            <i class="fas fa-envelope"></i>
+                            <span>ceo@company.com</span>
+                        </div>
+                        <div class="contact-item-executive">
+                            <i class="fab fa-linkedin"></i>
+                            <span>linkedin.com/in/executive</span>
                         </div>
                     </div>
-                    <div class="skill-item-gray">
-                        <span>Project Management</span>
-                        <div class="skill-bars">
-                            <div class="skill-bar active"></div>
-                            <div class="skill-bar active"></div>
-                            <div class="skill-bar"></div>
-                        </div>
+                </div>
+                <div class="preview-section-executive">
+                    <h4>ACHIEVEMENTS</h4>
+                    <div class="achievement-item">
+                        <div class="achievement-number">$50M+</div>
+                        <div class="achievement-desc">Revenue Growth</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">500+</div>
+                        <div class="achievement-desc">Team Members</div>
+                    </div>
+                </div>
+                <div class="preview-section-executive">
+                    <h4>LEADERSHIP</h4>
+                    <div class="leadership-skills">
+                        <span class="leadership-tag">Strategic Planning</span>
+                        <span class="leadership-tag">Team Building</span>
+                        <span class="leadership-tag">Innovation</span>
                     </div>
                 </div>
             </div>
-            <div class="preview-main-gray">
-                <div class="preview-name-gray">AUSTIN BRONSON</div>
-                <div class="preview-contact-gray">
-                    4710 Bus Boulevard, Flintstone, GA<br>
-                    phone: +(0) 1 2345 555
+            <div class="preview-main-executive">
+                <div class="preview-name-executive">MICHAEL JOHNSON</div>
+                <div class="preview-title-executive">Chief Executive Officer</div>
+                <div class="preview-section-executive">
+                    <h4>EXECUTIVE SUMMARY</h4>
+                    <p>Visionary leader with 15+ years of experience driving organizational growth, strategic transformation, and market expansion across global enterprises.</p>
                 </div>
-                <div class="preview-section-gray">
-                    <h4>EXPERIENCE</h4>
-                    <div class="exp-item-gray">
-                        <strong>SALES FORCE TEAM LEADER</strong> (2018 - Present)<br>
-                        Led a team of 12 sales professionals, achieving 150% of quarterly targets through strategic planning and team development.
+                <div class="preview-section-executive">
+                    <h4>EXECUTIVE EXPERIENCE</h4>
+                    <div class="exp-item-executive">
+                        <div class="exp-header-executive">
+                            <strong>Chief Executive Officer</strong>
+                            <span class="exp-dates">2019 - Present</span>
+                        </div>
+                        <div class="exp-company-executive">Global Tech Solutions</div>
+                        <div class="exp-desc-executive">Led company through IPO and 300% revenue growth, expanding to 15 countries</div>
                     </div>
                 </div>
-                <div class="preview-section-gray">
+                <div class="preview-section-executive">
                     <h4>EDUCATION</h4>
-                    <div class="edu-item-gray">
-                        <strong>UNIVERSITY OF BUSINESS</strong> (2014 - 2018)<br>
-                        Bachelor of Science in Marketing with focus on digital strategy and consumer behavior.
+                    <div class="edu-item-executive">
+                        <strong>Harvard Business School</strong><br>
+                        Master of Business Administration (MBA) • 2005-2007
                     </div>
                 </div>
             </div>
@@ -512,3 +583,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add smooth scroll behavior
 document.documentElement.style.scrollBehavior = 'smooth';
+

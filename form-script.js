@@ -2,58 +2,68 @@
 const templates = {
     template1: {
         id: 'template1',
-        name: 'Classic Blue',
+        name: 'Executive Classic',
         sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        sidebarBg: '#1a365d',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
-        profilePhotoBorderRadius: '50%'
+        profilePhotoBg: '#2d3748',
+        profilePhotoBorder: '#4299e1',
+        sectionTitleBorder: '#4299e1',
+        profilePhotoBorderRadius: '50%',
+        accentColor: '#4299e1',
+        layout: 'traditional'
     },
     template2: {
         id: 'template2',
-        name: 'Modern Beige',
-        sidebarWidth: '30%',
-        sidebarBg: '#f5f5f5',
-        sidebarColor: '#333',
-        profilePhotoBg: '#e8e8e8',
-        profilePhotoBorder: '#ddd',
-        sectionTitleBorder: '#ddd',
-        profilePhotoBorderRadius: '0'
+        name: 'Creative Portfolio',
+        sidebarWidth: '40%',
+        sidebarBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        sidebarColor: 'white',
+        profilePhotoBg: 'rgba(255,255,255,0.2)',
+        profilePhotoBorder: 'rgba(255,255,255,0.5)',
+        sectionTitleBorder: 'rgba(255,255,255,0.8)',
+        profilePhotoBorderRadius: '20px',
+        accentColor: '#ff6b6b',
+        layout: 'creative'
     },
     template3: {
         id: 'template3',
-        name: 'Teal Professional',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        name: 'Tech Modern',
+        sidebarWidth: '30%',
+        sidebarBg: '#0f172a',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: '#f39c12',
-        sectionTitleBorder: '#f39c12',
-        profilePhotoBorderRadius: '50%'
+        profilePhotoBg: '#1e293b',
+        profilePhotoBorder: '#06b6d4',
+        sectionTitleBorder: '#06b6d4',
+        profilePhotoBorderRadius: '8px',
+        accentColor: '#06b6d4',
+        layout: 'tech'
     },
     template4: {
         id: 'template4',
-        name: 'Light Blue',
+        name: 'Medical Professional',
         sidebarWidth: '35%',
-        sidebarBg: '#e0ebf2',
-        sidebarColor: '#333',
-        profilePhotoBg: '#bdc3c7',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: '#2c3e50',
-        profilePhotoBorderRadius: '50%'
+        sidebarBg: '#f0f9ff',
+        sidebarColor: '#1e40af',
+        profilePhotoBg: '#dbeafe',
+        profilePhotoBorder: '#3b82f6',
+        sectionTitleBorder: '#3b82f6',
+        profilePhotoBorderRadius: '50%',
+        accentColor: '#3b82f6',
+        layout: 'medical'
     },
     template5: {
         id: 'template5',
-        name: 'Dark Gray Modern',
-        sidebarWidth: '35%',
-        sidebarBg: '#2c3e50',
+        name: 'Bold Executive',
+        sidebarWidth: '40%',
+        sidebarBg: '#000000',
         sidebarColor: 'white',
-        profilePhotoBg: '#34495e',
-        profilePhotoBorder: 'white',
-        sectionTitleBorder: 'white',
-        profilePhotoBorderRadius: '50%'
+        profilePhotoBg: '#1a1a1a',
+        profilePhotoBorder: '#ffd700',
+        sectionTitleBorder: '#ffd700',
+        profilePhotoBorderRadius: '0',
+        accentColor: '#ffd700',
+        layout: 'executive'
     }
 };
 
@@ -761,6 +771,7 @@ class ResumeBuilder {
     generatePreview() {
         const previewContainer = document.getElementById('resumePreview');
         const templateClass = this.getTemplateClass();
+        const template = templates[this.selectedTemplate];
         
         // Clear any existing content first
         previewContainer.innerHTML = '';
@@ -773,8 +784,8 @@ class ResumeBuilder {
         // Add sidebar
         resumeTemplate.innerHTML = this.getSidebarHTML();
         
-        // Apply template-specific colors to the live preview
-        this.applyTemplateColors(resumeTemplate);
+        // Apply template-specific styles dynamically after elements are created
+        this.applyTemplateStyles(resumeTemplate, template);
         
         // Create main content container
         const mainContent = document.createElement('div');
@@ -822,9 +833,170 @@ class ResumeBuilder {
         mainContent.innerHTML += experienceHTML + educationHTML;
         
         resumeTemplate.appendChild(mainContent);
+        
+        // Apply template styles to main content as well
+        this.applyMainContentStyles(resumeTemplate, template);
+        
         previewContainer.appendChild(resumeTemplate);
         
         this.applyZoom();
+    }
+    
+    applyTemplateStyles(resumeTemplate, template) {
+        // Apply template-specific styles to the resume template
+        
+        const sidebar = resumeTemplate.querySelector('.resume-sidebar');
+        const main = resumeTemplate.querySelector('.resume-main');
+        const profilePhoto = resumeTemplate.querySelector('.profile-photo');
+        const sectionTitles = resumeTemplate.querySelectorAll('.section-title');
+        
+        if (sidebar) {
+            sidebar.style.setProperty('width', template.sidebarWidth, 'important');
+            sidebar.style.setProperty('background', template.sidebarBg, 'important');
+            sidebar.style.setProperty('color', template.sidebarColor, 'important');
+        }
+        
+        if (main) {
+            main.style.setProperty('width', `calc(100% - ${template.sidebarWidth})`, 'important');
+        }
+        
+        if (profilePhoto) {
+            profilePhoto.style.setProperty('background', template.profilePhotoBg, 'important');
+            profilePhoto.style.setProperty('border-color', template.profilePhotoBorder, 'important');
+            profilePhoto.style.setProperty('border-radius', template.profilePhotoBorderRadius, 'important');
+        }
+        
+        sectionTitles.forEach(title => {
+            if (title.classList.contains('blue')) {
+                title.style.setProperty('border-bottom-color', template.sectionTitleBorder, 'important');
+            }
+        });
+        
+        // Apply accent color to contact item icons
+        const contactItems = resumeTemplate.querySelectorAll('.contact-item i');
+        contactItems.forEach(icon => {
+            icon.style.setProperty('color', template.accentColor || '#f39c12', 'important');
+        });
+        
+        // Ensure all section titles get the correct styling
+        const allSectionTitles = resumeTemplate.querySelectorAll('.section-title');
+        allSectionTitles.forEach(title => {
+            if (title.classList.contains('blue')) {
+                title.style.setProperty('border-bottom-color', template.sectionTitleBorder, 'important');
+            }
+        });
+        
+        // Apply template-specific special styling
+        this.applyTemplateSpecialStyles(resumeTemplate, template);
+    }
+    
+    applyTemplateSpecialStyles(resumeTemplate, template) {
+        // Apply unique styling for each template
+        const sidebar = resumeTemplate.querySelector('.resume-sidebar');
+        
+        if (this.selectedTemplate === 'template2') {
+            // Creative Portfolio - Add gradient and special effects
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                sidebar.style.setProperty('overflow', 'hidden', 'important');
+                
+                // Add decorative corner element
+                const cornerElement = document.createElement('div');
+                cornerElement.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 0 0 0 80px;
+                    pointer-events: none;
+                `;
+                sidebar.appendChild(cornerElement);
+            }
+        } else if (this.selectedTemplate === 'template3') {
+            // Tech Modern - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        } else if (this.selectedTemplate === 'template4') {
+            // Medical Professional - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        } else if (this.selectedTemplate === 'template5') {
+            // Bold Executive - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        }
+    }
+    
+    applyMainContentStyles(resumeTemplate, template) {
+        // Apply template-specific styles to main content
+        const main = resumeTemplate.querySelector('.resume-main');
+        const resumeName = resumeTemplate.querySelector('.resume-name');
+        const resumeTitle = resumeTemplate.querySelector('.resume-title');
+        const mainSectionTitles = resumeTemplate.querySelectorAll('.resume-main .section-title');
+        
+        if (main) {
+            main.style.setProperty('width', `calc(100% - ${template.sidebarWidth})`, 'important');
+        }
+        
+        if (resumeName) {
+            // Apply template-specific name styling
+            resumeName.style.setProperty('color', template.accentColor || '#2c3e50', 'important');
+        }
+        
+        if (resumeTitle) {
+            // Apply template-specific title styling
+            resumeTitle.style.setProperty('color', template.accentColor || '#7f8c8d', 'important');
+        }
+        
+        mainSectionTitles.forEach(title => {
+            title.style.setProperty('border-bottom-color', template.accentColor || '#bdc3c7', 'important');
+            title.style.setProperty('color', template.accentColor || '#2c3e50', 'important');
+        });
+    }
+    
+    changeTemplate(templateId) {
+        // Change the selected template and update preview
+        this.selectedTemplate = templateId;
+        localStorage.setItem('selectedTemplate', templateId);
+        this.generatePreview();
     }
     
     getTemplateClass() {
@@ -836,32 +1008,6 @@ class ResumeBuilder {
             'template5': 'template-5'
         };
         return templateMap[this.selectedTemplate] || 'template-1';
-    }
-    
-    applyTemplateColors(resumeTemplate) {
-        const templateColors = this.getTemplateColors();
-        
-        // Apply sidebar colors
-        const sidebar = resumeTemplate.querySelector('.resume-sidebar');
-        if (sidebar) {
-            sidebar.style.width = templateColors.width;
-            sidebar.style.background = templateColors.background;
-            sidebar.style.color = templateColors.color;
-        }
-        
-        // Apply profile photo colors
-        const profilePhoto = resumeTemplate.querySelector('.profile-photo');
-        if (profilePhoto) {
-            profilePhoto.style.background = templateColors.profilePhotoBg;
-            profilePhoto.style.borderColor = templateColors.profilePhotoBorder;
-            profilePhoto.style.borderRadius = templateColors.profilePhotoBorderRadius;
-        }
-        
-        // Apply section title colors
-        const sectionTitles = resumeTemplate.querySelectorAll('.section-title');
-        sectionTitles.forEach(title => {
-            title.style.borderBottomColor = templateColors.sectionTitleBorder;
-        });
     }
 
     getTemplateColors() {
@@ -1177,7 +1323,7 @@ class ResumeBuilder {
         const resumeElement = document.getElementById('resumeTemplate');
         if (!resumeElement) return null;
 
-        // Create container with exact A4 dimensions
+        // Create container with exact A4 dimensions and proper font loading
         const container = document.createElement('div');
         container.style.cssText = `
             position: fixed;
@@ -1189,12 +1335,12 @@ class ResumeBuilder {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             display: flex;
             box-sizing: border-box;
         `;
 
-        // Clone the resume element
+        // Clone the resume element with all its classes and styles
         const resumeClone = resumeElement.cloneNode(true);
         resumeClone.style.cssText = `
             width: 100%;
@@ -1206,6 +1352,7 @@ class ResumeBuilder {
             border-radius: 0;
             display: flex;
             box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         `;
 
         // Remove job title if it's empty (for fresh graduates)
@@ -1218,47 +1365,47 @@ class ResumeBuilder {
             jobTitleInClone.textContent = jobTitleInput.value.trim().toUpperCase();
         }
 
-        // Optimize sidebar
+        // Apply template-specific styling to match live preview exactly
+        const template = templates[this.selectedTemplate];
+        
+        // Style the sidebar to match live preview
         const sidebar = resumeClone.querySelector('.resume-sidebar');
         if (sidebar) {
-            // Get template-specific colors
-            const templateColors = this.getTemplateColors();
-            
             sidebar.style.cssText = `
-                width: ${templateColors.width};
-                background: ${templateColors.background};
-                color: ${templateColors.color};
+                width: ${template.sidebarWidth};
+                background: ${template.sidebarBg};
+                color: ${template.sidebarColor};
                 padding: 25px 20px;
                 margin: 0;
                 height: 100%;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
-                font-size: 14px;
-                line-height: 1.4;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             `;
 
-            // Optimize profile photo
+            // Style profile photo to match live preview
             const profilePhoto = sidebar.querySelector('.profile-photo');
             if (profilePhoto) {
                 profilePhoto.style.cssText = `
                     width: 160px;
                     height: 160px;
                     margin: 0 auto 25px;
-                    border-radius: ${templateColors.profilePhotoBorderRadius};
-                    background: ${templateColors.profilePhotoBg};
-                    border: 4px solid ${templateColors.profilePhotoBorder};
+                    border-radius: ${template.profilePhotoBorderRadius};
+                    background: ${template.profilePhotoBg};
+                    border: 4px solid ${template.profilePhotoBorder};
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: ${templateColors.color};
+                    color: ${template.sidebarColor};
                     font-size: 3rem;
                     overflow: hidden;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             }
 
-            // Optimize section titles
+            // Style section titles to match live preview
             const sectionTitles = sidebar.querySelectorAll('.section-title');
             sectionTitles.forEach(title => {
                 title.style.cssText = `
@@ -1266,14 +1413,15 @@ class ResumeBuilder {
                     font-weight: 700;
                     text-transform: uppercase;
                     margin-bottom: 15px;
-                    margin-top: 20px;
-                    border-bottom: 2px solid ${templateColors.sectionTitleBorder};
+                    margin-top: 25px;
+                    border-bottom: 2px solid ${template.sectionTitleBorder};
                     padding-bottom: 5px;
                     letter-spacing: 0.5px;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            // Optimize contact items
+            // Style contact items to match live preview
             const contactItems = sidebar.querySelectorAll('.contact-item');
             contactItems.forEach(item => {
                 item.style.cssText = `
@@ -1281,11 +1429,12 @@ class ResumeBuilder {
                     align-items: center;
                     margin-bottom: 8px;
                     font-size: 13px;
-                    line-height: 1.3;
+                    line-height: 1.4;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            // Optimize skills and languages lists
+            // Style skills and languages lists to match live preview
             const skillsLists = sidebar.querySelectorAll('.skills-list, .languages-list');
             skillsLists.forEach(list => {
                 list.style.cssText = `
@@ -1297,32 +1446,22 @@ class ResumeBuilder {
                 const listItems = list.querySelectorAll('li');
                 listItems.forEach(item => {
                     item.style.cssText = `
-                        margin-bottom: 6px;
+                        margin-bottom: 5px;
                         font-size: 13px;
-                        line-height: 1.3;
+                        line-height: 1.4;
                         padding-left: 0;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     `;
                 });
             });
-
-            // Optimize summary text
-            const summaryText = sidebar.querySelector('.summary-section p');
-            if (summaryText) {
-                summaryText.style.cssText = `
-                    font-size: 13px;
-                    line-height: 1.4;
-                    margin: 0;
-                    text-align: justify;
-                `;
-            }
         }
 
-        // Optimize main content
+        // Style main content to match live preview exactly
         const main = resumeClone.querySelector('.resume-main');
         if (main) {
             main.style.cssText = `
-                width: 65%;
-                padding: 25px 20px;
+                width: calc(100% - ${template.sidebarWidth});
+                padding: 25px;
                 margin: 0;
                 height: 100%;
                 display: flex;
@@ -1331,34 +1470,37 @@ class ResumeBuilder {
                 color: #333;
                 font-size: 14px;
                 line-height: 1.4;
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             `;
 
-            // Optimize name
+            // Style name to match live preview exactly
             const resumeName = main.querySelector('.resume-name');
             if (resumeName) {
                 resumeName.style.cssText = `
                     font-size: 42px;
                     font-weight: 800;
-                    color: #2c3e50;
+                    color: ${template.accentColor};
                     margin-bottom: 8px;
                     letter-spacing: 1px;
                     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             }
 
-            // Optimize title (only if it exists)
+            // Style title to match live preview exactly
             const resumeTitle = main.querySelector('.resume-title');
             if (resumeTitle) {
                 resumeTitle.style.cssText = `
                     font-size: 18px;
-                    color: #7f8c8d;
+                    color: ${template.accentColor};
                     margin-bottom: 30px;
-                    border-bottom: 2px solid #bdc3c7;
+                    border-bottom: 2px solid ${template.accentColor};
                     padding-bottom: 10px;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             }
 
-            // Optimize title spacer
+            // Style title spacer to match live preview
             const titleSpacer = main.querySelector('.resume-title-spacer');
             if (titleSpacer) {
                 titleSpacer.style.cssText = `
@@ -1367,7 +1509,7 @@ class ResumeBuilder {
                 `;
             }
 
-            // Optimize About section
+            // Style About section to match live preview
             const aboutSection = main.querySelector('.about-section');
             if (aboutSection) {
                 aboutSection.style.cssText = `
@@ -1380,12 +1522,13 @@ class ResumeBuilder {
                         font-size: 16px;
                         font-weight: 700;
                         text-transform: uppercase;
-                        margin-bottom: 10px;
-                        margin-top: 0;
-                        border-bottom: 2px solid #bdc3c7;
+                        margin-bottom: 15px;
+                        margin-top: 25px;
+                        border-bottom: 2px solid ${template.accentColor};
                         padding-bottom: 5px;
-                        color: #2c3e50;
+                        color: ${template.accentColor};
                         letter-spacing: 0.5px;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     `;
                 }
                 
@@ -1394,13 +1537,13 @@ class ResumeBuilder {
                     aboutText.style.cssText = `
                         font-size: 14px;
                         line-height: 1.5;
-                        margin: 0 0 20px 0;
-                        text-align: left;
+                        margin-bottom: 20px;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     `;
                 }
             }
 
-            // Optimize section titles in main
+            // Style section titles in main to match live preview
             const mainSectionTitles = main.querySelectorAll('.section-title');
             mainSectionTitles.forEach(title => {
                 title.style.cssText = `
@@ -1409,22 +1552,24 @@ class ResumeBuilder {
                     text-transform: uppercase;
                     margin-bottom: 15px;
                     margin-top: 25px;
-                    border-bottom: 2px solid #bdc3c7;
+                    border-bottom: 2px solid ${template.accentColor};
                     padding-bottom: 5px;
-                    color: #2c3e50;
+                    color: ${template.accentColor};
                     letter-spacing: 0.5px;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            // Optimize experience and education items
+            // Style experience and education items to match live preview
             const expItems = main.querySelectorAll('.experience-item-preview, .education-item-preview');
             expItems.forEach(item => {
                 item.style.cssText = `
                     margin-bottom: 20px;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            // Optimize experience and education headers
+            // Style experience/education headers to match live preview
             const expHeaders = main.querySelectorAll('.experience-header, .education-header');
             expHeaders.forEach(header => {
                 header.style.cssText = `
@@ -1435,46 +1580,131 @@ class ResumeBuilder {
                 `;
             });
 
-            // Optimize experience and education text elements
-            const expPositions = main.querySelectorAll('.experience-position, .education-degree');
-            expPositions.forEach(position => {
-                position.style.cssText = `
+            // Style position/degree titles to match live preview
+            const positionTitles = main.querySelectorAll('.experience-position, .education-degree');
+            positionTitles.forEach(title => {
+                title.style.cssText = `
                     font-weight: 600;
                     font-size: 16px;
                     color: #2c3e50;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            const expCompanies = main.querySelectorAll('.experience-company, .education-institution');
-            expCompanies.forEach(company => {
-                company.style.cssText = `
+            // Style company/institution names to match live preview
+            const companyNames = main.querySelectorAll('.experience-company, .education-institution');
+            companyNames.forEach(name => {
+                name.style.cssText = `
                     font-weight: 500;
                     color: #7f8c8d;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            const expDates = main.querySelectorAll('.experience-dates, .education-dates');
-            expDates.forEach(date => {
+            // Style dates to match live preview
+            const dates = main.querySelectorAll('.experience-dates, .education-dates');
+            dates.forEach(date => {
                 date.style.cssText = `
                     font-size: 12px;
                     color: #7f8c8d;
                     text-align: right;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
 
-            const expDescriptions = main.querySelectorAll('.experience-description, .education-info');
-            expDescriptions.forEach(desc => {
+            // Style descriptions to match live preview
+            const descriptions = main.querySelectorAll('.experience-description, .education-info');
+            descriptions.forEach(desc => {
                 desc.style.cssText = `
                     font-size: 13px;
                     line-height: 1.5;
+                    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 `;
             });
         }
+
+        // Apply template-specific special styling for PDF
+        this.applyPDFTemplateSpecialStyles(resumeClone, template);
 
         container.appendChild(resumeClone);
         document.body.appendChild(container);
 
         return container;
+    }
+    
+    applyPDFTemplateSpecialStyles(resumeClone, template) {
+        // Apply template-specific special styling for PDF generation
+        const sidebar = resumeClone.querySelector('.resume-sidebar');
+        
+        if (this.selectedTemplate === 'template2') {
+            // Creative Portfolio - Add gradient and special effects
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                sidebar.style.setProperty('overflow', 'hidden', 'important');
+                
+                // Add decorative corner element
+                const cornerElement = document.createElement('div');
+                cornerElement.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 80px;
+                    height: 80px;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 0 0 0 80px;
+                    pointer-events: none;
+                `;
+                sidebar.appendChild(cornerElement);
+            }
+        } else if (this.selectedTemplate === 'template3') {
+            // Tech Modern - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        } else if (this.selectedTemplate === 'template4') {
+            // Medical Professional - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        } else if (this.selectedTemplate === 'template5') {
+            // Bold Executive - Add gradient top border
+            if (sidebar) {
+                sidebar.style.setProperty('position', 'relative', 'important');
+                
+                const topBorder = document.createElement('div');
+                topBorder.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+                `;
+                sidebar.appendChild(topBorder);
+            }
+        }
     }
     
     async downloadPDF() {
@@ -1507,8 +1737,14 @@ class ResumeBuilder {
                 throw new Error('Resume preview not found');
             }
             
+            // Ensure Google Fonts are loaded before PDF generation
+            await this.ensureFontsLoaded();
+            
             // Create a perfectly sized resume for PDF generation
             const pdfResume = this.createPDFOptimizedResume();
+            
+            // Wait a moment for fonts to render properly
+            await new Promise(resolve => setTimeout(resolve, 500));
             
             // Generate canvas with exact A4 dimensions (no margins)
             const canvas = await html2canvas(pdfResume, {
@@ -1571,6 +1807,37 @@ class ResumeBuilder {
             downloadBtn.classList.remove('loading');
             this.hideProgressIndicator();
         }
+    }
+
+    // Ensure Google Fonts are loaded before PDF generation
+    async ensureFontsLoaded() {
+        return new Promise((resolve) => {
+            // Check if fonts are already loaded
+            if (document.fonts && document.fonts.check) {
+                if (document.fonts.check('16px Inter')) {
+                    resolve();
+                    return;
+                }
+            }
+
+            // Load Google Fonts if not already loaded
+            const link = document.createElement('link');
+            link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+
+            // Wait for fonts to load
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(() => {
+                    resolve();
+                });
+            } else {
+                // Fallback: wait a bit for fonts to load
+                setTimeout(() => {
+                    resolve();
+                }, 1000);
+            }
+        });
     }
 
     showProgressIndicator(message) {
