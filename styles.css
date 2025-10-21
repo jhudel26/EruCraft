@@ -446,14 +446,17 @@ body::before {
     overflow: hidden;
 }
 
-.preview-sidebar {
+.template-card[data-template="template1"] .template-preview .resume-sidebar {
     width: 35%;
     background: #1a365d;
     color: white;
     padding: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.preview-photo {
+.template-card[data-template="template1"] .template-preview .profile-photo {
     width: 90px;
     height: 90px;
     border-radius: 50%;
@@ -461,10 +464,37 @@ body::before {
     margin: 0 auto 15px;
     border: 3px solid #4299e1;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
 }
 
-.preview-section h4 {
-    font-size: 14px;
+.template-preview .resume-sidebar {
+    padding: 15px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.template-preview .profile-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #2d3748;
+    margin: 0 auto 15px;
+    border: 3px solid #4299e1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+}
+
+.template-preview .section-title {
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -472,70 +502,103 @@ body::before {
     padding-bottom: 3px;
 }
 
-.preview-contact .contact-item {
-    font-size: 12px;
+.template-preview .contact-item {
+    font-size: 11px;
     margin-bottom: 5px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.preview-contact .contact-item i {
+.template-preview .contact-item i {
     width: 12px;
     font-size: 10px;
     color: #4299e1;
 }
 
-.preview-education .edu-item,
-.preview-skills .skill-item {
-    font-size: 12px;
-    margin-bottom: 5px;
+.template-preview .skills-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.preview-main {
+.template-preview .skills-list li {
+    font-size: 11px;
+    margin-bottom: 3px;
+}
+
+.template-preview .resume-main {
     width: 65%;
     padding: 15px;
     color: #333;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.preview-name {
-    font-size: 24px;
+.template-preview .resume-name {
+    font-size: 20px;
     font-weight: 800;
     color: var(--text-color);
     margin-bottom: 5px;
     letter-spacing: 0.5px;
 }
 
-.preview-title {
-    font-size: 14px;
+.template-preview .resume-title {
+    font-size: 12px;
     color: var(--text-muted);
     margin-bottom: 15px;
     border-bottom: 1px solid #bdc3c7;
     padding-bottom: 8px;
 }
 
-.preview-section {
+.template-preview .about-section,
+.template-preview .experience-section,
+.template-preview .education-section {
     margin-bottom: 15px;
 }
 
-.preview-section h4 {
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--text-color);
-    margin-bottom: 8px;
-    border-bottom: 1px solid #bdc3c7;
-    padding-bottom: 3px;
-}
-
-.preview-section p {
-    font-size: 12px;
+.template-preview .about-section p {
+    font-size: 11px;
     line-height: 1.3;
 }
 
-.preview-experience .exp-item {
+.template-preview .experience-item-preview,
+.template-preview .education-item-preview {
+    margin-bottom: 10px;
+}
+
+.template-preview .experience-header,
+.template-preview .education-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+}
+
+.template-preview .experience-position,
+.template-preview .education-degree {
     font-size: 12px;
-    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.template-preview .experience-company,
+.template-preview .education-institution {
+    font-size: 11px;
+    color: #7f8c8d;
+}
+
+.template-preview .experience-dates,
+.template-preview .education-dates {
+    font-size: 10px;
+    color: #7f8c8d;
+    text-align: right;
+}
+
+.template-preview .experience-description {
+    font-size: 10px;
+    line-height: 1.3;
 }
 
 /* Template 2 - Creative Portfolio */
@@ -545,7 +608,7 @@ body::before {
     overflow: hidden;
 }
 
-.preview-sidebar-creative {
+.template-2 .resume-sidebar {
     width: 40%;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -553,18 +616,15 @@ body::before {
     position: relative;
 }
 
-.preview-sidebar-creative::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 0 0 0 50px;
+.template-card[data-template="template2"] .template-preview .resume-sidebar {
+    width: 40%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    position: relative;
 }
 
-.preview-photo-creative {
+.template-card[data-template="template2"] .template-preview .profile-photo {
     width: 90px;
     height: 90px;
     border-radius: 20px;
@@ -578,7 +638,32 @@ body::before {
     font-size: 2rem;
 }
 
-.preview-section-creative h4 {
+.template-2 .resume-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 0 50px;
+}
+
+.template-2 .profile-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 0 auto 15px;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.template-2 .section-title {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -588,52 +673,25 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-contact-creative .contact-item-creative {
-    font-size: 11px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.preview-contact-creative .contact-item-creative i {
-    width: 12px;
-    font-size: 10px;
+.template-2 .contact-item i {
     color: #ff6b6b;
 }
 
-.skills-grid-creative {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-top: 8px;
-}
-
-.skill-tag {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 9px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.preview-main-creative {
+.template-2 .resume-main {
     width: 60%;
     padding: 15px;
     background: #f8f9fa;
 }
 
-.preview-name-creative {
-    font-size: 22px;
+.template-2 .resume-name {
+    font-size: 20px;
     font-weight: 800;
     margin-bottom: 5px;
     letter-spacing: 0.5px;
     color: #2c3e50;
 }
 
-.preview-title-creative {
+.template-2 .resume-title {
     font-size: 12px;
     color: #667eea;
     margin-bottom: 15px;
@@ -642,7 +700,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-section-creative h4 {
+.template-2 .section-title.main {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
@@ -650,27 +708,6 @@ body::before {
     margin-bottom: 8px;
     border-bottom: 2px solid #ff6b6b;
     padding-bottom: 3px;
-}
-
-.preview-section-creative p {
-    font-size: 11px;
-    line-height: 1.4;
-    color: #555;
-}
-
-.project-item-creative {
-    font-size: 11px;
-    margin-bottom: 8px;
-    padding: 8px;
-    background: white;
-    border-radius: 8px;
-    border-left: 3px solid #667eea;
-}
-
-.project-client {
-    color: #667eea;
-    font-size: 10px;
-    font-weight: 500;
 }
 
 /* Template 3 - Tech Modern */
@@ -681,7 +718,7 @@ body::before {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.preview-sidebar-tech {
+.template-3 .resume-sidebar {
     width: 30%;
     background: #0f172a;
     color: white;
@@ -689,17 +726,15 @@ body::before {
     position: relative;
 }
 
-.preview-sidebar-tech::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+.template-card[data-template="template3"] .template-preview .resume-sidebar {
+    width: 30%;
+    background: #0f172a;
+    color: white;
+    padding: 15px;
+    position: relative;
 }
 
-.preview-photo-tech {
+.template-card[data-template="template3"] .template-preview .profile-photo {
     width: 80px;
     height: 80px;
     border-radius: 8px;
@@ -713,7 +748,31 @@ body::before {
     font-size: 1.8rem;
 }
 
-.preview-section-tech h4 {
+.template-3 .resume-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 100%);
+}
+
+.template-3 .profile-photo {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    background: #1e293b;
+    margin: 0 auto 15px;
+    border: 2px solid #06b6d4;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.template-3 .section-title {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -723,7 +782,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-contact-tech .contact-item-tech {
+.template-3 .contact-item {
     font-size: 10px;
     margin-bottom: 6px;
     display: flex;
@@ -731,40 +790,19 @@ body::before {
     gap: 8px;
 }
 
-.preview-contact-tech .contact-item-tech i {
+.template-3 .contact-item i {
     width: 12px;
     font-size: 9px;
     color: #06b6d4;
 }
 
-.tech-stack {
-    margin-top: 8px;
-}
-
-.tech-category {
-    margin-bottom: 8px;
-}
-
-.tech-category strong {
-    font-size: 9px;
-    color: #06b6d4;
-    display: block;
-    margin-bottom: 3px;
-}
-
-.tech-items {
-    font-size: 8px;
-    color: #94a3b8;
-    line-height: 1.3;
-}
-
-.preview-main-tech {
+.template-3 .resume-main {
     width: 70%;
     padding: 15px;
     background: #f8fafc;
 }
 
-.preview-name-tech {
+.template-3 .resume-name {
     font-size: 20px;
     font-weight: 800;
     color: #0f172a;
@@ -772,7 +810,7 @@ body::before {
     letter-spacing: 0.5px;
 }
 
-.preview-title-tech {
+.template-3 .resume-title {
     font-size: 11px;
     color: #06b6d4;
     margin-bottom: 15px;
@@ -781,7 +819,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-section-tech h4 {
+.template-3 .section-title.main {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -789,50 +827,6 @@ body::before {
     margin-bottom: 8px;
     border-bottom: 2px solid #06b6d4;
     padding-bottom: 3px;
-}
-
-.preview-section-tech p {
-    font-size: 10px;
-    line-height: 1.4;
-    color: #475569;
-}
-
-.exp-item-tech {
-    background: white;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    border-left: 3px solid #06b6d4;
-}
-
-.exp-header-tech {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3px;
-}
-
-.exp-header-tech strong {
-    font-size: 10px;
-    color: #0f172a;
-}
-
-.exp-dates {
-    font-size: 8px;
-    color: #06b6d4;
-    font-weight: 600;
-}
-
-.exp-company-tech {
-    font-size: 9px;
-    color: #64748b;
-    margin-bottom: 3px;
-}
-
-.exp-desc-tech {
-    font-size: 9px;
-    color: #475569;
-    line-height: 1.3;
 }
 
 /* Template 4 - Medical Professional */
@@ -843,7 +837,7 @@ body::before {
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
-.preview-sidebar-medical {
+.template-4 .resume-sidebar {
     width: 35%;
     background: #f0f9ff;
     color: #1e40af;
@@ -851,17 +845,15 @@ body::before {
     position: relative;
 }
 
-.preview-sidebar-medical::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+.template-card[data-template="template4"] .template-preview .resume-sidebar {
+    width: 35%;
+    background: #f0f9ff;
+    color: #1e40af;
+    padding: 15px;
+    position: relative;
 }
 
-.preview-photo-medical {
+.template-card[data-template="template4"] .template-preview .profile-photo {
     width: 90px;
     height: 90px;
     border-radius: 50%;
@@ -876,7 +868,32 @@ body::before {
     color: #3b82f6;
 }
 
-.preview-section-medical h4 {
+.template-4 .resume-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.template-4 .profile-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #dbeafe;
+    margin: 0 auto 15px;
+    border: 3px solid #3b82f6;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #3b82f6;
+}
+
+.template-4 .section-title {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -886,7 +903,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-contact-medical .contact-item-medical {
+.template-4 .contact-item {
     font-size: 10px;
     margin-bottom: 6px;
     display: flex;
@@ -894,59 +911,27 @@ body::before {
     gap: 8px;
 }
 
-.preview-contact-medical .contact-item-medical i {
+.template-4 .contact-item i {
     width: 12px;
     font-size: 9px;
     color: #3b82f6;
 }
 
-.cert-item-medical {
-    font-size: 9px;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 8px;
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 6px;
-}
-
-.cert-item-medical i {
-    color: #3b82f6;
-    font-size: 8px;
-}
-
-.specialty-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 6px;
-}
-
-.specialty-tag {
-    background: #3b82f6;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 8px;
-    font-weight: 500;
-}
-
-.preview-main-medical {
+.template-4 .resume-main {
     width: 65%;
     padding: 15px;
     background: #fafbfc;
 }
 
-.preview-name-medical {
-    font-size: 22px;
+.template-4 .resume-name {
+    font-size: 20px;
     font-weight: 800;
     color: #1e40af;
     margin-bottom: 5px;
     letter-spacing: 0.5px;
 }
 
-.preview-title-medical {
+.template-4 .resume-title {
     font-size: 11px;
     color: #3b82f6;
     margin-bottom: 15px;
@@ -955,7 +940,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-section-medical h4 {
+.template-4 .section-title.main {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -963,28 +948,6 @@ body::before {
     margin-bottom: 8px;
     border-bottom: 2px solid #3b82f6;
     padding-bottom: 3px;
-}
-
-.preview-section-medical p {
-    font-size: 10px;
-    line-height: 1.4;
-    color: #475569;
-}
-
-.edu-item-medical,
-.exp-item-medical {
-    font-size: 10px;
-    margin-bottom: 8px;
-    padding: 8px;
-    background: white;
-    border-radius: 6px;
-    border-left: 3px solid #3b82f6;
-}
-
-.exp-company-medical {
-    color: #3b82f6;
-    font-size: 9px;
-    font-weight: 500;
 }
 
 /* Template 5 - Bold Executive */
@@ -995,7 +958,7 @@ body::before {
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
-.preview-sidebar-executive {
+.template-5 .resume-sidebar {
     width: 40%;
     background: #000000;
     color: white;
@@ -1003,17 +966,15 @@ body::before {
     position: relative;
 }
 
-.preview-sidebar-executive::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+.template-card[data-template="template5"] .template-preview .resume-sidebar {
+    width: 40%;
+    background: #000000;
+    color: white;
+    padding: 15px;
+    position: relative;
 }
 
-.preview-photo-executive {
+.template-card[data-template="template5"] .template-preview .profile-photo {
     width: 90px;
     height: 90px;
     border-radius: 0;
@@ -1028,7 +989,32 @@ body::before {
     color: #ffd700;
 }
 
-.preview-section-executive h4 {
+.template-5 .resume-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ffd700 0%, #ffed4e 100%);
+}
+
+.template-5 .profile-photo {
+    width: 90px;
+    height: 90px;
+    border-radius: 0;
+    background: #1a1a1a;
+    margin: 0 auto 15px;
+    border: 3px solid #ffd700;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #ffd700;
+}
+
+.template-5 .section-title {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1038,7 +1024,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-contact-executive .contact-item-executive {
+.template-5 .contact-item {
     font-size: 10px;
     margin-bottom: 6px;
     display: flex;
@@ -1046,61 +1032,20 @@ body::before {
     gap: 8px;
 }
 
-.preview-contact-executive .contact-item-executive i {
+.template-5 .contact-item i {
     width: 12px;
     font-size: 9px;
     color: #ffd700;
 }
 
-.achievement-item {
-    text-align: center;
-    margin-bottom: 12px;
-    padding: 8px;
-    background: rgba(255, 215, 0, 0.1);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-}
-
-.achievement-number {
-    font-size: 16px;
-    font-weight: 800;
-    color: #ffd700;
-    margin-bottom: 2px;
-}
-
-.achievement-desc {
-    font-size: 8px;
-    color: #cccccc;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.leadership-skills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-top: 6px;
-}
-
-.leadership-tag {
-    background: #ffd700;
-    color: #000000;
-    padding: 3px 8px;
-    border-radius: 12px;
-    font-size: 8px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.preview-main-executive {
+.template-5 .resume-main {
     width: 60%;
     padding: 15px;
     background: #f8f9fa;
 }
 
-.preview-name-executive {
-    font-size: 24px;
+.template-5 .resume-name {
+    font-size: 20px;
     font-weight: 800;
     color: #000000;
     margin-bottom: 5px;
@@ -1108,7 +1053,7 @@ body::before {
     text-transform: uppercase;
 }
 
-.preview-title-executive {
+.template-5 .resume-title {
     font-size: 12px;
     color: #ffd700;
     margin-bottom: 15px;
@@ -1117,7 +1062,7 @@ body::before {
     letter-spacing: 1px;
 }
 
-.preview-section-executive h4 {
+.template-5 .section-title.main {
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
@@ -1125,63 +1070,6 @@ body::before {
     margin-bottom: 8px;
     border-bottom: 2px solid #ffd700;
     padding-bottom: 3px;
-}
-
-.preview-section-executive p {
-    font-size: 10px;
-    line-height: 1.4;
-    color: #333333;
-}
-
-.exp-item-executive {
-    background: white;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    border-left: 4px solid #ffd700;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.exp-header-executive {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-}
-
-.exp-header-executive strong {
-    font-size: 11px;
-    color: #000000;
-    font-weight: 700;
-}
-
-.exp-dates {
-    font-size: 9px;
-    color: #ffd700;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.exp-company-executive {
-    font-size: 10px;
-    color: #666666;
-    margin-bottom: 4px;
-    font-weight: 500;
-}
-
-.exp-desc-executive {
-    font-size: 9px;
-    color: #555555;
-    line-height: 1.3;
-}
-
-.edu-item-executive {
-    font-size: 10px;
-    margin-bottom: 8px;
-    padding: 8px;
-    background: white;
-    border-radius: 6px;
-    border-left: 3px solid #ffd700;
 }
 
 /* Carousel Controls */

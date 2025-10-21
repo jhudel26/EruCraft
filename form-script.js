@@ -796,10 +796,32 @@ class ResumeBuilder {
         const jobTitleInput = document.getElementById('jobTitle');
         const jobTitle = jobTitleInput ? jobTitleInput.value.trim() : '';
         
-        // Create name element
+        // Create name element with proper line breaking
         const nameElement = document.createElement('div');
         nameElement.className = 'resume-name';
-        nameElement.textContent = fullName.toUpperCase();
+        
+        // Check if name is too long and needs to be broken into lines
+        const nameParts = fullName.toUpperCase().trim().split(' ');
+        if (nameParts.length >= 3 && fullName.length > 15) {
+            // For long names, try to break them logically
+            const firstPart = nameParts.slice(0, nameParts.length - 1).join(' ');
+            const lastPart = nameParts[nameParts.length - 1];
+            
+            // Create divs for each line with explicit styling
+            const firstLine = document.createElement('div');
+            firstLine.style.cssText = 'display: block; line-height: 1.2; margin: 0; padding: 0;';
+            firstLine.textContent = firstPart;
+            
+            const secondLine = document.createElement('div');
+            secondLine.style.cssText = 'display: block; line-height: 1.2; margin: 0; padding: 0;';
+            secondLine.textContent = lastPart;
+            
+            nameElement.appendChild(firstLine);
+            nameElement.appendChild(secondLine);
+        } else {
+            nameElement.textContent = fullName.toUpperCase();
+        }
+        
         mainContent.appendChild(nameElement);
         
         // Create job title element only if there's content
@@ -1344,7 +1366,8 @@ class ResumeBuilder {
         const resumeClone = resumeElement.cloneNode(true);
         resumeClone.style.cssText = `
             width: 100%;
-            height: 100%;
+            min-height: 100%;
+            height: auto;
             margin: 0;
             padding: 0;
             transform: none;
@@ -1353,6 +1376,7 @@ class ResumeBuilder {
             display: flex;
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: visible;
         `;
 
         // Remove job title if it's empty (for fresh graduates)
@@ -1377,7 +1401,8 @@ class ResumeBuilder {
                 color: ${template.sidebarColor};
                 padding: 25px 20px;
                 margin: 0;
-                height: 100%;
+                min-height: 100%;
+                height: auto;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
@@ -1463,7 +1488,8 @@ class ResumeBuilder {
                 width: calc(100% - ${template.sidebarWidth});
                 padding: 25px;
                 margin: 0;
-                height: 100%;
+                min-height: 100%;
+                height: auto;
                 display: flex;
                 flex-direction: column;
                 box-sizing: border-box;
@@ -1484,7 +1510,29 @@ class ResumeBuilder {
                     letter-spacing: 1px;
                     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    line-height: 1.2;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    max-width: 100%;
+                    white-space: normal;
                 `;
+                
+                // Style any nested divs within the name element
+                const nameLines = resumeName.querySelectorAll('div');
+                nameLines.forEach(line => {
+                    line.style.cssText = `
+                        display: block;
+                        line-height: 1.2;
+                        margin: 0;
+                        padding: 0;
+                        font-size: inherit;
+                        font-weight: inherit;
+                        color: inherit;
+                        letter-spacing: inherit;
+                        text-shadow: inherit;
+                        font-family: inherit;
+                    `;
+                });
             }
 
             // Style title to match live preview exactly
@@ -1746,14 +1794,50 @@ class ResumeBuilder {
             // Wait a moment for fonts to render properly
             await new Promise(resolve => setTimeout(resolve, 500));
             
-            // Generate canvas with exact A4 dimensions (no margins)
+            // Update progress indicator
+            this.showProgressIndicator('Analyzing content size...');
+            
+            // Wait a moment for layout to settle
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Check if the content fits within A4 dimensions
+            const contentHeight = pdfResume.scrollHeight;
+            const contentWidth = pdfResume.scrollWidth;
+            const maxHeight = 1123; // 297mm in pixels at 96 DPI
+            const maxWidth = 794; // 210mm in pixels at 96 DPI
+            
+            let scale = 3; // Default scale for better quality
+            let canvasHeight = maxHeight;
+            let canvasWidth = maxWidth;
+            
+            // Calculate optimal scale to fit content
+            const heightRatio = maxHeight / contentHeight;
+            const widthRatio = maxWidth / contentWidth;
+            const optimalScale = Math.min(heightRatio, widthRatio, 1); // Don't scale up
+            
+            // If content is too large, scale it down to fit
+            if (contentHeight > maxHeight || contentWidth > maxWidth) {
+                scale = optimalScale * 3; // Maintain quality while fitting
+                canvasHeight = contentHeight * (scale / 3);
+                canvasWidth = contentWidth * (scale / 3);
+                
+                // Update progress
+                this.showProgressIndicator(`Scaling content to fit page (${Math.round(optimalScale * 100)}%)...`);
+            } else {
+                this.showProgressIndicator('Content fits perfectly, generating PDF...');
+            }
+            
+            // Update progress indicator
+            this.showProgressIndicator('Generating high-quality image...');
+            
+            // Generate canvas with dynamic scaling
             const canvas = await html2canvas(pdfResume, {
-                scale: 3, // Higher scale for better quality
+                scale: scale,
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: '#ffffff',
-                width: 794, // 210mm in pixels at 96 DPI
-                height: 1123, // 297mm in pixels at 96 DPI
+                width: Math.min(canvasWidth, maxWidth), // Use calculated width
+                height: Math.min(canvasHeight, maxHeight), // Use calculated height
                 scrollX: 0,
                 scrollY: 0,
                 x: 0,
@@ -1775,14 +1859,35 @@ class ResumeBuilder {
                 format: [210, 297] // A4 size in mm
             });
             
+            // Update progress indicator
+            this.showProgressIndicator('Creating PDF document...');
+            
             const imgData = canvas.toDataURL('image/png');
             
             // Add image to fill entire page with no margins
             const pageWidth = 210; // A4 width in mm
             const pageHeight = 297; // A4 height in mm
             
-            // Add image to fill the entire page
-            pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+            // Calculate the actual image dimensions in mm
+            const imgWidthInMm = (canvas.width / scale) * 0.264583; // Convert pixels to mm
+            const imgHeightInMm = (canvas.height / scale) * 0.264583;
+            
+            // Calculate scaling to fit within A4 page
+            const scaleX = pageWidth / imgWidthInMm;
+            const scaleY = pageHeight / imgHeightInMm;
+            const finalScale = Math.min(scaleX, scaleY, 1); // Don't scale up, only down
+            
+            // Calculate final dimensions and centered position
+            const finalWidth = imgWidthInMm * finalScale;
+            const finalHeight = imgHeightInMm * finalScale;
+            const xOffset = (pageWidth - finalWidth) / 2;
+            const yOffset = (pageHeight - finalHeight) / 2;
+            
+            // Add image centered and scaled to fit
+            pdf.addImage(imgData, 'PNG', xOffset, yOffset, finalWidth, finalHeight);
+            
+            // Update progress indicator
+            this.showProgressIndicator('Finalizing PDF...');
             
             // Since we're using a fixed A4 container, content should fit in one page
             // If it doesn't, we'll let it overflow (which is rare with our fixed sizing)

@@ -14,58 +14,50 @@ const templates = {
         accentColor: '#4299e1',
         layout: 'traditional',
         previewHTML: `
-            <div class="preview-sidebar">
-                <div class="preview-photo">
+            <div class="resume-sidebar">
+                <div class="profile-photo">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="preview-section">
-                    <h4>CONTACT</h4>
-                    <div class="preview-contact">
-                        <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <span>+123-456-7890</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <span>hello@example.com</span>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>123 Anywhere St.</span>
-                        </div>
+                <div class="contact-info">
+                    <div class="section-title blue">CONTACT</div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+123-456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>hello@example.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Anywhere St.</span>
                     </div>
                 </div>
-                <div class="preview-section">
-                    <h4>EDUCATION</h4>
-                    <div class="preview-education">
-                        <div class="edu-item">
-                            <strong>UNIVERSITY</strong><br>
-                            Master of Business
-                        </div>
-                    </div>
-                </div>
-                <div class="preview-section">
-                    <h4>SKILLS</h4>
-                    <div class="preview-skills">
-                        <div class="skill-item">• Project Management</div>
-                        <div class="skill-item">• Leadership</div>
-                        <div class="skill-item">• Communication</div>
-                    </div>
+                <div class="skills-section">
+                    <div class="section-title blue">SKILLS</div>
+                    <ul class="skills-list">
+                        <li>• Project Management</li>
+                        <li>• Leadership</li>
+                        <li>• Communication</li>
+                    </ul>
                 </div>
             </div>
-            <div class="preview-main">
-                <div class="preview-name">RICHARD SANCHEZ</div>
-                <div class="preview-title">MARKETING MANAGER</div>
-                <div class="preview-section">
-                    <h4>ABOUT</h4>
+            <div class="resume-main">
+                <div class="resume-name">RICHARD SANCHEZ</div>
+                <div class="resume-title">MARKETING MANAGER</div>
+                <div class="about-section">
+                    <div class="section-title main">ABOUT</div>
                     <p>Experienced marketing professional with 5+ years of expertise in digital marketing, brand management, and team leadership.</p>
                 </div>
-                <div class="preview-section">
-                    <h4>WORK EXPERIENCE</h4>
-                    <div class="preview-experience">
-                        <div class="exp-item">
-                            <strong>Senior Marketing Manager</strong><br>
-                            TechCorp Inc. • 2020-2023
+                <div class="experience-section">
+                    <div class="section-title main">WORK EXPERIENCE</div>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Senior Marketing Manager</div>
+                                <div class="experience-company">TechCorp Inc.</div>
+                            </div>
+                            <div class="experience-dates">2020 - 2023</div>
                         </div>
                     </div>
                 </div>
@@ -86,53 +78,61 @@ const templates = {
         accentColor: '#ff6b6b',
         layout: 'creative',
         previewHTML: `
-            <div class="preview-sidebar-creative">
-                <div class="preview-photo-creative">
+            <div class="resume-sidebar">
+                <div class="profile-photo">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="preview-section-creative">
-                    <h4>CONTACT</h4>
-                    <div class="preview-contact-creative">
-                        <div class="contact-item-creative">
-                            <i class="fas fa-phone"></i>
-                            <span>+123-456-7890</span>
-                        </div>
-                        <div class="contact-item-creative">
-                            <i class="fas fa-envelope"></i>
-                            <span>hello@example.com</span>
-                        </div>
-                        <div class="contact-item-creative">
-                            <i class="fas fa-globe"></i>
-                            <span>portfolio.com</span>
-                        </div>
+                <div class="contact-info">
+                    <div class="section-title blue">CONTACT</div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+123-456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>hello@example.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>portfolio.com</span>
                     </div>
                 </div>
-                <div class="preview-section-creative">
-                    <h4>TOOLS & SKILLS</h4>
-                    <div class="skills-grid-creative">
-                        <div class="skill-tag">Photoshop</div>
-                        <div class="skill-tag">Illustrator</div>
-                        <div class="skill-tag">Figma</div>
-                        <div class="skill-tag">After Effects</div>
-                    </div>
+                <div class="skills-section">
+                    <div class="section-title blue">TOOLS & SKILLS</div>
+                    <ul class="skills-list">
+                        <li>• Photoshop</li>
+                        <li>• Illustrator</li>
+                        <li>• Figma</li>
+                        <li>• After Effects</li>
+                    </ul>
                 </div>
             </div>
-            <div class="preview-main-creative">
-                <div class="preview-name-creative">OLIVIA WILSON</div>
-                <div class="preview-title-creative">Creative Director</div>
-                <div class="preview-section-creative">
-                    <h4>ABOUT</h4>
+            <div class="resume-main">
+                <div class="resume-name">OLIVIA WILSON</div>
+                <div class="resume-title">Creative Director</div>
+                <div class="about-section">
+                    <div class="section-title main">ABOUT</div>
                     <p>Passionate creative professional with 8+ years transforming brands through innovative design and strategic thinking.</p>
                 </div>
-                <div class="preview-section-creative">
-                    <h4>FEATURED PROJECTS</h4>
-                    <div class="project-item-creative">
-                        <strong>Brand Identity Redesign</strong><br>
-                        <span class="project-client">TechStart Inc. • 2023</span>
+                <div class="experience-section">
+                    <div class="section-title main">FEATURED PROJECTS</div>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Brand Identity Redesign</div>
+                                <div class="experience-company">TechStart Inc.</div>
+                            </div>
+                            <div class="experience-dates">2023</div>
+                        </div>
                     </div>
-                    <div class="project-item-creative">
-                        <strong>Mobile App Design</strong><br>
-                        <span class="project-client">FinanceApp • 2022</span>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Mobile App Design</div>
+                                <div class="experience-company">FinanceApp</div>
+                            </div>
+                            <div class="experience-dates">2022</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,57 +153,52 @@ const templates = {
         accentColor: '#06b6d4',
         layout: 'tech',
         previewHTML: `
-            <div class="preview-sidebar-tech">
-                <div class="preview-photo-tech">
+            <div class="resume-sidebar">
+                <div class="profile-photo">
                     <i class="fas fa-user"></i>
                 </div>
-                <div class="preview-section-tech">
-                    <h4>CONTACT</h4>
-                    <div class="preview-contact-tech">
-                        <div class="contact-item-tech">
-                            <i class="fas fa-phone"></i>
-                            <span>+123-456-7890</span>
-                        </div>
-                        <div class="contact-item-tech">
-                            <i class="fas fa-envelope"></i>
-                            <span>hello@example.com</span>
-                        </div>
-                        <div class="contact-item-tech">
-                            <i class="fab fa-github"></i>
-                            <span>github.com/username</span>
-                        </div>
+                <div class="contact-info">
+                    <div class="section-title blue">CONTACT</div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+123-456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>hello@example.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <span>github.com/username</span>
                     </div>
                 </div>
-                <div class="preview-section-tech">
-                    <h4>TECH STACK</h4>
-                    <div class="tech-stack">
-                        <div class="tech-category">
-                            <strong>Frontend</strong>
-                            <div class="tech-items">React, Vue.js, TypeScript</div>
-                        </div>
-                        <div class="tech-category">
-                            <strong>Backend</strong>
-                            <div class="tech-items">Node.js, Python, Go</div>
-                        </div>
-                    </div>
+                <div class="skills-section">
+                    <div class="section-title blue">TECH STACK</div>
+                    <ul class="skills-list">
+                        <li>• React, Vue.js, TypeScript</li>
+                        <li>• Node.js, Python, Go</li>
+                        <li>• AWS, Docker, Kubernetes</li>
+                    </ul>
                 </div>
             </div>
-            <div class="preview-main-tech">
-                <div class="preview-name-tech">ALEX CHEN</div>
-                <div class="preview-title-tech">Full Stack Developer</div>
-                <div class="preview-section-tech">
-                    <h4>ABOUT</h4>
+            <div class="resume-main">
+                <div class="resume-name">ALEX CHEN</div>
+                <div class="resume-title">Full Stack Developer</div>
+                <div class="about-section">
+                    <div class="section-title main">ABOUT</div>
                     <p>Innovative developer with 6+ years building scalable web applications and leading technical teams in fast-paced environments.</p>
                 </div>
-                <div class="preview-section-tech">
-                    <h4>EXPERIENCE</h4>
-                    <div class="exp-item-tech">
-                        <div class="exp-header-tech">
-                            <strong>Senior Software Engineer</strong>
-                            <span class="exp-dates">2021 - Present</span>
+                <div class="experience-section">
+                    <div class="section-title main">EXPERIENCE</div>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Senior Software Engineer</div>
+                                <div class="experience-company">TechCorp Inc.</div>
+                            </div>
+                            <div class="experience-dates">2021 - Present</div>
                         </div>
-                        <div class="exp-company-tech">TechCorp Inc.</div>
-                        <div class="exp-desc-tech">Led development of microservices architecture serving 1M+ users</div>
+                        <div class="experience-description">Led development of microservices architecture serving 1M+ users</div>
                     </div>
                 </div>
             </div>
@@ -223,65 +218,64 @@ const templates = {
         accentColor: '#3b82f6',
         layout: 'medical',
         previewHTML: `
-            <div class="preview-sidebar-medical">
-                <div class="preview-photo-medical">
+            <div class="resume-sidebar">
+                <div class="profile-photo">
                     <i class="fas fa-user-md"></i>
                 </div>
-                <div class="preview-section-medical">
-                    <h4>CONTACT</h4>
-                    <div class="preview-contact-medical">
-                        <div class="contact-item-medical">
-                            <i class="fas fa-phone"></i>
-                            <span>+123-456-7890</span>
-                        </div>
-                        <div class="contact-item-medical">
-                            <i class="fas fa-envelope"></i>
-                            <span>dr.smith@hospital.com</span>
-                        </div>
-                        <div class="contact-item-medical">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Medical Center, NY</span>
-                        </div>
+                <div class="contact-info">
+                    <div class="section-title blue">CONTACT</div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+123-456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>dr.smith@hospital.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Medical Center, NY</span>
                     </div>
                 </div>
-                <div class="preview-section-medical">
-                    <h4>CERTIFICATIONS</h4>
-                    <div class="cert-item-medical">
-                        <i class="fas fa-certificate"></i>
-                        <span>Board Certified</span>
-                    </div>
-                    <div class="cert-item-medical">
-                        <i class="fas fa-certificate"></i>
-                        <span>ACLS Certified</span>
-                    </div>
-                </div>
-                <div class="preview-section-medical">
-                    <h4>SPECIALTIES</h4>
-                    <div class="specialty-tags">
-                        <span class="specialty-tag">Internal Medicine</span>
-                        <span class="specialty-tag">Cardiology</span>
-                    </div>
+                <div class="skills-section">
+                    <div class="section-title blue">CERTIFICATIONS</div>
+                    <ul class="skills-list">
+                        <li>• Board Certified</li>
+                        <li>• ACLS Certified</li>
+                        <li>• Internal Medicine</li>
+                        <li>• Cardiology</li>
+                    </ul>
                 </div>
             </div>
-            <div class="preview-main-medical">
-                <div class="preview-name-medical">DR. SARAH SMITH</div>
-                <div class="preview-title-medical">Internal Medicine Physician</div>
-                <div class="preview-section-medical">
-                    <h4>PROFESSIONAL SUMMARY</h4>
+            <div class="resume-main">
+                <div class="resume-name">DR. SARAH SMITH</div>
+                <div class="resume-title">Internal Medicine Physician</div>
+                <div class="about-section">
+                    <div class="section-title main">PROFESSIONAL SUMMARY</div>
                     <p>Dedicated physician with 10+ years of experience in internal medicine, committed to providing exceptional patient care and advancing medical knowledge through research.</p>
                 </div>
-                <div class="preview-section-medical">
-                    <h4>EDUCATION</h4>
-                    <div class="edu-item-medical">
-                        <strong>Johns Hopkins University</strong><br>
-                        Doctor of Medicine (MD) • 2010-2014
+                <div class="education-section">
+                    <div class="section-title main">EDUCATION</div>
+                    <div class="education-item-preview">
+                        <div class="education-header">
+                            <div>
+                                <div class="education-degree">Doctor of Medicine (MD)</div>
+                                <div class="education-institution">Johns Hopkins University</div>
+                            </div>
+                            <div class="education-dates">2010 - 2014</div>
+                        </div>
                     </div>
                 </div>
-                <div class="preview-section-medical">
-                    <h4>CLINICAL EXPERIENCE</h4>
-                    <div class="exp-item-medical">
-                        <strong>Senior Physician</strong><br>
-                        <span class="exp-company-medical">City General Hospital • 2018-Present</span>
+                <div class="experience-section">
+                    <div class="section-title main">CLINICAL EXPERIENCE</div>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Senior Physician</div>
+                                <div class="experience-company">City General Hospital</div>
+                            </div>
+                            <div class="experience-dates">2018 - Present</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,70 +295,65 @@ const templates = {
         accentColor: '#ffd700',
         layout: 'executive',
         previewHTML: `
-            <div class="preview-sidebar-executive">
-                <div class="preview-photo-executive">
+            <div class="resume-sidebar">
+                <div class="profile-photo">
                     <i class="fas fa-user-tie"></i>
                 </div>
-                <div class="preview-section-executive">
-                    <h4>CONTACT</h4>
-                    <div class="preview-contact-executive">
-                        <div class="contact-item-executive">
-                            <i class="fas fa-phone"></i>
-                            <span>+123-456-7890</span>
-                        </div>
-                        <div class="contact-item-executive">
-                            <i class="fas fa-envelope"></i>
-                            <span>ceo@company.com</span>
-                        </div>
-                        <div class="contact-item-executive">
-                            <i class="fab fa-linkedin"></i>
-                            <span>linkedin.com/in/executive</span>
-                        </div>
+                <div class="contact-info">
+                    <div class="section-title blue">CONTACT</div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+123-456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>ceo@company.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <span>linkedin.com/in/executive</span>
                     </div>
                 </div>
-                <div class="preview-section-executive">
-                    <h4>ACHIEVEMENTS</h4>
-                    <div class="achievement-item">
-                        <div class="achievement-number">$50M+</div>
-                        <div class="achievement-desc">Revenue Growth</div>
-                    </div>
-                    <div class="achievement-item">
-                        <div class="achievement-number">500+</div>
-                        <div class="achievement-desc">Team Members</div>
-                    </div>
-                </div>
-                <div class="preview-section-executive">
-                    <h4>LEADERSHIP</h4>
-                    <div class="leadership-skills">
-                        <span class="leadership-tag">Strategic Planning</span>
-                        <span class="leadership-tag">Team Building</span>
-                        <span class="leadership-tag">Innovation</span>
-                    </div>
+                <div class="skills-section">
+                    <div class="section-title blue">LEADERSHIP</div>
+                    <ul class="skills-list">
+                        <li>• Strategic Planning</li>
+                        <li>• Team Building</li>
+                        <li>• Innovation</li>
+                        <li>• Revenue Growth: $50M+</li>
+                    </ul>
                 </div>
             </div>
-            <div class="preview-main-executive">
-                <div class="preview-name-executive">MICHAEL JOHNSON</div>
-                <div class="preview-title-executive">Chief Executive Officer</div>
-                <div class="preview-section-executive">
-                    <h4>EXECUTIVE SUMMARY</h4>
+            <div class="resume-main">
+                <div class="resume-name">MICHAEL JOHNSON</div>
+                <div class="resume-title">Chief Executive Officer</div>
+                <div class="about-section">
+                    <div class="section-title main">EXECUTIVE SUMMARY</div>
                     <p>Visionary leader with 15+ years of experience driving organizational growth, strategic transformation, and market expansion across global enterprises.</p>
                 </div>
-                <div class="preview-section-executive">
-                    <h4>EXECUTIVE EXPERIENCE</h4>
-                    <div class="exp-item-executive">
-                        <div class="exp-header-executive">
-                            <strong>Chief Executive Officer</strong>
-                            <span class="exp-dates">2019 - Present</span>
+                <div class="experience-section">
+                    <div class="section-title main">EXECUTIVE EXPERIENCE</div>
+                    <div class="experience-item-preview">
+                        <div class="experience-header">
+                            <div>
+                                <div class="experience-position">Chief Executive Officer</div>
+                                <div class="experience-company">Global Tech Solutions</div>
+                            </div>
+                            <div class="experience-dates">2019 - Present</div>
                         </div>
-                        <div class="exp-company-executive">Global Tech Solutions</div>
-                        <div class="exp-desc-executive">Led company through IPO and 300% revenue growth, expanding to 15 countries</div>
+                        <div class="experience-description">Led company through IPO and 300% revenue growth, expanding to 15 countries</div>
                     </div>
                 </div>
-                <div class="preview-section-executive">
-                    <h4>EDUCATION</h4>
-                    <div class="edu-item-executive">
-                        <strong>Harvard Business School</strong><br>
-                        Master of Business Administration (MBA) • 2005-2007
+                <div class="education-section">
+                    <div class="section-title main">EDUCATION</div>
+                    <div class="education-item-preview">
+                        <div class="education-header">
+                            <div>
+                                <div class="education-degree">Master of Business Administration (MBA)</div>
+                                <div class="education-institution">Harvard Business School</div>
+                            </div>
+                            <div class="education-dates">2005 - 2007</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -583,4 +572,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Add smooth scroll behavior
 document.documentElement.style.scrollBehavior = 'smooth';
+
 
