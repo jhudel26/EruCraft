@@ -59,7 +59,8 @@ const ResumeApp = {
             skillStyle: 'tags',
             lineHeight: '1.5',
             margins: '20mm',
-            dateFormat: 'YYYY'
+            dateFormat: 'YYYY',
+            onePageMode: false
         }
     },
 
@@ -168,21 +169,30 @@ const ResumeApp = {
         });
 
         // Config Inputs
-        ['primaryColor', 'fontFamily', 'fontSize', 'spacing', 'paperSize', 'headerAlign', 'sectionStyle', 'skillStyle', 'lineHeight', 'margins', 'dateFormat'].forEach(key => {
+        ['primaryColor', 'fontFamily', 'fontSize', 'spacing', 'paperSize', 'headerAlign', 'sectionStyle', 'skillStyle', 'lineHeight', 'margins', 'dateFormat', 'onePageMode'].forEach(key => {
             const input = document.getElementById(`config-${key}`);
             if (input) {
-                input.value = this.state.config[key];
-                input.addEventListener('input', (e) => {
-                    this.state.config[key] = e.target.value;
-                    
-                    if (key === 'primaryColor') {
-                        const colorValue = document.getElementById('primary-color-value');
-                        if (colorValue) colorValue.textContent = e.target.value;
-                    }
-                    
-                    this.renderPreview();
-                    this.saveToLocalStorage();
-                });
+                if (input.type === 'checkbox') {
+                    input.checked = this.state.config[key];
+                    input.addEventListener('change', (e) => {
+                        this.state.config[key] = e.target.checked;
+                        this.renderPreview();
+                        this.saveToLocalStorage();
+                    });
+                } else {
+                    input.value = this.state.config[key];
+                    input.addEventListener('input', (e) => {
+                        this.state.config[key] = e.target.value;
+                        
+                        if (key === 'primaryColor') {
+                            const colorValue = document.getElementById('primary-color-value');
+                            if (colorValue) colorValue.textContent = e.target.value;
+                        }
+                        
+                        this.renderPreview();
+                        this.saveToLocalStorage();
+                    });
+                }
             }
         });
 
@@ -507,7 +517,7 @@ const ResumeApp = {
             preview.style.minHeight = '297mm';
         }
 
-        preview.className = `resume-paper template-${templateId} layout-${layout} section-${config.sectionStyle} skills-${config.skillStyle}`;
+        preview.className = `resume-paper template-${templateId} layout-${layout} section-${config.sectionStyle} skills-${config.skillStyle} ${config.onePageMode ? 'one-page-mode' : ''}`;
         
         // Apply Config Styles directly to the element style to ensure they take effect
         preview.style.setProperty('--primary', config.primaryColor, 'important');
@@ -541,6 +551,21 @@ const ResumeApp = {
                             ${this.renderSkills(s.skills, config.skillStyle, true)}
                         </div>
                     </div>
+
+                    ${templateId === 'creative' ? `
+                    <div style="margin-top:2.5rem">
+                        <h4 style="color:white;text-transform:uppercase;font-size:0.75rem;letter-spacing:1px;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:0.5rem">Projects</h4>
+                        <div style="display:flex;flex-direction:column;gap:1rem; color:rgba(255,255,255,0.9); font-size: 0.85rem;">
+                            ${s.projects.map(p => `
+                                <div>
+                                    <div style="font-weight:600; color:white;">${p.name}</div>
+                                    ${p.link ? `<div style="font-size:0.75rem; opacity:0.8;">${p.link}</div>` : ''}
+                                    <div style="font-size:0.8rem; margin-top:0.25rem; opacity:0.9;">${p.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
                 </div>
                 <div class="main-col">
                     <section class="tm-section">
@@ -549,7 +574,7 @@ const ResumeApp = {
                     </section>
                     ${this.renderPreviewSection('Experience', s.experience)}
                     ${this.renderPreviewSection('Education', s.education)}
-                    ${this.renderPreviewSection('Projects', s.projects)}
+                    ${templateId !== 'creative' ? this.renderPreviewSection('Projects', s.projects) : ''}
                     ${this.renderPreviewSection('Certifications', s.certifications)}
                 </div>
             `;
@@ -579,17 +604,17 @@ const ResumeApp = {
                     <p style="white-space: pre-wrap;">${s.summary || 'Write a brief summary...'}</p>
                 </section>
 
-                ${this.renderPreviewSection('Experience', s.experience)}
-                ${this.renderPreviewSection('Education', s.education)}
-                ${this.renderPreviewSection('Projects', s.projects)}
-                ${this.renderPreviewSection('Certifications', s.certifications)}
-                
                 <section class="tm-section">
                     <h3 class="tm-section-title">Skills</h3>
                     <div class="skills-container" style="display:flex;flex-wrap:wrap;gap:0.5rem; justify-content: ${config.headerAlign === 'center' ? 'center' : 'flex-start'};">
                         ${this.renderSkills(s.skills, config.skillStyle)}
                     </div>
                 </section>
+
+                ${this.renderPreviewSection('Experience', s.experience)}
+                ${this.renderPreviewSection('Education', s.education)}
+                ${this.renderPreviewSection('Projects', s.projects)}
+                ${this.renderPreviewSection('Certifications', s.certifications)}
             `;
         }
 
