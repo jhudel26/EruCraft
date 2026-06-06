@@ -675,7 +675,6 @@ const ResumeApp = {
                     const endYear = this.formatYear(endYearRaw, config.dateFormat);
                     
                     return `
-                    return `
                     <div style="margin-bottom: 1rem">
                         <div style="display:flex;justify-content:space-between;font-weight:600">
                             <span>
