@@ -700,21 +700,21 @@ const ResumeApp = {
                     const endYear = this.formatYear(endYearRaw, config.dateFormat);
                     
                     return `
-                    <div style="margin-bottom: 1rem">
-                        <div style="display:flex;justify-content:space-between;font-weight:600">
-                            <span>
-                                ${item.position || item.degree || item.school || item.name || 'Untitled'} 
-                                ${item.company ? `at ${item.company}` : ''} 
-                                ${item.school && item.degree ? `from ${item.school}` : ''}
-                                ${item.level ? `(${item.level})` : ''}
+                    <div style="margin-bottom: 1.25rem">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                            <span style="font-size:1.1rem; font-weight:800; color:#1e293b; text-transform:uppercase; letter-spacing:0.025em">
+                                ${item.company || item.school || item.name || 'Untitled'} 
+                                ${item.level ? `<span style="text-transform:none; font-size:0.75rem; font-weight:600; color:#94a3b8; margin-left:0.5rem; vertical-align:middle">(${item.level})</span>` : ''}
                             </span>
-                            <span style="color:#64748b;font-size:0.875rem">
+                            <span style="color:#64748b;font-size:0.875rem;font-weight:600">
                                 ${startYear || ''} ${startYear && (item.current || endYearRaw) ? '-' : ''} ${item.current ? 'Present' : endYear || ''}
                             </span>
                         </div>
-                        ${item.link ? `<div style="font-size:0.8rem; color:var(--primary);"><i data-lucide="link" style="width:12px; height:12px"></i> <a href="${item.link}" target="_blank" style="color:inherit; text-decoration:none">${item.link}</a></div>` : ''}
-                        <p style="margin-top:0.25rem; white-space: pre-wrap;">${item.description || ''}</p>
-                        ${item.issuer ? `<p style="font-size:0.875rem; color:#64748b">${item.issuer}</p>` : ''}
+                        ${item.position ? `<div style="font-weight:600; color:var(--primary); font-size:0.95rem; margin-top:0.15rem; font-style:italic">${item.position}</div>` : ''}
+                        ${item.degree ? `<div style="font-weight:600; color:var(--primary); font-size:0.95rem; margin-top:0.15rem; font-style:italic">${item.degree}</div>` : ''}
+                        ${item.link ? `<div style="font-size:0.8rem; color:var(--primary); margin-top:0.2rem;"><i data-lucide="link" style="width:12px; height:12px"></i> <a href="${item.link}" target="_blank" style="color:inherit; text-decoration:none">${item.link}</a></div>` : ''}
+                        <p style="margin-top:0.4rem; white-space: pre-wrap; line-height:1.5">${item.description || ''}</p>
+                        ${item.issuer ? `<p style="font-size:0.875rem; color:#64748b; font-weight:500">${item.issuer}</p>` : ''}
                     </div>
                 `}).join('')}
             </section>
