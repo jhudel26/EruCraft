@@ -247,6 +247,28 @@ const ResumeApp = {
             input.click();
         });
 
+        // About Modal Events
+        const aboutBtn = document.getElementById('about-btn');
+        const aboutModal = document.getElementById('about-modal');
+        const closeAbout = document.getElementById('close-about');
+
+        if (aboutBtn && aboutModal && closeAbout) {
+            aboutBtn.addEventListener('click', () => {
+                aboutModal.style.display = 'block';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            });
+
+            closeAbout.addEventListener('click', () => {
+                aboutModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === aboutModal) {
+                    aboutModal.style.display = 'none';
+                }
+            });
+        }
+
         // Event Delegation for Dynamic Items (Remove Button)
         document.addEventListener('click', (e) => {
             const removeBtn = e.target.closest('.btn-remove');
