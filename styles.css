@@ -527,8 +527,14 @@ input:focus, textarea:focus {
         z-index: 10;
     }
     
-    .resume-paper[style*="width: 215.9mm"]::after {
+    .resume-paper[style*="width: 215.9mm"][style*="min-height: 279.4mm"]::after {
         top: 279.4mm; /* Letter height */
+    }
+    .resume-paper[style*="min-height: 355.6mm"]::after {
+        top: 355.6mm; /* Legal height */
+    }
+    .resume-paper[style*="min-height: 330.2mm"]::after {
+        top: 330.2mm; /* Oficio height */
     }
 }
 
