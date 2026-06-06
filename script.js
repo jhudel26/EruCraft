@@ -376,7 +376,7 @@ const ResumeApp = {
         if (stateKey === 'experience') {
             newItem.company = ''; newItem.position = ''; newItem.startDate = ''; newItem.endDate = ''; newItem.description = ''; newItem.current = false;
         } else if (stateKey === 'education') {
-            newItem.school = ''; newItem.degree = ''; newItem.startDate = ''; newItem.endDate = ''; newItem.level = 'College';
+            newItem.school = ''; newItem.degree = ''; newItem.startDate = ''; newItem.endDate = ''; newItem.level = 'Tertiary';
         } else if (stateKey === 'skills') {
             newItem.name = '';
         } else if (stateKey === 'projects') {
@@ -462,9 +462,10 @@ const ResumeApp = {
                 <div class="input-group">
                     <label>Level</label>
                     <select name="level">
-                        <option value="Elementary" ${item.level === 'Elementary' ? 'selected' : ''}>Elementary</option>
-                        <option value="High School" ${item.level === 'High School' ? 'selected' : ''}>High School</option>
-                        <option value="College" ${item.level === 'College' ? 'selected' : ''}>College</option>
+                        <option value="Tertiary" ${item.level === 'Tertiary' ? 'selected' : ''}>Tertiary</option>
+                        <option value="Secondary" ${item.level === 'Secondary' ? 'selected' : ''}>Secondary</option>
+                        <option value="Vocational" ${item.level === 'Vocational' ? 'selected' : ''}>Vocational</option>
+                        <option value="Primary" ${item.level === 'Primary' ? 'selected' : ''}>Primary</option>
                     </select>
                 </div>
                 <div class="input-group"><label>Degree / Qualification</label><input type="text" name="degree" value="${item.degree || ''}"></div>
@@ -674,12 +675,13 @@ const ResumeApp = {
                     const endYear = this.formatYear(endYearRaw, config.dateFormat);
                     
                     return `
+                    return `
                     <div style="margin-bottom: 1rem">
                         <div style="display:flex;justify-content:space-between;font-weight:600">
                             <span>
-                                ${item.position || item.degree || item.name || 'Untitled'} 
+                                ${item.position || item.degree || item.school || item.name || 'Untitled'} 
                                 ${item.company ? `at ${item.company}` : ''} 
-                                ${item.school ? `from ${item.school}` : ''}
+                                ${item.school && item.degree ? `from ${item.school}` : ''}
                                 ${item.level ? `(${item.level})` : ''}
                             </span>
                             <span style="color:#64748b;font-size:0.875rem">
