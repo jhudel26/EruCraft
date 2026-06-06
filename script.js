@@ -1,5 +1,5 @@
 /**
- * ProResume Builder - Core Script
+ * EruCraft - Core Script
  * Modern, Vanilla JavaScript Resume Generator
  */
 
@@ -71,6 +71,7 @@ const ResumeApp = {
 
     history: [],
     historyIndex: -1,
+    historyTimeout: null,
 
     // Initialization
     init() {
@@ -81,6 +82,13 @@ const ResumeApp = {
         this.saveToHistory();
         this.populateTemplates();
         this.updateTips();
+        
+        // Hide loader after a short delay to ensure icons and fonts are ready
+        setTimeout(() => {
+            const loader = document.getElementById('app-loader');
+            if (loader) loader.classList.add('hidden');
+        }, 1500);
+
         setInterval(() => this.updateTips(), 10000);
     },
 
@@ -342,6 +350,10 @@ const ResumeApp = {
         this.renderPreview();
         this.saveToLocalStorage();
         this.updateCompletion();
+        
+        // Save to history with debounce
+        clearTimeout(this.historyTimeout);
+        this.historyTimeout = setTimeout(() => this.saveToHistory(), 500);
     },
 
     // Dynamic List Management
@@ -432,7 +444,11 @@ const ResumeApp = {
                         <input type="checkbox" name="current" ${item.current ? 'checked' : ''}> Currently Work Here
                     </label>
                 </div>
-                <div class="input-group" style="grid-column: span 2"><label>Description</label><textarea name="description" rows="6" style="min-height: 120px; white-space: pre-wrap;">${item.description || ''}</textarea></div>
+                <div class="input-group" style="grid-column: span 2">
+                    <label>Description (One bullet per line)</label>
+                    <textarea name="description" rows="6" style="min-height: 120px; white-space: pre-wrap;" placeholder="• Developed a new feature...&#10;• Led a team of 5...">${item.description || ''}</textarea>
+                    <small style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Start each line with a bullet (•) or hyphen (-) to format as list.</small>
+                </div>
             `,
             education: `
                 <div class="input-group"><label>School</label><input type="text" name="school" value="${item.school || ''}"></div>
@@ -454,7 +470,10 @@ const ResumeApp = {
             projects: `
                 <div class="input-group"><label>Project Name</label><input type="text" name="name" value="${item.name || ''}"></div>
                 <div class="input-group"><label>Link</label><input type="url" name="link" value="${item.link || ''}"></div>
-                <div class="input-group" style="grid-column: span 2"><label>Description</label><textarea name="description">${item.description || ''}</textarea></div>
+                <div class="input-group" style="grid-column: span 2">
+                    <label>Description (One bullet per line)</label>
+                    <textarea name="description" placeholder="• Built a full-stack app...&#10;• Integrated Stripe...">${item.description || ''}</textarea>
+                </div>
             `,
             certifications: `
                 <div class="input-group"><label>Certification</label><input type="text" name="name" value="${item.name || ''}"></div>
@@ -632,7 +651,7 @@ const ResumeApp = {
                                 ${item.level ? `(${item.level})` : ''}
                             </span>
                             <span style="color:#64748b;font-size:0.875rem">
-                                ${startYear} - ${item.current ? 'Present' : endYear}
+                                ${startYear || ''} ${startYear && (item.current || endYear) ? '-' : ''} ${item.current ? 'Present' : endYear || ''}
                             </span>
                         </div>
                         ${item.link ? `<div style="font-size:0.8rem; color:var(--primary);"><i data-lucide="link" style="width:12px; height:12px"></i> <a href="${item.link}" target="_blank" style="color:inherit; text-decoration:none">${item.link}</a></div>` : ''}
@@ -707,7 +726,20 @@ const ResumeApp = {
 
     // Persistence
     saveToLocalStorage() {
+        const statusEl = document.getElementById('save-status');
+        if (statusEl) {
+            statusEl.innerHTML = '<i data-lucide="refresh-cw" class="spin" style="width: 14px;"></i><span>Saving...</span>';
+            lucide.createIcons();
+        }
+
         localStorage.setItem('resume_data', JSON.stringify(this.state));
+
+        setTimeout(() => {
+            if (statusEl) {
+                statusEl.innerHTML = '<i data-lucide="check-circle" style="width: 14px;"></i><span>All changes saved</span>';
+                lucide.createIcons();
+            }
+        }, 800);
     },
 
     loadFromLocalStorage() {
