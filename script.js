@@ -52,7 +52,14 @@ const ResumeApp = {
             primaryColor: '#4f46e5',
             fontSize: '14px',
             spacing: '1.5rem',
-            layout: 'single'
+            layout: 'single',
+            paperSize: 'A4',
+            headerAlign: 'left',
+            sectionStyle: 'standard',
+            skillStyle: 'tags',
+            lineHeight: '1.5',
+            margins: '20mm',
+            dateFormat: 'YYYY'
         }
     },
 
@@ -161,11 +168,11 @@ const ResumeApp = {
         });
 
         // Config Inputs
-        ['primaryColor', 'fontFamily', 'fontSize', 'spacing'].forEach(key => {
+        ['primaryColor', 'fontFamily', 'fontSize', 'spacing', 'paperSize', 'headerAlign', 'sectionStyle', 'skillStyle', 'lineHeight', 'margins', 'dateFormat'].forEach(key => {
             const input = document.getElementById(`config-${key}`);
             if (input) {
                 input.value = this.state.config[key];
-                input.addEventListener('input', (e) => { // Changed from 'change' to 'input' for real-time
+                input.addEventListener('input', (e) => {
                     this.state.config[key] = e.target.value;
                     
                     if (key === 'primaryColor') {
@@ -490,16 +497,28 @@ const ResumeApp = {
         const templateId = config.template;
         const layout = config.layout;
 
-        preview.className = `resume-paper template-${templateId} layout-${layout}`;
+        // Paper Size Handling
+        if (config.paperSize === 'Letter') {
+            preview.style.width = '215.9mm';
+            preview.style.minHeight = '279.4mm';
+        } else {
+            preview.style.width = '210mm';
+            preview.style.minHeight = '297mm';
+        }
+
+        preview.className = `resume-paper template-${templateId} layout-${layout} section-${config.sectionStyle} skills-${config.skillStyle}`;
         
         // Apply Config Styles directly to the element style to ensure they take effect
         preview.style.setProperty('--primary', config.primaryColor, 'important');
         preview.style.setProperty('font-family', config.fontFamily, 'important');
         preview.style.setProperty('font-size', config.fontSize, 'important');
+        preview.style.setProperty('line-height', config.lineHeight, 'important');
+        preview.style.setProperty('padding', config.margins, 'important');
         
         let html = '';
 
         if (templateId === 'creative' || layout === 'sidebar') {
+            // Sidebar layout logic (kept same but can be adjusted for headerAlign if needed)
             html = `
                 <div class="sidebar-col">
                     ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:120px;height:120px;border-radius:12px;margin-bottom:1.5rem;object-fit:cover;">` : ''}
@@ -515,16 +534,7 @@ const ResumeApp = {
                     <div style="margin-top:2.5rem">
                         <h4 style="color:white;text-transform:uppercase;font-size:0.75rem;letter-spacing:1px;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:0.5rem">Skills</h4>
                         <div style="display:flex;flex-direction:column;gap:0.75rem">
-                            ${s.skills.map(skill => `
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:0.25rem">
-                                        <span>${skill.name}</span>
-                                    </div>
-                                    <div style="height:4px;background:rgba(255,255,255,0.2);border-radius:2px">
-                                        <div style="height:100%;background:white;width:100%;border-radius:2px"></div>
-                                    </div>
-                                </div>
-                            `).join('')}
+                            ${this.renderSkills(s.skills, config.skillStyle, true)}
                         </div>
                     </div>
                 </div>
@@ -537,58 +547,24 @@ const ResumeApp = {
                     ${this.renderPreviewSection('Education', s.education)}
                     ${this.renderPreviewSection('Projects', s.projects)}
                     ${this.renderPreviewSection('Certifications', s.certifications)}
-                </div></section>
-            `;
-        } else if (templateId === 'minimalist') {
-            html = `
-                <header class="tm-header" style="border:none; text-align:center; flex-direction:column; align-items:center;">
-                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:1.5rem;">` : ''}
-                    <div>
-                        <h1 class="tm-name">${s.personal.fullName || 'Your Name'}</h1>
-                        <p class="tm-title">${s.personal.title || 'Professional Title'}</p>
-                        <div class="tm-contact" style="justify-content:center;">
-                            ${s.personal.email ? `<span><i data-lucide="mail"></i> ${s.personal.email}</span>` : ''}
-                            ${s.personal.phone ? `<span><i data-lucide="phone"></i> ${s.personal.phone}</span>` : ''}
-                            ${s.personal.address ? `<span><i data-lucide="map-pin"></i> ${s.personal.address}</span>` : ''}
-                        </div>
-                    </div>
-                </header>
-
-                <section class="tm-section">
-                    <h3 class="tm-section-title">Professional Summary</h3>
-                    <p style="white-space: pre-wrap;">${s.summary || 'Write a brief summary...'}</p>
-                </section>
-
-                ${this.renderPreviewSection('Experience', s.experience)}
-                ${this.renderPreviewSection('Education', s.education)}
-                ${this.renderPreviewSection('Projects', s.projects)}
-                ${this.renderPreviewSection('Certifications', s.certifications)}
-                
-                <section class="tm-section">
-                    <h3 class="tm-section-title">Skills</h3>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;">
-                        ${s.skills.map(skill => `
-                            <span style="background:#f1f5f9;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.875rem">
-                                ${skill.name}
-                            </span>
-                        `).join('')}
-                    </div>
-                </section>
+                </div>
             `;
         } else {
-            // Default Standard Layout
+            // Standard Top Header layout (used by most templates)
+            const headerStyle = `text-align: ${config.headerAlign}; flex-direction: ${config.headerAlign === 'center' ? 'column' : 'row'}; align-items: ${config.headerAlign === 'center' ? 'center' : 'flex-start'};`;
+            
             html = `
-                <header class="tm-header">
-                    <div>
+                <header class="tm-header" style="${headerStyle}">
+                    <div style="flex: 1;">
                         <h1 class="tm-name">${s.personal.fullName || 'Your Name'}</h1>
                         <p class="tm-title">${s.personal.title || 'Professional Title'}</p>
-                        <div class="tm-contact">
+                        <div class="tm-contact" style="justify-content: ${config.headerAlign === 'center' ? 'center' : 'flex-start'};">
                             ${s.personal.email ? `<span><i data-lucide="mail"></i> ${s.personal.email}</span>` : ''}
                             ${s.personal.phone ? `<span><i data-lucide="phone"></i> ${s.personal.phone}</span>` : ''}
                             ${s.personal.address ? `<span><i data-lucide="map-pin"></i> ${s.personal.address}</span>` : ''}
                         </div>
                     </div>
-                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">` : ''}
+                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover; margin-top: ${config.headerAlign === 'center' ? '1rem' : '0'};">` : ''}
                 </header>
 
                 <section class="tm-section">
@@ -603,18 +579,15 @@ const ResumeApp = {
                 
                 <section class="tm-section">
                     <h3 class="tm-section-title">Skills</h3>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
-                        ${s.skills.map(skill => `
-                            <span style="background:#f1f5f9;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.875rem">
-                                ${skill.name}
-                            </span>
-                        `).join('')}
+                    <div class="skills-container" style="display:flex;flex-wrap:wrap;gap:0.5rem; justify-content: ${config.headerAlign === 'center' ? 'center' : 'flex-start'};">
+                        ${this.renderSkills(s.skills, config.skillStyle)}
                     </div>
                 </section>
             `;
         }
 
         preview.innerHTML = html;
+        // ... (rest of renderPreview logic for lucide icons and element styles)
 
         // Apply Font Family and Spacing to all elements after they are injected into DOM
         const allElements = preview.querySelectorAll('*');
@@ -631,15 +604,65 @@ const ResumeApp = {
         lucide.createIcons();
     },
 
+    renderSkills(skills, style, isSidebar = false) {
+        if (!skills || skills.length === 0) return '';
+        
+        return skills.map(skill => {
+            if (style === 'badges') {
+                const badgeBorder = isSidebar ? 'rgba(255,255,255,0.4)' : 'var(--primary)';
+                const badgeColor = isSidebar ? 'white' : 'var(--primary)';
+                return `
+                    <span style="border: 1px solid ${badgeBorder}; padding:0.2rem 0.6rem; border-radius:4px; font-size:0.8rem; color: ${badgeColor}; font-weight: 500;">
+                        ${skill.name}
+                    </span>
+                `;
+            } else if (style === 'minimal') {
+                return `<span style="font-size:0.875rem; color: ${isSidebar ? 'white' : 'inherit'}">${skill.name}</span>`;
+            } else if (style === 'dots') {
+                return `
+                    <div style="display:flex; align-items:center; gap:0.5rem; font-size:0.875rem; color: ${isSidebar ? 'white' : 'inherit'}">
+                        <span style="width:6px; height:6px; background:var(--primary); border-radius:50%"></span>
+                        <span>${skill.name}</span>
+                    </div>
+                `;
+            } else { // 'tags'
+                const tagBg = isSidebar ? 'rgba(255,255,255,0.1)' : '#f1f5f9';
+                const tagColor = isSidebar ? 'white' : 'inherit';
+                return `
+                    <span style="background:${tagBg}; padding:0.25rem 0.75rem; border-radius:99px; font-size:0.875rem; color: ${tagColor}">
+                        ${skill.name}
+                    </span>
+                `;
+            }
+        }).join('');
+    },
+
+    formatYear(year, format) {
+        if (!year) return '';
+        const yearStr = year.toString();
+        
+        if (format === "'YY") {
+            return "'" + yearStr.slice(-2);
+        } else if (format === "[YYYY]") {
+            return `[${yearStr}]`;
+        }
+        return yearStr; // Default YYYY
+    },
+
     renderPreviewSection(title, items) {
         if (!items || items.length === 0) return '';
+        const config = this.state.config;
+        
         return `
             <section class="tm-section">
                 <h3 class="tm-section-title">${title}</h3>
                 ${items.map(item => {
-                    // Extract only the year if the date is in YYYY-MM format
-                    const startYear = item.startDate ? item.startDate.split('-')[0] : '';
-                    const endYear = item.endDate ? item.endDate.split('-')[0] : '';
+                    // Extract only the year
+                    const startYearRaw = item.startDate ? item.startDate.toString().split('-')[0] : '';
+                    const endYearRaw = item.endDate ? item.endDate.toString().split('-')[0] : '';
+                    
+                    const startYear = this.formatYear(startYearRaw, config.dateFormat);
+                    const endYear = this.formatYear(endYearRaw, config.dateFormat);
                     
                     return `
                     <div style="margin-bottom: 1rem">
@@ -651,7 +674,7 @@ const ResumeApp = {
                                 ${item.level ? `(${item.level})` : ''}
                             </span>
                             <span style="color:#64748b;font-size:0.875rem">
-                                ${startYear || ''} ${startYear && (item.current || endYear) ? '-' : ''} ${item.current ? 'Present' : endYear || ''}
+                                ${startYear || ''} ${startYear && (item.current || endYearRaw) ? '-' : ''} ${item.current ? 'Present' : endYear || ''}
                             </span>
                         </div>
                         ${item.link ? `<div style="font-size:0.8rem; color:var(--primary);"><i data-lucide="link" style="width:12px; height:12px"></i> <a href="${item.link}" target="_blank" style="color:inherit; text-decoration:none">${item.link}</a></div>` : ''}

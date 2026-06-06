@@ -554,6 +554,30 @@ input:focus, textarea:focus {
     background: #e2e8f0;
 }
 
+/* Section Style Variants */
+.section-filled .tm-section-title {
+    background: var(--primary);
+    color: white !important;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+}
+.section-filled .tm-section-title::after {
+    display: none;
+}
+
+.section-minimal .tm-section-title::after {
+    display: none;
+}
+
+.section-double-line .tm-section-title {
+    border-bottom: 3px double var(--border);
+    padding-bottom: 0.5rem;
+    width: 100%;
+}
+.section-double-line .tm-section-title::after {
+    display: none;
+}
+
 /* Buttons */
 .btn {
     display: inline-flex;
