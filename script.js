@@ -1,576 +1,781 @@
-// Template Configuration for Modularity
-const templates = {
-    template1: {
-        id: 'template1',
-        name: 'Executive Classic',
-        description: 'Corporate • Professional • Traditional',
-        sidebarWidth: '35%',
-        sidebarBg: '#1a365d',
-        sidebarColor: 'white',
-        profilePhotoBg: '#2d3748',
-        profilePhotoBorder: '#4299e1',
-        sectionTitleBorder: '#4299e1',
-        profilePhotoBorderRadius: '50%',
-        accentColor: '#4299e1',
-        layout: 'traditional',
-        previewHTML: `
-            <div class="resume-sidebar">
-                <div class="profile-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="contact-info">
-                    <div class="section-title blue">CONTACT</div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>hello@example.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Anywhere St.</span>
-                    </div>
-                </div>
-                <div class="skills-section">
-                    <div class="section-title blue">SKILLS</div>
-                    <ul class="skills-list">
-                        <li>• Project Management</li>
-                        <li>• Leadership</li>
-                        <li>• Communication</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="resume-main">
-                <div class="resume-name">RICHARD SANCHEZ</div>
-                <div class="resume-title">MARKETING MANAGER</div>
-                <div class="about-section">
-                    <div class="section-title main">ABOUT</div>
-                    <p>Experienced marketing professional with 5+ years of expertise in digital marketing, brand management, and team leadership.</p>
-                </div>
-                <div class="experience-section">
-                    <div class="section-title main">WORK EXPERIENCE</div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Senior Marketing Manager</div>
-                                <div class="experience-company">TechCorp Inc.</div>
-                            </div>
-                            <div class="experience-dates">2020 - 2023</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `
+/**
+ * ProResume Builder - Core Script
+ * Modern, Vanilla JavaScript Resume Generator
+ */
+
+const ResumeApp = {
+    // Application State
+    state: {
+        personal: {
+            fullName: 'John Doe',
+            title: 'Senior Software Engineer',
+            email: 'john.doe@example.com',
+            phone: '+1 234 567 890',
+            address: 'New York, USA',
+            website: 'https://johndoe.dev',
+            linkedin: 'linkedin.com/in/johndoe',
+            github: 'github.com/johndoe',
+            photo: null
+        },
+        summary: 'Passionate software engineer with 8+ years of experience building scalable web applications. Expert in JavaScript, React, and Node.js with a strong focus on clean code and user-centric design.',
+        experience: [
+            {
+                id: Date.now(),
+                company: 'Tech Solutions Inc.',
+                position: 'Lead Developer',
+                startDate: '2020',
+                endDate: '', // Use empty string for current/present
+                current: true,
+                description: 'Leading a team of 10 developers to build a high-traffic e-commerce platform. Improved performance by 40%.'
+            }
+        ],
+        education: [
+            {
+                id: Date.now() + 1,
+                school: 'University of Technology',
+                degree: 'B.S. in Computer Science',
+                startDate: '2014',
+                endDate: '2018',
+                gpa: '3.9'
+            }
+        ],
+        skills: [
+            { id: Date.now() + 2, name: 'JavaScript', level: 90 },
+            { id: Date.now() + 3, name: 'TypeScript', level: 85 },
+            { id: Date.now() + 4, name: 'React', level: 95 }
+        ],
+        projects: [],
+        certifications: [],
+        config: {
+            theme: 'light',
+            template: 'modern',
+            primaryColor: '#4f46e5',
+            fontSize: '14px',
+            spacing: '1.5rem',
+            layout: 'single'
+        }
     },
-    template2: {
-        id: 'template2',
-        name: 'Creative Portfolio',
-        description: 'Artistic • Colorful • Dynamic',
-        sidebarWidth: '40%',
-        sidebarBg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        sidebarColor: 'white',
-        profilePhotoBg: 'rgba(255,255,255,0.2)',
-        profilePhotoBorder: 'rgba(255,255,255,0.5)',
-        sectionTitleBorder: 'rgba(255,255,255,0.8)',
-        profilePhotoBorderRadius: '20px',
-        accentColor: '#ff6b6b',
-        layout: 'creative',
-        previewHTML: `
-            <div class="resume-sidebar">
-                <div class="profile-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="contact-info">
-                    <div class="section-title blue">CONTACT</div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>hello@example.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-globe"></i>
-                        <span>portfolio.com</span>
-                    </div>
-                </div>
-                <div class="skills-section">
-                    <div class="section-title blue">TOOLS & SKILLS</div>
-                    <ul class="skills-list">
-                        <li>• Photoshop</li>
-                        <li>• Illustrator</li>
-                        <li>• Figma</li>
-                        <li>• After Effects</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="resume-main">
-                <div class="resume-name">OLIVIA WILSON</div>
-                <div class="resume-title">Creative Director</div>
-                <div class="about-section">
-                    <div class="section-title main">ABOUT</div>
-                    <p>Passionate creative professional with 8+ years transforming brands through innovative design and strategic thinking.</p>
-                </div>
-                <div class="experience-section">
-                    <div class="section-title main">FEATURED PROJECTS</div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Brand Identity Redesign</div>
-                                <div class="experience-company">TechStart Inc.</div>
-                            </div>
-                            <div class="experience-dates">2023</div>
-                        </div>
-                    </div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Mobile App Design</div>
-                                <div class="experience-company">FinanceApp</div>
-                            </div>
-                            <div class="experience-dates">2022</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `
+
+    templates: [
+        { id: 'modern', name: 'Modern Professional' },
+        { id: 'minimalist', name: 'Minimalist' },
+        { id: 'executive', name: 'Executive' },
+        { id: 'creative', name: 'Creative Designer' },
+        { id: 'ats', name: 'ATS-Friendly' },
+        { id: 'corporate', name: 'Corporate' },
+        { id: 'elegant', name: 'Elegant' },
+        { id: 'tech', name: 'Tech Developer' },
+        { id: 'academic', name: 'Academic' },
+        { id: 'colorful', name: 'Colorful Portfolio' }
+    ],
+
+    history: [],
+    historyIndex: -1,
+
+    // Initialization
+    init() {
+        this.loadFromLocalStorage();
+        this.bindEvents();
+        this.renderAll();
+        this.updateCompletion();
+        this.saveToHistory();
+        this.populateTemplates();
+        this.updateTips();
+        setInterval(() => this.updateTips(), 10000);
     },
-    // Add similar objects for template3, template4, template5...
-    template3: {
-        id: 'template3',
-        name: 'Tech Modern',
-        description: 'Innovative • Data-driven • Sleek',
-        sidebarWidth: '30%',
-        sidebarBg: '#0f172a',
-        sidebarColor: 'white',
-        profilePhotoBg: '#1e293b',
-        profilePhotoBorder: '#06b6d4',
-        sectionTitleBorder: '#06b6d4',
-        profilePhotoBorderRadius: '8px',
-        accentColor: '#06b6d4',
-        layout: 'tech',
-        previewHTML: `
-            <div class="resume-sidebar">
-                <div class="profile-photo">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="contact-info">
-                    <div class="section-title blue">CONTACT</div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>hello@example.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fab fa-github"></i>
-                        <span>github.com/username</span>
-                    </div>
-                </div>
-                <div class="skills-section">
-                    <div class="section-title blue">TECH STACK</div>
-                    <ul class="skills-list">
-                        <li>• React, Vue.js, TypeScript</li>
-                        <li>• Node.js, Python, Go</li>
-                        <li>• AWS, Docker, Kubernetes</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="resume-main">
-                <div class="resume-name">ALEX CHEN</div>
-                <div class="resume-title">Full Stack Developer</div>
-                <div class="about-section">
-                    <div class="section-title main">ABOUT</div>
-                    <p>Innovative developer with 6+ years building scalable web applications and leading technical teams in fast-paced environments.</p>
-                </div>
-                <div class="experience-section">
-                    <div class="section-title main">EXPERIENCE</div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Senior Software Engineer</div>
-                                <div class="experience-company">TechCorp Inc.</div>
-                            </div>
-                            <div class="experience-dates">2021 - Present</div>
-                        </div>
-                        <div class="experience-description">Led development of microservices architecture serving 1M+ users</div>
-                    </div>
-                </div>
-            </div>
-        `
+
+    // Event Bindings
+    bindEvents() {
+        // Form Inputs
+        const form = document.getElementById('resume-form');
+        form.addEventListener('input', (e) => {
+            this.handleInput(e);
+        });
+
+        // Add Buttons
+        document.querySelectorAll('.btn-add').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.add;
+                this.addItem(type);
+            });
+        });
+
+        // Sidebar Navigation
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const section = btn.dataset.section;
+                if (!section) return;
+
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                if (section === 'templates') {
+                    document.getElementById('template-modal').classList.add('active');
+                } else if (section === 'editor') {
+                    document.getElementById('editor-sections').style.display = 'block';
+                    document.getElementById('customization-panel').style.display = 'none';
+                    document.getElementById('template-modal').classList.remove('active');
+                } else if (section === 'customization') {
+                    document.getElementById('editor-sections').style.display = 'none';
+                    document.getElementById('customization-panel').style.display = 'block';
+                    document.getElementById('template-modal').classList.remove('active');
+                }
+            });
+        });
+
+        // Editor Tab Switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tab = btn.dataset.tab;
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active');
+                document.getElementById(`tab-${tab}`).classList.add('active');
+            });
+        });
+
+        // Next Button Logic
+        document.addEventListener('click', (e) => {
+            const nextBtn = e.target.closest('.btn-next');
+            if (nextBtn) {
+                const nextTab = nextBtn.dataset.next;
+                const tabBtn = document.querySelector(`.tab-btn[data-tab="${nextTab}"]`);
+                if (tabBtn) tabBtn.click();
+                // Scroll to top of editor
+                document.querySelector('.editor-pane').scrollTop = 0;
+            }
+
+            const finalBtn = e.target.closest('#final-choose-template');
+            if (finalBtn) {
+                document.getElementById('template-modal').classList.add('active');
+            }
+        });
+
+        // Config Inputs
+        ['primaryColor', 'fontFamily', 'fontSize', 'spacing'].forEach(key => {
+            const input = document.getElementById(`config-${key}`);
+            if (input) {
+                input.value = this.state.config[key];
+                input.addEventListener('input', (e) => { // Changed from 'change' to 'input' for real-time
+                    this.state.config[key] = e.target.value;
+                    
+                    if (key === 'primaryColor') {
+                        const colorValue = document.getElementById('primary-color-value');
+                        if (colorValue) colorValue.textContent = e.target.value;
+                    }
+                    
+                    this.renderPreview();
+                    this.saveToLocalStorage();
+                });
+            }
+        });
+
+        // Close Modal
+        document.querySelector('.close-modal').addEventListener('click', () => {
+            document.getElementById('template-modal').classList.remove('active');
+        });
+
+        // Theme Toggle
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            this.toggleTheme();
+        });
+
+        // Download PDF
+        document.getElementById('download-pdf').addEventListener('click', () => {
+            window.print();
+        });
+
+        // Photo Upload
+        document.getElementById('profile-photo').addEventListener('change', (e) => {
+            this.handlePhotoUpload(e);
+        });
+
+        // Zoom Controls
+        let zoom = 100;
+        document.getElementById('zoom-in').addEventListener('click', () => {
+            zoom = Math.min(zoom + 10, 150);
+            this.updateZoom(zoom);
+        });
+        document.getElementById('zoom-out').addEventListener('click', () => {
+            zoom = Math.max(zoom - 10, 50);
+            this.updateZoom(zoom);
+        });
+
+        // Layout Switching
+        document.querySelectorAll('.btn-layout').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.btn-layout').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.state.config.layout = btn.dataset.layout;
+                this.renderPreview();
+            });
+        });
+
+        // JSON Export/Import
+        document.getElementById('export-json').addEventListener('click', () => this.exportJSON());
+        document.getElementById('import-json').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => this.importJSON(e);
+            input.click();
+        });
+
+        // Event Delegation for Dynamic Items (Remove Button)
+        document.addEventListener('click', (e) => {
+            const removeBtn = e.target.closest('.btn-remove');
+            if (removeBtn) {
+                const type = removeBtn.dataset.removeType;
+                const id = parseInt(removeBtn.dataset.removeId);
+                this.removeItem(type, id);
+            }
+        });
     },
-    template4: {
-        id: 'template4',
-        name: 'Medical Professional',
-        description: 'Healthcare • Trustworthy • Caring',
-        sidebarWidth: '35%',
-        sidebarBg: '#f0f9ff',
-        sidebarColor: '#1e40af',
-        profilePhotoBg: '#dbeafe',
-        profilePhotoBorder: '#3b82f6',
-        sectionTitleBorder: '#3b82f6',
-        profilePhotoBorderRadius: '50%',
-        accentColor: '#3b82f6',
-        layout: 'medical',
-        previewHTML: `
-            <div class="resume-sidebar">
-                <div class="profile-photo">
-                    <i class="fas fa-user-md"></i>
-                </div>
-                <div class="contact-info">
-                    <div class="section-title blue">CONTACT</div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>dr.smith@hospital.com</span>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Medical Center, NY</span>
-                    </div>
-                </div>
-                <div class="skills-section">
-                    <div class="section-title blue">CERTIFICATIONS</div>
-                    <ul class="skills-list">
-                        <li>• Board Certified</li>
-                        <li>• ACLS Certified</li>
-                        <li>• Internal Medicine</li>
-                        <li>• Cardiology</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="resume-main">
-                <div class="resume-name">DR. SARAH SMITH</div>
-                <div class="resume-title">Internal Medicine Physician</div>
-                <div class="about-section">
-                    <div class="section-title main">PROFESSIONAL SUMMARY</div>
-                    <p>Dedicated physician with 10+ years of experience in internal medicine, committed to providing exceptional patient care and advancing medical knowledge through research.</p>
-                </div>
-                <div class="education-section">
-                    <div class="section-title main">EDUCATION</div>
-                    <div class="education-item-preview">
-                        <div class="education-header">
-                            <div>
-                                <div class="education-degree">Doctor of Medicine (MD)</div>
-                                <div class="education-institution">Johns Hopkins University</div>
-                            </div>
-                            <div class="education-dates">2010 - 2014</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="experience-section">
-                    <div class="section-title main">CLINICAL EXPERIENCE</div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Senior Physician</div>
-                                <div class="experience-company">City General Hospital</div>
-                            </div>
-                            <div class="experience-dates">2018 - Present</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `
+
+    undo() {
+        if (this.historyIndex > 0) {
+            this.historyIndex--;
+            this.state = JSON.parse(this.history[this.historyIndex]);
+            this.renderAll();
+        }
     },
-    template5: {
-        id: 'template5',
-        name: 'Bold Executive',
-        description: 'Powerful • Confident • Impactful',
-        sidebarWidth: '40%',
-        sidebarBg: '#000000',
-        sidebarColor: 'white',
-        profilePhotoBg: '#1a1a1a',
-        profilePhotoBorder: '#ffd700',
-        sectionTitleBorder: '#ffd700',
-        profilePhotoBorderRadius: '0',
-        accentColor: '#ffd700',
-        layout: 'executive',
-        previewHTML: `
-            <div class="resume-sidebar">
-                <div class="profile-photo">
-                    <i class="fas fa-user-tie"></i>
+
+    redo() {
+        if (this.historyIndex < this.history.length - 1) {
+            this.historyIndex++;
+            this.state = JSON.parse(this.history[this.historyIndex]);
+            this.renderAll();
+        }
+    },
+
+    populateTemplates() {
+        const grid = document.querySelector('.template-grid');
+        grid.innerHTML = this.templates.map(t => `
+            <div class="template-card ${this.state.config.template === t.id ? 'active' : ''}" data-id="${t.id}">
+                <div class="template-thumb">
+                    ${this.getMockupHTML(t.id)}
                 </div>
-                <div class="contact-info">
-                    <div class="section-title blue">CONTACT</div>
-                    <div class="contact-item">
-                        <i class="fas fa-phone"></i>
-                        <span>+123-456-7890</span>
+                <p>${t.name}</p>
+            </div>
+        `).join('');
+
+        grid.querySelectorAll('.template-card').forEach(card => {
+            card.addEventListener('click', () => {
+                grid.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                this.state.config.template = card.dataset.id;
+                this.renderPreview();
+                
+                // Switch back to editor view
+                document.getElementById('template-modal').classList.remove('active');
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                const editorBtn = document.querySelector('.nav-btn[data-section="editor"]');
+                if (editorBtn) editorBtn.classList.add('active');
+                document.getElementById('editor-sections').style.display = 'block';
+                document.getElementById('customization-panel').style.display = 'none';
+            });
+        });
+    },
+
+    getMockupHTML(id) {
+        const base = '<div class="m-title"></div><div class="m-text"></div><div class="m-text"></div><div class="m-line"></div><div class="m-text"></div><div class="m-text"></div>';
+        
+        if (id === 'creative') {
+            return `
+                <div class="thumb-mockup">
+                    <div class="m-side">
+                        <div class="m-side-box" style="height:20px; border-radius:50%"></div>
+                        <div class="m-side-box"></div>
+                        <div class="m-side-box"></div>
                     </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>ceo@company.com</span>
+                    <div class="m-main">
+                        <div class="m-title"></div>
+                        <div class="m-text"></div>
+                        <div class="m-text"></div>
+                        <div class="m-line"></div>
+                        <div class="m-text"></div>
                     </div>
-                    <div class="contact-item">
-                        <i class="fab fa-linkedin"></i>
-                        <span>linkedin.com/in/executive</span>
-                    </div>
-                </div>
-                <div class="skills-section">
-                    <div class="section-title blue">LEADERSHIP</div>
-                    <ul class="skills-list">
-                        <li>• Strategic Planning</li>
-                        <li>• Team Building</li>
-                        <li>• Innovation</li>
-                        <li>• Revenue Growth: $50M+</li>
-                    </ul>
+                </div>`;
+        }
+        
+        if (id === 'corporate') {
+            return `
+                <div class="thumb-mockup">
+                    <div class="m-header"></div>
+                    <div class="m-body">${base}</div>
+                </div>`;
+        }
+
+        return `<div class="thumb-mockup">${base}</div>`;
+    },
+
+    // Input Handling
+    handleInput(e) {
+        const { name, value, type, checked } = e.target;
+        const section = e.target.closest('.form-section')?.dataset.section;
+
+        if (section === 'personal') {
+            this.state.personal[name] = value;
+        } else if (name === 'summary') {
+            this.state.summary = value;
+        } else {
+            // Handle dynamic list items
+            const dynamicItem = e.target.closest('.dynamic-item');
+            if (dynamicItem) {
+                const listType = dynamicItem.dataset.type;
+                const id = parseInt(dynamicItem.dataset.id);
+                const item = this.state[listType].find(i => i.id === id);
+                if (item) {
+                    if (type === 'checkbox') {
+                        item[name] = checked;
+                        // If it's the "current" checkbox, we might want to disable/enable the end date input
+                        const endDateInput = dynamicItem.querySelector('input[name="endDate"]');
+                        if (endDateInput) endDateInput.disabled = checked;
+                    } else {
+                        item[name] = value;
+                    }
+                }
+            }
+        }
+
+        this.renderPreview();
+        this.saveToLocalStorage();
+        this.updateCompletion();
+    },
+
+    // Dynamic List Management
+    addItem(type) {
+        const newItem = { id: Date.now() };
+        let stateKey = type;
+        
+        // Map singular to plural where necessary to match state
+        if (type === 'skill') stateKey = 'skills';
+        if (type === 'project') stateKey = 'projects';
+        if (type === 'certification') stateKey = 'certifications';
+
+        if (stateKey === 'experience') {
+            newItem.company = ''; newItem.position = ''; newItem.startDate = ''; newItem.endDate = ''; newItem.description = ''; newItem.current = false;
+        } else if (stateKey === 'education') {
+            newItem.school = ''; newItem.degree = ''; newItem.startDate = ''; newItem.endDate = ''; newItem.level = 'College';
+        } else if (stateKey === 'skills') {
+            newItem.name = '';
+        } else if (stateKey === 'projects') {
+            newItem.name = ''; newItem.description = ''; newItem.link = '';
+        } else if (stateKey === 'certifications') {
+            newItem.name = ''; newItem.issuer = '';
+        }
+
+        if (!this.state[stateKey]) this.state[stateKey] = [];
+        this.state[stateKey].push(newItem);
+        this.renderAll();
+    },
+
+    removeItem(type, id) {
+        this.state[type] = this.state[type].filter(item => item.id !== id);
+        this.renderAll();
+    },
+
+    // Rendering
+    renderAll() {
+        this.renderForm();
+        this.renderPreview();
+    },
+
+    renderForm() {
+        // Fill personal info
+        Object.keys(this.state.personal).forEach(key => {
+            const input = document.querySelector(`input[name="${key}"]`);
+            if (input) input.value = this.state.personal[key] || '';
+        });
+
+        // Fill summary
+        const summaryEl = document.querySelector('textarea[name="summary"]');
+        if (summaryEl) summaryEl.value = this.state.summary || '';
+
+        // Render dynamic lists
+        this.renderDynamicList('experience');
+        this.renderDynamicList('education');
+        this.renderDynamicList('skills');
+        this.renderDynamicList('projects');
+        this.renderDynamicList('certifications');
+    },
+
+    renderDynamicList(type) {
+        const container = document.getElementById(`${type}-list`);
+        if (!container) return;
+        
+        container.innerHTML = this.state[type].map(item => `
+            <div class="dynamic-item" data-type="${type}" data-id="${item.id}">
+                <button type="button" class="btn-remove" data-remove-type="${type}" data-remove-id="${item.id}">
+                    <i data-lucide="trash-2" style="width:14px;height:14px"></i>
+                </button>
+                <div class="form-grid">
+                    ${this.getFieldsForType(type, item)}
                 </div>
             </div>
-            <div class="resume-main">
-                <div class="resume-name">MICHAEL JOHNSON</div>
-                <div class="resume-title">Chief Executive Officer</div>
-                <div class="about-section">
-                    <div class="section-title main">EXECUTIVE SUMMARY</div>
-                    <p>Visionary leader with 15+ years of experience driving organizational growth, strategic transformation, and market expansion across global enterprises.</p>
+        `).join('');
+        
+        lucide.createIcons();
+    },
+
+    getFieldsForType(type, item) {
+        const fields = {
+            experience: `
+                <div class="input-group"><label>Company</label><input type="text" name="company" value="${item.company || ''}"></div>
+                <div class="input-group"><label>Position</label><input type="text" name="position" value="${item.position || ''}"></div>
+                <div class="input-group"><label>Start Year</label><input type="number" name="startDate" value="${item.startDate || ''}" placeholder="YYYY"></div>
+                <div class="input-group">
+                    <label>End Year</label>
+                    <input type="number" name="endDate" value="${item.endDate || ''}" ${item.current ? 'disabled' : ''} placeholder="YYYY">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="current" ${item.current ? 'checked' : ''}> Currently Work Here
+                    </label>
                 </div>
-                <div class="experience-section">
-                    <div class="section-title main">EXECUTIVE EXPERIENCE</div>
-                    <div class="experience-item-preview">
-                        <div class="experience-header">
-                            <div>
-                                <div class="experience-position">Chief Executive Officer</div>
-                                <div class="experience-company">Global Tech Solutions</div>
-                            </div>
-                            <div class="experience-dates">2019 - Present</div>
+                <div class="input-group" style="grid-column: span 2"><label>Description</label><textarea name="description" rows="6" style="min-height: 120px; white-space: pre-wrap;">${item.description || ''}</textarea></div>
+            `,
+            education: `
+                <div class="input-group"><label>School</label><input type="text" name="school" value="${item.school || ''}"></div>
+                <div class="input-group">
+                    <label>Level</label>
+                    <select name="level">
+                        <option value="Elementary" ${item.level === 'Elementary' ? 'selected' : ''}>Elementary</option>
+                        <option value="High School" ${item.level === 'High School' ? 'selected' : ''}>High School</option>
+                        <option value="College" ${item.level === 'College' ? 'selected' : ''}>College</option>
+                    </select>
+                </div>
+                <div class="input-group"><label>Degree / Qualification</label><input type="text" name="degree" value="${item.degree || ''}"></div>
+                <div class="input-group"><label>Start Year</label><input type="number" name="startDate" value="${item.startDate || ''}" placeholder="YYYY"></div>
+                <div class="input-group"><label>End Year</label><input type="number" name="endDate" value="${item.endDate || ''}" placeholder="YYYY"></div>
+            `,
+            skills: `
+                <div class="input-group"><label>Skill Name</label><input type="text" name="name" value="${item.name || ''}"></div>
+            `,
+            projects: `
+                <div class="input-group"><label>Project Name</label><input type="text" name="name" value="${item.name || ''}"></div>
+                <div class="input-group"><label>Link</label><input type="url" name="link" value="${item.link || ''}"></div>
+                <div class="input-group" style="grid-column: span 2"><label>Description</label><textarea name="description">${item.description || ''}</textarea></div>
+            `,
+            certifications: `
+                <div class="input-group"><label>Certification</label><input type="text" name="name" value="${item.name || ''}"></div>
+                <div class="input-group"><label>Issuer</label><input type="text" name="issuer" value="${item.issuer || ''}"></div>
+            `
+        };
+        return fields[type] || '';
+    },
+
+    renderPreview() {
+        const preview = document.getElementById('resume-preview');
+        const s = this.state;
+        const config = s.config;
+        const templateId = config.template;
+        const layout = config.layout;
+
+        preview.className = `resume-paper template-${templateId} layout-${layout}`;
+        
+        // Apply Config Styles directly to the element style to ensure they take effect
+        preview.style.setProperty('--primary', config.primaryColor, 'important');
+        preview.style.setProperty('font-family', config.fontFamily, 'important');
+        preview.style.setProperty('font-size', config.fontSize, 'important');
+        
+        let html = '';
+
+        if (templateId === 'creative' || layout === 'sidebar') {
+            html = `
+                <div class="sidebar-col">
+                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:120px;height:120px;border-radius:12px;margin-bottom:1.5rem;object-fit:cover;">` : ''}
+                    <h2 style="color:white;margin-bottom:0.5rem">${s.personal.fullName || 'Your Name'}</h2>
+                    <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem;font-weight:500">${s.personal.title || ''}</p>
+                    
+                    <div class="contact-sidebar" style="font-size:0.85rem;display:flex;flex-direction:column;gap:0.75rem;color:rgba(255,255,255,0.9)">
+                        ${s.personal.email ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="mail" style="width:14px"></i> ${s.personal.email}</div>` : ''}
+                        ${s.personal.phone ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="phone" style="width:14px"></i> ${s.personal.phone}</div>` : ''}
+                        ${s.personal.address ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="map-pin" style="width:14px"></i> ${s.personal.address}</div>` : ''}
+                    </div>
+
+                    <div style="margin-top:2.5rem">
+                        <h4 style="color:white;text-transform:uppercase;font-size:0.75rem;letter-spacing:1px;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.2);padding-bottom:0.5rem">Skills</h4>
+                        <div style="display:flex;flex-direction:column;gap:0.75rem">
+                            ${s.skills.map(skill => `
+                                <div>
+                                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;margin-bottom:0.25rem">
+                                        <span>${skill.name}</span>
+                                    </div>
+                                    <div style="height:4px;background:rgba(255,255,255,0.2);border-radius:2px">
+                                        <div style="height:100%;background:white;width:100%;border-radius:2px"></div>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
-                        <div class="experience-description">Led company through IPO and 300% revenue growth, expanding to 15 countries</div>
                     </div>
                 </div>
-                <div class="education-section">
-                    <div class="section-title main">EDUCATION</div>
-                    <div class="education-item-preview">
-                        <div class="education-header">
-                            <div>
-                                <div class="education-degree">Master of Business Administration (MBA)</div>
-                                <div class="education-institution">Harvard Business School</div>
-                            </div>
-                            <div class="education-dates">2005 - 2007</div>
+                <div class="main-col">
+                    <section class="tm-section">
+                        <h3 class="tm-section-title">Professional Summary</h3>
+                        <p style="line-height:1.6; white-space: pre-wrap;">${s.summary || 'Summary goes here...'}</p>
+                    </section>
+                    ${this.renderPreviewSection('Experience', s.experience)}
+                    ${this.renderPreviewSection('Education', s.education)}
+                    ${this.renderPreviewSection('Projects', s.projects)}
+                    ${this.renderPreviewSection('Certifications', s.certifications)}
+                </div></section>
+            `;
+        } else if (templateId === 'minimalist') {
+            html = `
+                <header class="tm-header" style="border:none; text-align:center; flex-direction:column; align-items:center;">
+                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin-bottom:1.5rem;">` : ''}
+                    <div>
+                        <h1 class="tm-name">${s.personal.fullName || 'Your Name'}</h1>
+                        <p class="tm-title">${s.personal.title || 'Professional Title'}</p>
+                        <div class="tm-contact" style="justify-content:center;">
+                            ${s.personal.email ? `<span><i data-lucide="mail"></i> ${s.personal.email}</span>` : ''}
+                            ${s.personal.phone ? `<span><i data-lucide="phone"></i> ${s.personal.phone}</span>` : ''}
+                            ${s.personal.address ? `<span><i data-lucide="map-pin"></i> ${s.personal.address}</span>` : ''}
                         </div>
                     </div>
-                </div>
-            </div>
-        `
+                </header>
+
+                <section class="tm-section">
+                    <h3 class="tm-section-title">Professional Summary</h3>
+                    <p style="white-space: pre-wrap;">${s.summary || 'Write a brief summary...'}</p>
+                </section>
+
+                ${this.renderPreviewSection('Experience', s.experience)}
+                ${this.renderPreviewSection('Education', s.education)}
+                ${this.renderPreviewSection('Projects', s.projects)}
+                ${this.renderPreviewSection('Certifications', s.certifications)}
+                
+                <section class="tm-section">
+                    <h3 class="tm-section-title">Skills</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;">
+                        ${s.skills.map(skill => `
+                            <span style="background:#f1f5f9;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.875rem">
+                                ${skill.name}
+                            </span>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+        } else {
+            // Default Standard Layout
+            html = `
+                <header class="tm-header">
+                    <div>
+                        <h1 class="tm-name">${s.personal.fullName || 'Your Name'}</h1>
+                        <p class="tm-title">${s.personal.title || 'Professional Title'}</p>
+                        <div class="tm-contact">
+                            ${s.personal.email ? `<span><i data-lucide="mail"></i> ${s.personal.email}</span>` : ''}
+                            ${s.personal.phone ? `<span><i data-lucide="phone"></i> ${s.personal.phone}</span>` : ''}
+                            ${s.personal.address ? `<span><i data-lucide="map-pin"></i> ${s.personal.address}</span>` : ''}
+                        </div>
+                    </div>
+                    ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;">` : ''}
+                </header>
+
+                <section class="tm-section">
+                    <h3 class="tm-section-title">Professional Summary</h3>
+                    <p style="white-space: pre-wrap;">${s.summary || 'Write a brief summary...'}</p>
+                </section>
+
+                ${this.renderPreviewSection('Experience', s.experience)}
+                ${this.renderPreviewSection('Education', s.education)}
+                ${this.renderPreviewSection('Projects', s.projects)}
+                ${this.renderPreviewSection('Certifications', s.certifications)}
+                
+                <section class="tm-section">
+                    <h3 class="tm-section-title">Skills</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+                        ${s.skills.map(skill => `
+                            <span style="background:#f1f5f9;padding:0.25rem 0.75rem;border-radius:99px;font-size:0.875rem">
+                                ${skill.name}
+                            </span>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+        }
+
+        preview.innerHTML = html;
+
+        // Apply Font Family and Spacing to all elements after they are injected into DOM
+        const allElements = preview.querySelectorAll('*');
+        allElements.forEach(el => {
+            el.style.setProperty('font-family', config.fontFamily, 'important');
+        });
+
+        // Apply Spacing (Section Gaps) to the newly created elements
+        const sections = preview.querySelectorAll('.tm-section');
+        sections.forEach(sec => {
+            sec.style.setProperty('margin-bottom', config.spacing, 'important');
+        });
+
+        lucide.createIcons();
+    },
+
+    renderPreviewSection(title, items) {
+        if (!items || items.length === 0) return '';
+        return `
+            <section class="tm-section">
+                <h3 class="tm-section-title">${title}</h3>
+                ${items.map(item => {
+                    // Extract only the year if the date is in YYYY-MM format
+                    const startYear = item.startDate ? item.startDate.split('-')[0] : '';
+                    const endYear = item.endDate ? item.endDate.split('-')[0] : '';
+                    
+                    return `
+                    <div style="margin-bottom: 1rem">
+                        <div style="display:flex;justify-content:space-between;font-weight:600">
+                            <span>
+                                ${item.position || item.degree || item.name || 'Untitled'} 
+                                ${item.company ? `at ${item.company}` : ''} 
+                                ${item.school ? `from ${item.school}` : ''}
+                                ${item.level ? `(${item.level})` : ''}
+                            </span>
+                            <span style="color:#64748b;font-size:0.875rem">
+                                ${startYear} - ${item.current ? 'Present' : endYear}
+                            </span>
+                        </div>
+                        ${item.link ? `<div style="font-size:0.8rem; color:var(--primary);"><i data-lucide="link" style="width:12px; height:12px"></i> <a href="${item.link}" target="_blank" style="color:inherit; text-decoration:none">${item.link}</a></div>` : ''}
+                        <p style="margin-top:0.25rem; white-space: pre-wrap;">${item.description || ''}</p>
+                        ${item.issuer ? `<p style="font-size:0.875rem; color:#64748b">${item.issuer}</p>` : ''}
+                    </div>
+                `}).join('')}
+            </section>
+        `;
+    },
+
+    // Helpers
+    handlePhotoUpload(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                this.state.personal.photo = event.target.result;
+                document.getElementById('photo-preview').innerHTML = `<img src="${event.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`;
+                this.renderPreview();
+                this.saveToLocalStorage();
+            };
+            reader.readAsDataURL(file);
+        }
+    },
+
+    updateZoom(level) {
+        const preview = document.getElementById('resume-preview');
+        preview.style.transform = `scale(${level / 100})`;
+        document.getElementById('zoom-level').textContent = `${level}%`;
+    },
+
+    toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        this.state.config.theme = next;
+        this.saveToLocalStorage();
+    },
+
+    updateCompletion() {
+        // Simple logic: check how many fields are filled
+        const fields = [
+            this.state.personal.fullName,
+            this.state.personal.email,
+            this.state.summary,
+            this.state.experience.length > 0,
+            this.state.education.length > 0,
+            this.state.skills.length > 0
+        ];
+        const filled = fields.filter(Boolean).length;
+        const percentage = Math.round((filled / fields.length) * 100);
+        
+        document.querySelector('.progress-fill').style.width = `${percentage}%`;
+        document.querySelector('.percentage').textContent = `${percentage}%`;
+    },
+
+    tips: [
+        "Add a professional photo to increase your chances by 30%!",
+        "Quantify your achievements (e.g., 'Increased sales by 20%').",
+        "Keep your resume to 1-2 pages for maximum impact.",
+        "Use action verbs like 'Led', 'Developed', and 'Managed'.",
+        "Tailor your summary to the specific job you're applying for."
+    ],
+
+    updateTips() {
+        const tipEl = document.getElementById('ai-tip');
+        if (tipEl) {
+            tipEl.textContent = this.tips[Math.floor(Math.random() * this.tips.length)];
+        }
+    },
+
+    // Persistence
+    saveToLocalStorage() {
+        localStorage.setItem('resume_data', JSON.stringify(this.state));
+    },
+
+    loadFromLocalStorage() {
+        const saved = localStorage.getItem('resume_data');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                
+                // Sanitize dates: Convert "YYYY-MM" to "YYYY" for the new number inputs
+                if (parsed.experience) {
+                    parsed.experience.forEach(exp => {
+                        if (exp.startDate && exp.startDate.includes('-')) exp.startDate = exp.startDate.split('-')[0];
+                        if (exp.endDate && exp.endDate.includes('-')) exp.endDate = exp.endDate.split('-')[0];
+                    });
+                }
+                if (parsed.education) {
+                    parsed.education.forEach(edu => {
+                        if (edu.startDate && edu.startDate.includes('-')) edu.startDate = edu.startDate.split('-')[0];
+                        if (edu.endDate && edu.endDate.includes('-')) edu.endDate = edu.endDate.split('-')[0];
+                    });
+                }
+
+                this.state = parsed;
+                if (this.state.config.theme) {
+                    document.documentElement.setAttribute('data-theme', this.state.config.theme);
+                }
+            } catch (e) {
+                console.error("Failed to parse saved data", e);
+            }
+        }
+    },
+
+    saveToHistory() {
+        this.history = this.history.slice(0, this.historyIndex + 1);
+        this.history.push(JSON.stringify(this.state));
+        this.historyIndex++;
+        if (this.history.length > 20) {
+            this.history.shift();
+            this.historyIndex--;
+        }
+    },
+
+    exportJSON() {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.state));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "resume.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    },
+
+    importJSON(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                this.state = JSON.parse(event.target.result);
+                this.renderAll();
+                this.saveToLocalStorage();
+            } catch (err) {
+                alert('Invalid JSON file');
+            }
+        };
+        reader.readAsText(file);
     }
 };
 
-// Template Selection Carousel
-class TemplateCarousel {
-    constructor() {
-        this.currentIndex = 0;
-        this.track = document.getElementById('carouselTrack');
-        this.prevBtn = document.getElementById('prevBtn');
-        this.nextBtn = document.getElementById('nextBtn');
-        this.dots = document.querySelectorAll('.dot');
-        this.selectBtn = document.getElementById('selectTemplateBtn');
-        this.totalCards = Object.keys(templates).length;
-        this.templates = [];
-
-        this.init();
-    }
-
-    init() {
-        this.generateTemplateCards();
-        this.bindEvents();
-        this.updateCarousel();
-    }
-
-    generateTemplateCards() {
-        this.track.innerHTML = '';
-        Object.values(templates).forEach((template, index) => {
-            const card = document.createElement('div');
-            card.className = `template-card ${index === 0 ? 'active' : ''}`;
-            card.dataset.template = template.id;
-            card.innerHTML = `
-                <div class="template-preview ${template.id}">
-                    ${template.previewHTML}
-                </div>
-                <div class="template-info">
-                    <h3>${template.name}</h3>
-                    <p>${template.description}</p>
-                </div>
-            `;
-            this.track.appendChild(card);
-            this.templates.push(card);
-        });
-    }
-
-    bindEvents() {
-        this.prevBtn.addEventListener('click', () => this.previousTemplate());
-        this.nextBtn.addEventListener('click', () => this.nextTemplate());
-
-        this.dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => this.goToTemplate(index));
-        });
-
-        this.templates.forEach((template, index) => {
-            template.addEventListener('click', () => this.goToTemplate(index));
-        });
-
-        this.selectBtn.addEventListener('click', () => this.selectTemplate());
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') this.previousTemplate();
-            if (e.key === 'ArrowRight') this.nextTemplate();
-            const activeElement = document.activeElement;
-            const isOnCarousel = activeElement && (activeElement.classList.contains('template-card') || activeElement.classList.contains('dot') || activeElement === this.selectBtn);
-            if (e.key === 'Enter' && isOnCarousel) this.selectTemplate();
-        });
-    }
-
-    nextTemplate() {
-        this.currentIndex = (this.currentIndex + 1) % this.totalCards;
-        this.updateCarousel();
-    }
-
-    previousTemplate() {
-        this.currentIndex = (this.currentIndex - 1 + this.totalCards) % this.totalCards;
-        this.updateCarousel();
-    }
-
-    goToTemplate(index) {
-        this.currentIndex = index;
-        this.updateCarousel();
-    }
-
-    updateCarousel() {
-        // Update card positions and classes for 3D effect
-        this.templates.forEach((template, index) => {
-            const relativeIndex = (index - this.currentIndex + this.totalCards) % this.totalCards;
-
-            // Remove all position classes
-            template.className = template.className.replace(/\b(prev-\d|next-\d|active)\b/g, '');
-
-            // Add appropriate position class
-            switch(relativeIndex) {
-                case 0:
-                    template.classList.add('active');
-                    break;
-                case 1:
-                    template.classList.add('next-1');
-                    break;
-                case this.totalCards - 1:
-                    template.classList.add('prev-1');
-                    break;
-                case 2:
-                    template.classList.add('next-2');
-                    break;
-                case this.totalCards - 2:
-                    template.classList.add('prev-2');
-                    break;
-                default:
-                    // Cards that are not adjacent will be styled by the catch-all rule
-                    break;
-            }
-        });
-
-        // Update dots
-        this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
-        });
-
-        // Enable select button
-        this.selectBtn.disabled = false;
-        this.selectBtn.textContent = 'Select Template';
-    }
-
-    selectTemplate() {
-        const selectedTemplate = this.templates[this.currentIndex].dataset.template;
-        const template = templates[selectedTemplate];
-
-        // Add selection animation
-        this.selectBtn.textContent = 'Selected!';
-        this.selectBtn.style.background = '#27ae60';
-
-        // Store selected template
-        localStorage.setItem('selectedTemplate', selectedTemplate);
-
-        // Navigate to form page after animation
-        setTimeout(() => {
-            window.location.href = 'form.html';
-        }, 1000);
-    }
-}
-
-// Page Loader Management
-class PageLoader {
-    constructor() {
-        this.loader = document.getElementById('pageLoader');
-        this.progressFill = document.querySelector('.progress-fill');
-        this.progressText = document.querySelector('.progress-text');
-        this.init();
-    }
-
-    init() {
-        // Simulate loading progress
-        this.simulateProgress();
-        
-        // Hide loader when everything is ready
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                this.hideLoader();
-            }, 1000); // Minimum 1 second loading time
-        });
-    }
-
-    simulateProgress() {
-        const steps = [
-            { progress: 20, text: 'Initializing...' },
-            { progress: 40, text: 'Loading templates...' },
-            { progress: 60, text: 'Preparing interface...' },
-            { progress: 80, text: 'Almost ready...' },
-            { progress: 100, text: 'Complete!' }
-        ];
-
-        let currentStep = 0;
-        const interval = setInterval(() => {
-            if (currentStep < steps.length) {
-                const step = steps[currentStep];
-                this.updateProgress(step.progress, step.text);
-                currentStep++;
-            } else {
-                clearInterval(interval);
-            }
-        }, 600);
-    }
-
-    updateProgress(percentage, text) {
-        if (this.progressFill) {
-            this.progressFill.style.transform = `scaleX(${percentage / 100})`;
-        }
-        if (this.progressText) {
-            this.progressText.textContent = text;
-        }
-    }
-
-    hideLoader() {
-        if (this.loader) {
-            this.loader.classList.add('hidden');
-            // Remove from DOM after animation
-            setTimeout(() => {
-                if (this.loader.parentElement) {
-                    this.loader.remove();
-                }
-            }, 800);
-        }
-    }
-}
-
-// Initialize carousel when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    new PageLoader();
-    new TemplateCarousel();
-});
-
-// Add smooth scroll behavior
-document.documentElement.style.scrollBehavior = 'smooth';
-
-
+// Start the app
+window.addEventListener('DOMContentLoaded', () => ResumeApp.init());

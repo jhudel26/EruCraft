@@ -1,80 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EruCraft - Resume Builder</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <title>ProResume Builder | Premium AI-Powered Resume Generator</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Modern Loader -->
-    <div id="pageLoader" class="page-loader">
-        <div class="loader-content">
-            <div class="loader-logo">
-                <div class="logo-text">EruCraft</div>
-                <div class="logo-subtitle">Resume Builder</div>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="sparkles"></i>
+                <span>ProResume</span>
             </div>
-            <div class="loader-animation">
-                <div class="loader-circle"></div>
-                <div class="loader-circle"></div>
-                <div class="loader-circle"></div>
+            <nav class="side-nav">
+                <button class="nav-btn active" data-section="editor">
+                    <i data-lucide="file-edit"></i>
+                    <span>Editor</span>
+                </button>
+                <button class="nav-btn" data-section="templates">
+                    <i data-lucide="layout-template"></i>
+                    <span>Templates</span>
+                </button>
+                <button class="nav-btn" data-section="customization">
+                    <i data-lucide="palette"></i>
+                    <span>Customize</span>
+                </button>
+            </nav>
+
+            <div class="side-footer">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i data-lucide="moon" class="dark-icon"></i>
+                    <i data-lucide="sun" class="light-icon"></i>
+                </button>
             </div>
-            <div class="loader-progress">
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header/Toolbar -->
+            <header class="toolbar">
+                <div class="status-info">
+                    <div class="completion-track">
+                        <span>Profile Strength</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 30%;"></div>
+                        </div>
+                        <span class="percentage">30%</span>
+                    </div>
                 </div>
-                <div class="progress-text">Loading...</div>
-            </div>
-        </div>
-    </div>
+                <div class="actions">
+                    <button class="btn btn-secondary" id="export-json">
+                        <i data-lucide="download"></i> JSON
+                    </button>
+                    <button class="btn btn-secondary" id="import-json">
+                        <i data-lucide="upload"></i> Import
+                    </button>
+                    <button class="btn btn-primary" id="download-pdf">
+                        <i data-lucide="printer"></i> Download PDF
+                    </button>
+                </div>
+            </header>
 
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">EruCraft</h1>
-            <p class="subtitle">Create Professional Resumes in Minutes</p>
-        </header>
+            <div class="split-view">
+                <!-- Editor Section -->
+                <section class="editor-pane">
+                    <!-- Editor Sections -->
+                    <div id="editor-sections">
+                        <div class="editor-header">
+                            <h2>Resume Editor</h2>
+                            <p>Fill in your details to see the magic happen.</p>
+                        </div>
 
-        <main class="main-content" id="main-content">
-            <div class="template-selector">
-                <h2>Choose Your Template</h2>
-                <p class="selector-subtitle">Select the perfect resume template for your career</p>
-                
-                <div class="carousel-container">
-                    <div class="carousel-wrapper">
-                        <div class="carousel-track" id="carouselTrack">
-                            <!-- Template cards will be generated here -->
+                        <!-- Editor Sub-nav -->
+                        <div class="editor-tabs">
+                            <button class="tab-btn active" data-tab="personal">Personal</button>
+                            <button class="tab-btn" data-tab="summary">Summary</button>
+                            <button class="tab-btn" data-tab="experience">Experience</button>
+                            <button class="tab-btn" data-tab="education">Education</button>
+                            <button class="tab-btn" data-tab="skills">Skills</button>
+                            <button class="tab-btn" data-tab="projects">Projects</button>
+                            <button class="tab-btn" data-tab="certifications">Certifications</button>
+                        </div>
+
+                        <!-- AI Tips Section -->
+                        <div class="ai-tips-card">
+                            <div class="tip-header">
+                                <i data-lucide="lightbulb"></i>
+                                <span>Pro Tip</span>
+                            </div>
+                            <p id="ai-tip">Add a professional photo to increase your chances by 30%!</p>
+                        </div>
+                        
+                        <form id="resume-form" class="resume-form">
+                            <!-- Personal Info -->
+                            <div class="form-section tab-content active" id="tab-personal" data-section="personal">
+                                <div class="section-header">
+                                    <i data-lucide="user"></i>
+                                    <h3>Personal Information</h3>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="photo-upload-container">
+                                        <div class="photo-preview" id="photo-preview">
+                                            <i data-lucide="camera"></i>
+                                        </div>
+                                        <input type="file" id="profile-photo" accept="image/*" hidden>
+                                        <label for="profile-photo" class="btn btn-outline">Upload Photo</label>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Full Name</label>
+                                        <input type="text" name="fullName" placeholder="John Doe" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Professional Title</label>
+                                        <input type="text" name="title" placeholder="Senior Software Engineer">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" placeholder="john@example.com">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Phone</label>
+                                        <input type="tel" name="phone" placeholder="+1 234 567 890">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Location</label>
+                                        <input type="text" name="address" placeholder="New York, USA">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Website / Portfolio</label>
+                                        <input type="url" name="website" placeholder="https://portfolio.com">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>LinkedIn</label>
+                                        <input type="text" name="linkedin" placeholder="linkedin.com/in/johndoe">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>GitHub</label>
+                                        <input type="text" name="github" placeholder="github.com/johndoe">
+                                    </div>
+                                </div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="summary">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Professional Summary -->
+                            <div class="form-section tab-content" id="tab-summary">
+                                <div class="section-header">
+                                    <i data-lucide="file-text"></i>
+                                    <h3>Professional Summary</h3>
+                                </div>
+                                <textarea name="summary" placeholder="Briefly describe your professional background and key achievements..." style="width: 718px; min-height: 200px; resize: vertical;"></textarea>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="experience">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Experience -->
+                            <div class="form-section tab-content" id="tab-experience">
+                                <div class="section-header">
+                                    <i data-lucide="briefcase"></i>
+                                    <h3>Work Experience</h3>
+                                    <button type="button" class="btn-add" data-add="experience">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-list" id="experience-list"></div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="education">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Education -->
+                            <div class="form-section tab-content" id="tab-education">
+                                <div class="section-header">
+                                    <i data-lucide="graduation-cap"></i>
+                                    <h3>Education</h3>
+                                    <button type="button" class="btn-add" data-add="education">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-list" id="education-list"></div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="skills">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Skills -->
+                            <div class="form-section tab-content" id="tab-skills">
+                                <div class="section-header">
+                                    <i data-lucide="award"></i>
+                                    <h3>Skills</h3>
+                                    <button type="button" class="btn-add" data-add="skill">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-list skill-grid" id="skills-list"></div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="projects">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Projects -->
+                            <div class="form-section tab-content" id="tab-projects">
+                                <div class="section-header">
+                                    <i data-lucide="code"></i>
+                                    <h3>Projects</h3>
+                                    <button type="button" class="btn-add" data-add="project">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-list" id="projects-list"></div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary btn-next" data-next="certifications">Next Section <i data-lucide="arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Certifications -->
+                            <div class="form-section tab-content" id="tab-certifications">
+                                <div class="section-header">
+                                    <i data-lucide="shield-check"></i>
+                                    <h3>Certifications</h3>
+                                    <button type="button" class="btn-add" data-add="certification">
+                                        <i data-lucide="plus"></i>
+                                    </button>
+                                </div>
+                                <div class="dynamic-list" id="certifications-list"></div>
+                                <div class="form-footer" style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+                                    <button type="button" class="btn btn-primary" id="final-choose-template">Choose Template <i data-lucide="layout-template"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Customization Section -->
+                    <div id="customization-panel" style="display: none;">
+                        <div class="editor-header">
+                            <h2>Customize Design</h2>
+                            <p>Personalize the look and feel of your resume.</p>
+                        </div>
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i data-lucide="palette"></i>
+                                <h3>Appearance</h3>
+                            </div>
+                            <div class="form-grid">
+                                <div class="input-group">
+                                    <label>Primary Color</label>
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <input type="color" name="primaryColor" id="config-primaryColor" style="width: 50px; height: 40px; padding: 2px;">
+                                        <span id="primary-color-value" style="font-family: monospace; font-size: 0.875rem; color: var(--text-muted);">#4f46e5</span>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label>Font Family</label>
+                                    <select name="fontFamily" id="config-fontFamily">
+                                        <option value="'Inter', sans-serif">Inter (Modern)</option>
+                                        <option value="'Playfair Display', serif">Playfair (Elegant)</option>
+                                        <option value="'Roboto Mono', monospace">Roboto Mono (Tech)</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Font Size</label>
+                                    <select name="fontSize" id="config-fontSize">
+                                        <option value="12px">Small</option>
+                                        <option value="14px">Medium</option>
+                                        <option value="16px">Large</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Spacing</label>
+                                    <select name="spacing" id="config-spacing">
+                                        <option value="1rem">Compact</option>
+                                        <option value="1.5rem">Normal</option>
+                                        <option value="2rem">Spacious</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="carousel-controls">
-                        <button class="carousel-btn prev" id="prevBtn" aria-label="Previous template">
-                            <i class="fas fa-chevron-left" aria-hidden="true"></i>
-                        </button>
-                        <button class="carousel-btn next" id="nextBtn" aria-label="Next template">
-                            <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                        </button>
+                </section>
+
+                <!-- Preview Section -->
+                <section class="preview-pane">
+                    <div class="preview-controls">
+                        <div class="zoom-controls">
+                            <button id="zoom-out" title="Zoom Out"><i data-lucide="minus"></i></button>
+                            <span id="zoom-level">100%</span>
+                            <button id="zoom-in" title="Zoom In"><i data-lucide="plus"></i></button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="template-dots" role="tablist" aria-label="Template selection">
-                    <span class="dot active" data-index="0" role="tab" aria-selected="true" aria-label="Template 1" tabindex="0"></span>
-                    <span class="dot" data-index="1" role="tab" aria-selected="false" aria-label="Template 2" tabindex="0"></span>
-                    <span class="dot" data-index="2" role="tab" aria-selected="false" aria-label="Template 3" tabindex="0"></span>
-                    <span class="dot" data-index="3" role="tab" aria-selected="false" aria-label="Template 4" tabindex="0"></span>
-                    <span class="dot" data-index="4" role="tab" aria-selected="false" aria-label="Template 5" tabindex="0"></span>
-                </div>
-
-                <button class="select-template-btn" id="selectTemplateBtn" disabled aria-label="Select current template">
-                    Select Template
-                </button>
+                    <div class="resume-paper-container">
+                        <div id="resume-preview" class="resume-paper template-modern">
+                            <!-- Live content injected here -->
+                        </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
 
+    <!-- Template Gallery Modal -->
+    <div class="modal" id="template-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Choose a Template</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="template-grid">
+                <!-- 10 Templates will be listed here -->
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
 </body>
 </html>
