@@ -535,6 +535,26 @@ input:focus, textarea:focus {
     margin-top: 0.5rem;
 }
 
+.tm-contact span, .contact-sidebar > div {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.tm-contact i, .tm-contact svg, .contact-sidebar i, .contact-sidebar svg, .brand-icon {
+    width: 14px !important;
+    height: 14px !important;
+    min-width: 14px;
+    min-height: 14px;
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.brand-icon {
+    object-fit: contain;
+}
+
 .tm-section-title {
     font-size: 1.125rem;
     font-weight: 700;

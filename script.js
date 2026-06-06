@@ -526,9 +526,12 @@ const ResumeApp = {
                     <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem;font-weight:500">${s.personal.title || ''}</p>
                     
                     <div class="contact-sidebar" style="font-size:0.85rem;display:flex;flex-direction:column;gap:0.75rem;color:rgba(255,255,255,0.9)">
-                        ${s.personal.email ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="mail" style="width:14px"></i> ${s.personal.email}</div>` : ''}
-                        ${s.personal.phone ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="phone" style="width:14px"></i> ${s.personal.phone}</div>` : ''}
-                        ${s.personal.address ? `<div style="display:flex;align-items:center;gap:0.5rem"><i data-lucide="map-pin" style="width:14px"></i> ${s.personal.address}</div>` : ''}
+                        ${s.personal.email ? `<div><i data-lucide="mail"></i> ${s.personal.email}</div>` : ''}
+                        ${s.personal.phone ? `<div><i data-lucide="phone"></i> ${s.personal.phone}</div>` : ''}
+                        ${s.personal.address ? `<div><i data-lucide="map-pin"></i> ${s.personal.address}</div>` : ''}
+                        ${s.personal.website ? `<div><i data-lucide="globe"></i> ${s.personal.website}</div>` : ''}
+                        ${s.personal.linkedin ? `<div><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" class="brand-icon"> ${s.personal.linkedin}</div>` : ''}
+                        ${s.personal.github ? `<div><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="brand-icon" style="filter: invert(1)"> ${s.personal.github}</div>` : ''}
                     </div>
 
                     <div style="margin-top:2.5rem">
@@ -562,6 +565,9 @@ const ResumeApp = {
                             ${s.personal.email ? `<span><i data-lucide="mail"></i> ${s.personal.email}</span>` : ''}
                             ${s.personal.phone ? `<span><i data-lucide="phone"></i> ${s.personal.phone}</span>` : ''}
                             ${s.personal.address ? `<span><i data-lucide="map-pin"></i> ${s.personal.address}</span>` : ''}
+                            ${s.personal.website ? `<span><i data-lucide="globe"></i> ${s.personal.website}</span>` : ''}
+                            ${s.personal.linkedin ? `<span><img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" class="brand-icon"> ${s.personal.linkedin}</span>` : ''}
+                            ${s.personal.github ? `<span><img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" class="brand-icon"> ${s.personal.github}</span>` : ''}
                         </div>
                     </div>
                     ${s.personal.photo ? `<img src="${s.personal.photo}" style="width:100px;height:100px;border-radius:50%;object-fit:cover; margin-top: ${config.headerAlign === 'center' ? '1rem' : '0'};">` : ''}
@@ -601,7 +607,10 @@ const ResumeApp = {
             sec.style.setProperty('margin-bottom', config.spacing, 'important');
         });
 
-        lucide.createIcons();
+        // RE-INITIALIZE ICONS - CRITICAL FIX
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     },
 
     renderSkills(skills, style, isSidebar = false) {
